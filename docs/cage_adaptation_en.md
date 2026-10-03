@@ -129,6 +129,34 @@ Full trajectory checkpoints remain in ignored runtime directories. Changed
 configurations require a new directory. The frozen runner and learning modules
 remain byte-identical to those used for selection and testing.
 
+## Supplementary figures
+
+The [gallery](../results/cage_adaptation/figures/README.md) provides English and
+Russian PNG/PDF figures and links to their underlying arrays. The supplementary
+[figure protocol](cage_figures_protocol.json) was frozen before the new horizon
+runs. It does not alter the original validation, selection, or two primary
+contrasts. Loss curves and component intervals use 2000 paired crossed bootstrap
+draws (seed 46000000); their 95% bands are descriptive and pointwise.
+
+Vector distance is computed against the full response target in the fixed
+normalized training game, with numerical lower/upper distances and feasibility
+checks. The moving realized-hull target and a retrospective fixed final target
+are both displayed. A separate sweep uses all 20 new seeds 45000000–45000019
+at each horizon 64, 128, 256, 512, 1024 and 2048, retaining the selected settings.
+Phase lengths and the original learning-rate formulas scale with the announced
+horizon. No additional simulator episodes or parameter search are involved.
+Numerical-zero errors cannot support a fitted decay order.
+
+```bash
+python scripts/build_cage_dynamic_figures.py --output results/runs/dynamic_rebuild
+python scripts/build_cage_geometry_figures.py --stage report
+```
+
+The figure-specific README files explain how to recompute the arrays as well
+as redraw the figures. Uncertainty for vector distance concerns whole attacker
+paths conditional on the training game; held-out simulator tables are used
+only for the native-loss analysis.
+
 ## Presentation cleanup and limitations
 
 The main branch focuses on the validated primary result. The

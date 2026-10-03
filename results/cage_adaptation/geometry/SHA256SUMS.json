@@ -1,0 +1,28 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "e1cbe7d3e1776949c23319a71eabb45c8d6b7d87859560c4ff14cc4ebbe7b09d",
+    "README.ru.md": "5e250417321c295673094587d7d7c39da6d84f06f63f818cedce6dd279031d26",
+    "horizon_error.pdf": "091c0a05c87498ce11e532454aae5926ffc963e099d25d14d64ca67dc4516620",
+    "horizon_error.png": "8b85bc838990731e84e3e9651151fe0ab632267b3027d93dc5b3d0072acc7fd9",
+    "horizon_error.ru.pdf": "4b23895e5fb0c0d13fd4824141e4eb7db80c0d543efc7d23773f1954cd400ed3",
+    "horizon_error.ru.png": "a8f9bb5594cfd13ecf0c517911b5d93c6f7b7089be8f6e3da2b231167583d050",
+    "horizon_geometry.npz": "0dc363ca332b4b79d190350ad494c0132e9a7d00b4f6b2c7cce78e4b7df677b9",
+    "horizon_inputs.npz": "5b459bc912737e649d69493696394a0561295bcaac510b8d18bdcc2239f86f2d",
+    "horizon_sources.json": "2ee3e2ef5722ccaa3767b97ca647a9269659fe8ed3cad4d6bf025ecd17b92359",
+    "metrics.json": "61f65ea4d01dd4cc6e90ce8acf2d7d5e98784af0e19b91a097e5b24cbc2f07f2",
+    "prefix_error.pdf": "edefed305822109fc5aeccf23abdf7ce801d12bcb95f6f61b7d15e38eb9f6269",
+    "prefix_error.png": "60c85f52cedca96b661d98157f861c71bd99bb6c78ba3ce472ec1ee785582388",
+    "prefix_error.ru.pdf": "213b623aa6270fb03d561a0acba3900d4e8be274c4c8724eb236b7e530472b70",
+    "prefix_error.ru.png": "4f7ed0ad34ef619aaa38d26f7625a86bbf9ea374a3816246fb925f23d373adbd",
+    "prefix_fixed_target.pdf": "97ed246cdcc12e2827cdd4bbc9c1b835eb2ad4bd3bd24e20f73f745790e1f0f6",
+    "prefix_fixed_target.png": "324f54fc922cf8bec8673d4551c2ee885c0aa93608e448d0a460b016e3d53408",
+    "prefix_fixed_target.ru.pdf": "46da12c7061078c4ae3569f3dedf27acc811c828b8de8a9fda0ce0022fe04ad8",
+    "prefix_fixed_target.ru.png": "d0b838f3f577079484bd2180cd55d7e3fd9d0429e74cb215dfcafe4a73ec95c0",
+    "prefix_geometry.npz": "3f2dd2c8bc713e03d97f31170dd22efedcbef6aece94e70018637cd1ecda9e47",
+    "primary_inputs.npz": "937f332c555b97142a74ef926db0648b91bec8f99a6a11b104252275a162da19",
+    "primary_sources.json": "16caa1461433733570f7990977bceecdfa48f7c387526ad73001688d9a5d46b8",
+    "protocol.json": "4e4d6fa40b846a1acea1ae60d3f25be842b9fd21a4767710f1d9977507577061",
+    "serialization_repair.json": "88334ad6405c9f56408c4b5855aa87961522a53b1ce98b940f1e129c7c06d23c"
+  }
+}

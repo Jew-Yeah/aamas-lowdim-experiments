@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-03T18:25:08.308122+00:00",
+  "status": "Post-study descriptive visualization; original test outcomes already known",
+  "methods": [
+    "selected_scalar_one_switch",
+    "selected_window",
+    "selected_hedge"
+  ],
+  "all_predeclared_paths": true,
+  "all_heldout_episode_seeds": true,
+  "new_simulator_episodes": 0,
+  "new_parameter_selection": false,
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 46000000,
+  "bootstrap_units": [
+    "whole held-out simulator-seed tables",
+    "whole common paths"
+  ],
+  "paired_across_methods_and_components": true,
+  "interval_type": "descriptive pointwise 95% percentile intervals; not simultaneous",
+  "smoothing": {
+    "type": "trailing moving average for visualization only",
+    "window": 16
+  },
+  "phase_boundaries": [
+    0,
+    128,
+    384,
+    512
+  ],
+  "calibration_and_configuration_uncertainty_included": false,
+  "primary_inference_replaced": false,
+  "vector_error_evaluated_by_this_script": false
+}

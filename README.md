@@ -31,6 +31,12 @@ tuned Hedge in this benchmark. They do not establish superiority over window.
 The [complete primary report](results/cage_adaptation/README.md) includes figures,
 input hashes, locked parameters, and the two primary comparisons.
 
+The [figure gallery](results/cage_adaptation/figures/README.md) adds loss dynamics,
+cumulative paired differences, four cost components, all-path distributions,
+validation sensitivity, and full-target vector error. English and Russian
+PNG/PDF exports are available. These descriptive additions retain the selected
+parameters and the original primary comparisons.
+
 ## Use and reproduce
 
 Python 3.10 or later is required.
@@ -68,9 +74,11 @@ policy for a separately reset 50-step simulator episode; mixture scores average
 whole-episode outcomes. Red selects among three fixed attack modes. These are
 model-informed simulator experiments, not deployed-network attack logs.
 
-The reported endpoint is scalar loss. The manuscript concerns vector target
-distance; this final benchmark does not measure that distance or demonstrate a
-benefit from the vector guarantee. No safe switches occurred in these paths.
+The primary endpoint is scalar loss. The supplementary figures separately
+measure full-target vector distance in the fixed normalized training game,
+including new runs at six announced horizons. Errors at numerical precision
+do not identify an asymptotic decay rate or demonstrate a benefit from the
+vector guarantee. No safe switches occurred in the primary paths.
 Numerical oracle residuals provide floating-point checks rather than formal
 exact-arithmetic certification.
 

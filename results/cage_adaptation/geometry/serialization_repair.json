@@ -1,0 +1,17 @@
+{
+  "created_utc": "2026-10-03T18:30:54.956573+00:00",
+  "scope": "preserve frozen source JSON bytes during repeated replay",
+  "frozen_runner_sha256": "7daf9af757a1547635727aa7309a616a0264f7d681a087b9f0cb90117245f376",
+  "repaired_runner_sha256": "fa3fc916e0cbccb1594742333f990a3aae21cc7444bed0019db098ed13e4fc04",
+  "primary_sources_sha256": "16caa1461433733570f7990977bceecdfa48f7c387526ad73001688d9a5d46b8",
+  "reason": "Preparation source JSON contained Windows CRLF. The first prefix run reserialized it to LF; original frozen bytes have been restored. Repeated prefix replay now verifies and preserves the source JSON instead of rewriting it.",
+  "changes": [
+    "Verify the documented repaired runner identity alongside the original frozen identity.",
+    "Verify and preserve existing frozen source JSON bytes rather than reserialize.",
+    "Add matching RU/EN visual captions explaining omitted quantile bands when their lower limit reaches the declared log display floor; no plot data or projection changes."
+  ],
+  "scientific_changes": false,
+  "original_protocol_preserved": true,
+  "trajectory_or_projection_changes": false,
+  "sweep_rerun": false
+}

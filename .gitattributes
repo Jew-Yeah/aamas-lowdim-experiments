@@ -3,3 +3,5 @@ data/*.csv -text
 *.npz -text
 *.png -text
 *.pdf -text
+# Preserve the source-ledger bytes recorded before the geometry sweep.
+results/cage_adaptation/geometry/primary_sources.json -text

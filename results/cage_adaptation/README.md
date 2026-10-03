@@ -39,7 +39,7 @@ The loss difference is entirely due to our algorithm's first uniform action. Win
 
 The implementation is continuous one-switch without restarts: forecast window W=16 and permitted gap fraction rho=0.25. Window is also selected with W=16; Hedge uses learning-rate multiplier 4. The full selection grid is retained. The primary test has no safe switches, scalar-oracle fallbacks, or nominal oracle-contract violations. Numerical residual checks provide numerical evidence rather than an exact-arithmetic certificate.
 
-This is a simulator experiment with a known training model and attack-mode disclosure after defense selection. Mixtures represent expected outcomes of whole independently reset episodes. The attacker selects among three frozen modes and learns no new tactics. Vector target geometry is not evaluated here: scalar loss close to window does not by itself demonstrate the practical benefit of the paper's vector guarantee. These results do not establish general superiority over other CAGE methods or on a live network.
+This is a simulator experiment with a known training model and attack-mode disclosure after defense selection. Mixtures represent expected outcomes of whole independently reset episodes. The attacker selects among three frozen modes and learns no new tactics. The primary statistical comparisons concern scalar loss. Geometric error was not computed in the original primary analysis; supplementary numerical checks of the calibrated game are presented separately. Scalar loss close to window does not by itself demonstrate the practical benefit of the paper's vector guarantee. These results do not establish general superiority over other CAGE methods or on a live network.
 
 ## Reproducibility and archive
 
@@ -60,3 +60,9 @@ python scripts/build_cage_adaptation_report.py --run-dir results/cage_adaptation
 ```
 
 PDF figures: [means](primary_means.pdf), [differences and intervals](primary_comparisons.pdf).
+
+## Supplementary figures
+
+[Figure gallery and PDFs](figures/README.md): loss dynamics, cumulative differences, four components, path variability, validation sensitivity, and numerical distance to the full vector target.
+
+These checks are descriptive and were added after the primary test. The locked parameters and two original statistical comparisons are preserved.

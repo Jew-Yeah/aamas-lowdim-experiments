@@ -1,0 +1,167 @@
+{
+  "protocol_sha256": "4e4d6fa40b846a1acea1ae60d3f25be842b9fd21a4767710f1d9977507577061",
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "prefix": {
+    "path_count": 50,
+    "checkpoint_count": 39,
+    "moving_projection_count": 5850,
+    "fixed_projection_count": 5850,
+    "max_gap": 9.74003972094295e-13,
+    "max_alpha": 9.869163956963605e-07,
+    "all_success": true,
+    "maximum_affine_dimension": 2,
+    "methods": {
+      "selected_scalar_one_switch": {
+        "terminal_median_distance": 5.23077004783653e-17,
+        "terminal_max_distance": 5.92019621592981e-17,
+        "terminal_at_or_below_floor_count": 50,
+        "total_at_or_below_floor_count": 1114
+      },
+      "selected_window": {
+        "terminal_median_distance": 1.3877787807814457e-17,
+        "terminal_max_distance": 5.281344540365793e-17,
+        "terminal_at_or_below_floor_count": 50,
+        "total_at_or_below_floor_count": 1943
+      },
+      "selected_hedge": {
+        "terminal_median_distance": 0.0052422180647404976,
+        "terminal_max_distance": 0.005358008963751901,
+        "terminal_at_or_below_floor_count": 0,
+        "total_at_or_below_floor_count": 0
+      }
+    }
+  },
+  "terminal_sweep": {
+    "horizons": [
+      64,
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "path_count_per_horizon": 20,
+    "projection_count": 360,
+    "max_gap": 6.429222524370962e-13,
+    "max_alpha": 8.018243276660394e-07,
+    "all_success": true,
+    "methods": {
+      "selected_scalar_one_switch": {
+        "median_distances": [
+          0.00018707419134584056,
+          4.907700744752417e-17,
+          5.229058858441177e-17,
+          5.3991261126615416e-17,
+          5.4829933972604925e-17,
+          5.326238928845942e-17
+        ],
+        "median_lower_distances": [
+          0.00018707419133026008,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_distances": [
+          0.0005931146625653607,
+          6.294837104384724e-17,
+          5.777607478807353e-17,
+          5.639396594493563e-17,
+          5.98924862423868e-17,
+          6.062629372718274e-17
+        ],
+        "at_or_below_floor_counts": [
+          5,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "estimated_slope": null,
+        "reason": "At least one horizon median is zero or numerically unresolved."
+      },
+      "selected_window": {
+        "median_distances": [
+          1.3877787807814457e-17,
+          3.674203283201239e-18,
+          3.469446951953614e-18,
+          1.3877787807814457e-17,
+          1.734723475976807e-18,
+          1.419774160323127e-17
+        ],
+        "median_lower_distances": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_distances": [
+          2.829248368623626e-17,
+          1.4409695421113136e-17,
+          4.795312345487579e-17,
+          5.114723748700367e-17,
+          5.306003905894642e-17,
+          5.513701227297763e-17
+        ],
+        "at_or_below_floor_counts": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "estimated_slope": null,
+        "reason": "At least one horizon median is zero or numerically unresolved."
+      },
+      "selected_hedge": {
+        "median_distances": [
+          0.01534911101902125,
+          0.011262629095078929,
+          0.007880347174982108,
+          0.005256580347840404,
+          0.003406703428612077,
+          0.0021117892293315687
+        ],
+        "median_lower_distances": [
+          0.015349111019021214,
+          0.011262629095078875,
+          0.007880347174936263,
+          0.005256580347840316,
+          0.003406703428611739,
+          0.0021117892293302356
+        ],
+        "maximum_distances": [
+          0.01618332752265686,
+          0.011620461453491144,
+          0.008019447902204914,
+          0.005435294301746605,
+          0.0035011586397476775,
+          0.0021707480996940496
+        ],
+        "at_or_below_floor_counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "estimated_slope": -0.5733573567131864,
+        "intercept": -1.7213963214651515,
+        "interpretation": "Descriptive OLS of all horizon medians under changing scaled curricula and learning rates."
+      }
+    }
+  },
+  "numerical_floor": 1e-10,
+  "native_simulator_episodes_added": 0
+}

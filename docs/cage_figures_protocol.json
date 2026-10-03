@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-03T18:21:04+00:00",
+  "parent_commit": "2b62a53a06c2b67579b9041048703d26692b9ca0",
+  "purpose": "Post-study descriptive figures and a fixed-parameter numerical horizon sweep; no replacement of the two original primary comparisons",
+  "selection_sha256": "3e8f87ea1babcf7b2328fb6eed9aecb5314ffdc996be19f34667c31861ee4cc4",
+  "calibration_sha256": "29866e57ac18413b5e5bbe4f4b3cbea17237f03e5f42eb6aab532ae001188935",
+  "fixed_methods": {
+    "selected_scalar_one_switch": {"window": 16, "rho": 0.25, "first_action": "uniform", "restarts": false},
+    "selected_window": {"window": 16, "first_action": "response to known initial Meander mode"},
+    "selected_hedge": {"eta_multiplier": 4, "horizon_dependent_base_eta": "original Hedge rule"}
+  },
+  "primary_trajectory_figures": {
+    "horizon": 512,
+    "path_seed_start": 41000000,
+    "path_count": 50,
+    "episode_seed_start": 39000000,
+    "episode_seed_count": 400,
+    "phase_boundaries": [0, 128, 384, 512],
+    "plots": ["native loss over time", "cumulative paired loss differences", "four native cost components", "distribution of paired path differences", "validation-only W/rho sensitivity"],
+    "uncertainty": "Descriptive pointwise crossed bootstrap of whole simulator seed tables and whole paths; calibration and selected settings held fixed",
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 46000000,
+    "claim": "No new confirmatory superiority or equivalence claim"
+  },
+  "geometry": {
+    "quantity": "delta_t = dist(mean_{s<=t} u(p_s, ell_s), S(conv{ell_1,...,ell_t})) in the fixed normalized training game",
+    "target": "Full response target including responses on all mixtures in the realized hull, checked by full-target support LPs",
+    "methods": ["selected_scalar_one_switch", "selected_window", "selected_hedge"],
+    "primary_paths": "All 50 locked primary paths; logarithmic, regular and hull/phase-change checkpoints",
+    "fixed_target_panel": "Retrospective distance to each path's final full target S(Q_T), never passed to learners",
+    "projection_tolerance": 1e-11,
+    "report": ["upper distance", "lower distance", "squared objective gap", "sqrt gap", "feasibility error", "success", "realized hull dimension"],
+    "zero_handling": "Display numerical resolution and censored near-zero values explicitly; no arbitrary epsilon substitution for fitted slopes",
+    "reference_rate": "T^-1/2 for realized opponent dimension q<=2; a reference upper-rate exponent, not a prediction of exact finite-sample slope",
+    "native_heldout_loss_is_not_delta": true
+  },
+  "terminal_horizon_sweep": {
+    "horizons": [64, 128, 256, 512, 1024, 2048],
+    "path_seed_start": 45000000,
+    "path_count": 20,
+    "scenario": "curriculum",
+    "phase_fractions": [0.25, 0.5, 0.25],
+    "attacker_exploration": 0.1,
+    "initial_red_index": 1,
+    "experiment_count": 120,
+    "method_trajectory_count": 360,
+    "schedule": "Each horizon is separately announced to the learners; curriculum phases and original attacker/Hedge schedules scale with that horizon",
+    "interpretation": "Descriptive comparison of a fixed experiment family, not prefixes of one run or proof of a worst-case exponent",
+    "uncertainty": "Whole-path variability conditional on fixed calibration; no simulator-seed uncertainty for deterministic calibrated vector geometry",
+    "parameter_search": false,
+    "new_simulator_episodes": 0
+  },
+  "manuscript": "Original main.tex remains unchanged",
+  "reproducibility": "Publish compact trajectory inputs, configurations, source/input hashes, software versions, numerical geometry diagnostics and RU/EN PNG/PDF figures"
+}

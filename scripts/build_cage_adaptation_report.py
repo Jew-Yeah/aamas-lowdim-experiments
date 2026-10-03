@@ -234,7 +234,7 @@ def figures(analysis, output, trace):
         save_figure(fig, output, "primary_comparisons" + ending, created)
 
 
-def markdown(analysis, selection, protocol, ru, trace):
+def markdown(analysis, selection, protocol, ru, trace, supplementary=False):
     names = dict(zip(PRIMARY_METHODS, DISPLAY_LABELS[ru]))
     primary = analysis["primary"]
     mean = {name: primary["methods"][name]["mean_native_loss"] for name in PRIMARY_METHODS}
@@ -281,8 +281,8 @@ def markdown(analysis, selection, protocol, ru, trace):
     lines += ["## " + ("Реализация и границы вывода" if ru else "Implementation and limits"), "",
               ("Используется непрерывный one-switch без перезапусков: прогнозное окно W=16, доля допустимого зазора rho=0,25. Окно также выбрано с W=16; Hedge — с множителем скорости обучения 4. Полная сетка выбора сохранена. В основном тесте не было безопасных переключений, возвратов к исходному оракулу или превышений номинального допуска оракула. Численная проверка остатка служит численным свидетельством, а не сертификатом в точной арифметике."
                if ru else "The implementation is continuous one-switch without restarts: forecast window W=16 and permitted gap fraction rho=0.25. Window is also selected with W=16; Hedge uses learning-rate multiplier 4. The full selection grid is retained. The primary test has no safe switches, scalar-oracle fallbacks, or nominal oracle-contract violations. Numerical residual checks provide numerical evidence rather than an exact-arithmetic certificate."), "",
-              ("Это эксперимент в симуляторе с известной обучающей моделью и раскрытием режима атаки после выбора защиты. Смеси обозначают ожидаемые исходы полных независимо инициализированных эпизодов. Противник выбирает среди трёх зафиксированных режимов; новые тактики не изучает. Геометрия векторной цели здесь не оценивается: близость скалярных потерь к окну сама по себе не демонстрирует практическую пользу векторной гарантии статьи. Результат не означает общего превосходства над другими методами CAGE или на живой сети."
-               if ru else "This is a simulator experiment with a known training model and attack-mode disclosure after defense selection. Mixtures represent expected outcomes of whole independently reset episodes. The attacker selects among three frozen modes and learns no new tactics. Vector target geometry is not evaluated here: scalar loss close to window does not by itself demonstrate the practical benefit of the paper's vector guarantee. These results do not establish general superiority over other CAGE methods or on a live network."), "",
+              ("Это эксперимент в симуляторе с известной обучающей моделью и раскрытием режима атаки после выбора защиты. Смеси обозначают ожидаемые исходы полных независимо инициализированных эпизодов. Противник выбирает среди трёх зафиксированных режимов; новые тактики не изучает. Основные статистические сравнения относятся к скалярным потерям. Геометрическая ошибка в исходном основном анализе не вычислялась; дополнительные численные проверки калиброванной игры представлены отдельно. Близость скалярных потерь к окну сама по себе не демонстрирует практическую пользу векторной гарантии статьи. Результат не означает общего превосходства над другими методами CAGE или на живой сети."
+               if ru else "This is a simulator experiment with a known training model and attack-mode disclosure after defense selection. Mixtures represent expected outcomes of whole independently reset episodes. The attacker selects among three frozen modes and learns no new tactics. The primary statistical comparisons concern scalar loss. Geometric error was not computed in the original primary analysis; supplementary numerical checks of the calibrated game are presented separately. Scalar loss close to window does not by itself demonstrate the practical benefit of the paper's vector guarantee. These results do not establish general superiority over other CAGE methods or on a live network."), "",
               "## " + ("Воспроизводимость и архив" if ru else "Reproducibility and archive"), "",
               ("Это сокращённое представление уже завершённого исследования, созданное после просмотра его результатов. Состав основного теста, все 50 путей, параметры и два предзаданных сравнения сохранены. Побочные проверки перезапусков и ненастроенных вариантов доступны в полном архиве."
                if ru else "This is a focused presentation of an already completed study, created after its outcomes were inspected. The primary test, all 50 paths, configurations, and both predeclared comparisons are preserved. Exploratory restart checks and untuned variants remain available in the full archive."), "",
@@ -296,6 +296,12 @@ def markdown(analysis, selection, protocol, ru, trace):
               "python scripts/build_cage_adaptation_report.py --run-dir results/cage_adaptation --bank-root data/cage2_adaptation --output results/runs/focused_report", "```", "",
               ("PDF для статьи: [средние](primary_means.ru.pdf), [разности и интервалы](primary_comparisons.ru.pdf)."
                if ru else "PDF figures: [means](primary_means.pdf), [differences and intervals](primary_comparisons.pdf)."), ""]
+    if supplementary:
+        lines += ["## " + ("Дополнительные графики" if ru else "Supplementary figures"), "",
+                  ("[Галерея графиков и PDF](figures/README.ru.md): динамика потерь, накопленная разность, четыре компоненты, разброс по траекториям, валидационная чувствительность и численная ошибка до полного векторного целевого множества."
+                   if ru else "[Figure gallery and PDFs](figures/README.md): loss dynamics, cumulative differences, four components, path variability, validation sensitivity, and numerical distance to the full vector target."), "",
+                  ("Эти проверки описательные и добавлены после завершения основного теста. Параметры и два исходных статистических сравнения сохранены."
+                   if ru else "These checks are descriptive and were added after the primary test. The locked parameters and two original statistical comparisons are preserved."), ""]
     return "\n".join(lines)
 
 
@@ -366,14 +372,29 @@ def build(run_dir, bank_root, output, protocol_path):
         destination.mkdir(parents=True, exist_ok=True)
         for filename in ("occupancies.npz", "meta.json", "training_fit.npz"):
             atomic_bytes(destination / filename, (source / filename).read_bytes())
+    # A public-input rebuild also preserves the separately reproducible
+    # supplements. They do not change the locked primary analysis.
+    for name in ("geometry", "dynamics", "figures"):
+        source, destination = run_dir / name, output / name
+        if source.is_dir() and source.resolve() != destination.resolve():
+            for path in sorted(source.rglob("*")):
+                if path.is_file():
+                    atomic_bytes(destination / path.relative_to(source), path.read_bytes())
     write(output / "analysis.json", analysis)
     write(output / "trace_diagnostics.json", trace)
     figures(analysis, output, trace)
     for ru, filename in ((False, "README.md"), (True, "README.ru.md")):
-        atomic_bytes(output / filename, markdown(analysis, selection, protocol, ru, trace).encode("utf-8"))
+        supplementary = (output / "figures" / "README.md").exists()
+        atomic_bytes(output / filename, markdown(analysis, selection, protocol, ru, trace,
+                                                 supplementary=supplementary).encode("utf-8"))
     cleanup_legacy_report(output)
     for path in output.rglob("*.json"):
-        if b"\r\n" in path.read_bytes():
+        # Preserve the exact pre-sweep fingerprint of the supplementary source
+        # ledger, which was originally serialized with Windows line endings.
+        # Its own frozen protocol checks the bytes; normalizing it would break
+        # provenance. Primary runner JSON and all other report JSON remain LF.
+        historical_source = path.relative_to(output).as_posix() == "geometry/primary_sources.json"
+        if b"\r\n" in path.read_bytes() and not historical_source:
             raise ValueError("Published hash-bound JSON must use canonical LF bytes.")
     files = {p.relative_to(output).as_posix(): sha(p) for p in sorted(output.rglob("*"))
              if p.is_file() and p.name != "SHA256SUMS.json"}
