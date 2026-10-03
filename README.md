@@ -1,14 +1,66 @@
 [English](README.md) | [Русский](README.ru.md)
 
-# One-switch adaptation in CAGE 2
+# Full one-switch trajectories
 
-Reproducible experiments for a one-switch learner with a scalar-aware admissible
-saddle oracle. The recommended implementation uses a **16-round forecast window
-and `rho = 0.25`**, selected on separate validation data. The final benchmark
-compares this implementation with independently tuned window and Hedge policies
-in the official CAGE 2 simulator.
+The current primary experiment follows **730 chronological days of NYC request
+shares**, including the first certified crossing and the complete safe tail.
+It uses `u(p,ell)=(p-ell)/sqrt(2)`, benchmark `p*(ell)=ell`, and the full target
+`{0}`. A separately proved lag safe base gives the conservative, data-independent
+budget **G=1**. This is a different safe base from the original block routine.
+All methods start uniformly and choose before the current share is revealed;
+no learner restarts within the primary run.
 
-## Validated result
+| Method | Final vector distance δ | Mean daily mismatch norm |
+|---|---:|---:|
+| One-switch | 0.000939885 | 0.155910247 |
+| Fast only | 0.000644365 | 0.573865013 |
+| Lag safe only | 0.000167400 | 0.131152906 |
+| Window, W=16 | 0.001311085 | 0.104084214 |
+| Block safe only | 0.034672805 | 0.109093125 |
+
+The master switches at **44**, on **2021-02-13**, followed by **686 safe rounds**.
+It improves daily mismatch relative to fast-only, while fast has a smaller final
+vector distance. Lag is best on final distance; Window is best on daily mismatch.
+Signed errors can cancel in the vector average, so these metrics are distinct.
+Registered request shares are a modeled allocation objective, not measured
+staffing requirements or service outcomes.
+
+A constructed, high-dimensional resource-balance diagnostic separately retains
+the **original block-safe routine and G=6 T^(3/4)**. At `T=16384` it switches at
+**8817**. Final distance is **0.602296** for the master, **0.992126** for fast,
+and **0.124300** for standalone block-safe; lag and Window are stronger still.
+Its novel labels are payoff-equivalent. This is a mechanism test, not a
+low-dimensional rate experiment or a claim of general dominance.
+
+[Full results and both dynamics figures](results/switching/README.md) retain
+all five methods, both annual checks, per-round arrays and hashes.
+[Method notes](docs/switching_en.md) prove the budgets and describe observation
+order. These additions are post-review exploratory; fixed chronological traces
+carry no confidence intervals, p-values, or confirmatory holdout claims.
+
+## Reproduce the switching studies
+
+Python 3.10 or later is required. Only base scientific dependencies are needed.
+
+```bash
+python -m pip install -e ".[test]"
+python -m pytest -q
+python scripts/run_switching_study.py
+```
+
+Use `--output results/runs/switching_replay` for a separate replay. The runner
+verifies CSV hashes, replays all three NYC traces and the original-budget stress,
+and exports English PNG/PDF figures. Recorded verification: **152 tests passed**
+in the full development environment; optional simulator checks may skip without
+CAGE. [Pinned base dependencies](requirements-lock.txt) and
+[data provenance](data/switching_nyc/provenance.json) are retained.
+
+## Frozen CAGE 2 result
+
+The following retained study uses a scalar-aware admissible saddle oracle with
+**W=16 and `rho=0.25`**, selected on separate validation. Its scientific data,
+selection, results and original inference remain unchanged. CAGE is the simulator;
+Window and Hedge are the comparison policies.
 
 Mean native loss per simulator step, averaged over 400 held-out simulator seeds
 and 50 common attacker paths of 512 policy-selection rounds. Lower is better.
@@ -28,7 +80,7 @@ one-switch starts uniformly, while window responds to the known initial mode.
 
 These results support near-window scalar performance and an advantage over
 tuned Hedge in this benchmark. They do not establish superiority over window.
-The [complete primary report](results/cage_adaptation/README.md) includes figures,
+The [original CAGE report](results/cage_adaptation/README.md) includes figures,
 input hashes, locked parameters, and the two primary comparisons.
 
 The [figure gallery](results/cage_adaptation/figures/README.md) adds loss dynamics,
@@ -39,17 +91,16 @@ parameters and the original primary comparisons.
 
 ## AAMAS paper materials
 
-[English publication figures](results/cage_adaptation/aamas/README.md) provide
-three compact figures with explicit units and sign conventions. The
-[experimental LaTeX section](paper/README.md) selects a primary results table
-and the cumulative cost comparison for main text; component and geometric
-diagnostics belong in the supplement. [Submission guidance](docs/aamas_submission_en.md)
-separates official AAMAS 2027 requirements from our editorial choices.
-The anonymous package includes code, data, figure replay and AI methodology
-disclosure. Adding experiments to the existing eight-page theory manuscript
-still requires a separate whole-paper page allocation.
+[LaTeX integration notes](paper/README.md) describe the current switching main
+section and detailed supplementary methods. Current figures are in
+[the switching report](results/switching/README.md); the
+[frozen CAGE figure pack](results/cage_adaptation/aamas/README.md) remains secondary.
+[Submission guidance](docs/aamas_submission_en.md) distinguishes official rules
+from editorial choices. The final reviewer package must include the new switching
+code, inputs, results and figures; an earlier CAGE-only package is insufficient.
+The compiled whole manuscript determines page compliance.
 
-## Use and reproduce
+## Reproduce the frozen CAGE study
 
 Python 3.10 or later is required.
 
@@ -72,7 +123,7 @@ without collecting the simulator episodes again.
 selected baselines without retuning. The short command above is a functional
 check; omit `--horizon` and `--seeds` to use the recorded 512-round, 50-path setup.
 
-## Method and scope
+## CAGE method and scope
 
 The learner chooses before the current attack mode is revealed. Its forecast
 uses only previous observations. The oracle minimizes forecast scalar loss
@@ -96,8 +147,8 @@ exact-arithmetic certification.
 
 ## Previous studies and reuse
 
-The main branch focuses on the selected implementation and the primary
-comparison. The [full-study archive](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/archive/full-study-2026-10-04)
+The retained CAGE comparison uses its original selected implementation. The
+[full-study archive](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/archive/full-study-2026-10-04)
 preserves earlier implementations, results, and unsuccessful comparisons,
 including the original one-switch and exploratory restarts. Restarts had
 scenario-dependent effects and are not part of the recommended configuration.

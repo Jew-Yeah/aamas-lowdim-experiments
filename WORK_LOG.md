@@ -145,3 +145,60 @@ were verified; the public report rebuild includes the new publication pack.
 The reviewer ZIP contains 117 files, 8,055,075 bytes (below 25 MB), SHA-256
 c33efbc88cc55f15a302280435f720efecd265719d6ba90bb37fb392dd5cfecc.
 CI now validates anonymous package creation as part of every push.
+
+## 2026-10-04: complete switching trajectories
+
+Current experimental presentation now centers on the full chronological NYC
+Hazard request-share trace for 2021–2022: 730 days, with fixed groups Brooklyn,
+Queens, and the other three boroughs. Aggregate CSVs reproduce the original
+retained hashes. There is no fitted quantization; one zero-count day uses uniform
+shares. Registered requests are not described as staffing requirements or
+measured service outcomes. This post-review exploratory addition carries no
+iid-day bootstrap, p-values, confidence bands, or confirmatory holdout claim.
+
+The game is u(p,ell)=(p-ell)/sqrt(2), p*(ell)=ell, with full strict target {0}.
+The unchanged abstract master uses a separately certified lag base: a fresh
+uniform first move, then the previous share. The exact telescoping identity
+gives conservative B0(0)=0 and B0(h)=1 for h>0, hence G=1 before play. It is
+not a fitted replacement constant for the original block-safe routine. All
+methods choose before observation and start uniformly; there are no learner
+restarts within the primary trace. Annual checks are separate fresh runs.
+
+The primary master crosses at round 44 (2021-02-13), E=1.0907360349979347,
+followed by 686 safe rounds. Final delta for master/fast/lag/window/block-safe
+is 0.0009398852984031934 / 0.0006443650430498301 / 0.00016740002538651535 /
+0.0013110850136480333 / 0.034672804800485166. Mean daily norms are
+0.15591024746774773 / 0.5738650131910884 / 0.1311529055390833 /
+0.1040842139398677 / 0.10909312520490444. Cumulative daily-norm differences
+end at −305.10697897803846 versus fast and +37.83300447535242 versus Window.
+The annual masters switch at 44 and 26. Both the fast endpoint advantage and
+the stronger lag/window controls remain visible; no general dominance is claimed.
+
+The separate constructed diagnostic retains the original block-safe routine
+and G=6*T^(3/4). T=16384, 128 quiet rounds, and 16256 new orthogonal labels
+give G=8688.928127220297 and crossing 8817, followed by a fresh 7567-round
+safe tail. Labels are payoff-equivalent and dimension is deliberately high.
+Fast analytic oracles retain the original subprobability Euclidean geometry;
+only safe play uses lossless payoff compression. Master final delta is
+0.6022961476839032 versus 0.99212646484375 for fast and 0.1243004061577185
+for standalone block-safe; lag and Window are stronger still. Cumulative
+absolute-imbalance differences end at −6386.979916346925 versus fast and
++7705.482229165034 versus block-safe. This is a mechanism illustration,
+not realistic attack learning, low-dimensional rates, or q=4 validation.
+
+Two English PNG/PDF figures show full budget crossing, analytical full-target
+distance, and cumulative mismatch differences, retaining all five methods.
+The NYC log panel discloses a 1e-5 display floor affecting four lag-safe points;
+raw values are unchanged. Bilingual root, paper, and result README files now
+describe this scope. The CAGE calibration, selected parameters, observations,
+results and original inference remain frozen as a secondary study.
+
+Recorded final full-suite verification: 152 tests passed. Independent array checks
+confirm identical fast-prefix actions through crossing, first strict crossing,
+fresh safe local clocks, stopped E, analytical distances, all metrics, and
+source/artifact hashes. NYC safe-tail prefix telescope errors are below 5.3e-16;
+the tightest NYC overshoot is 0.0010787500410689432, versus a projection-error
+charge of 9.56e-8. Numerical fast-oracle checks remain floating-point evidence.
+Reproduction uses python scripts/run_switching_study.py with base dependencies.
+Whole-project TeX layout and current anonymous package are separate integration
+updates; no successful local compilation or current page count is claimed here.
