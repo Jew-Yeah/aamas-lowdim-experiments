@@ -138,6 +138,164 @@ def test_default_allowlist_contains_manuscript_builder_test_and_english_exports(
     assert not any(".ru." in name or name == "WORK_LOG.md" for name in names)
 
 
+def test_default_allowlist_covers_every_switching_replay_and_its_reproduction_inputs():
+    names = set(module.allowlist())
+    for name in ("src/lowdim_games/switching_tracking.py", "src/lowdim_games/switching_stress.py",
+                 "scripts/run_switching_study.py", "tests/test_switching_tracking.py",
+                 "tests/test_switching_stress.py", "docs/switching_en.md",
+                 "data/switching_nyc/provenance.json", "data/switching_nyc/nyc_forestry_hazard_daily_2021.csv",
+                 "data/switching_nyc/nyc_forestry_hazard_daily_2022.csv", "results/switching/analysis.json",
+                 "results/switching/protocol.json", "results/switching/manifest.json"):
+        assert name in names
+    for study in ("nyc_2021_2022", "nyc_2021", "nyc_2022", "original_budget_stress"):
+        assert f"results/switching/{study}/summary.json" in names
+        for method in ("one_switch", "shared_past_hull", "lag_safe", "last_window", "block_safe"):
+            assert f"results/switching/{study}/{method}.npz" in names
+        if study.startswith("nyc_"):
+            assert f"results/switching/{study}/game_path.npz" in names
+    for figure in ("switching_nyc_dynamics", "switching_original_budget"):
+        for extension in ("pdf", "png"):
+            assert f"results/switching/figures/{figure}.{extension}" in names
+    assert "docs/switching_ru.md" not in names
+
+
+def test_english_document_projection_preserves_science_and_records_only_navigation_changes():
+    raw = ("[English](switching_en.md) | [Русский](switching_ru.md) | [Home](../README.md)\r\n\r\n"
+           "# Switching\r\n\r\nThe fixed budget is G=1; delta=0.0009398852984031934.\r\n"
+           "[Public code](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/main).\r\n").encode()
+    projected, details = module.anonymous_document("docs/switching_en.md", raw)
+    assert projected == ("# Switching\r\n\r\nThe fixed budget is G=1; delta=0.0009398852984031934.\r\n"
+                         "[Public code](../README.md).\r\n").encode()
+    assert details["original_sha256"] == module.digest(raw)
+    assert details["derivative_sha256"] == module.digest(projected)
+    assert details["removed_language_navigation"] is True
+    assert details["author_repository_links_replaced"] == 1
+    assert details["scientific_prose_and_values_unchanged"] is True
+    module.scan_member("docs/switching_en.md", projected)
+    ordinary = b"# Fixed trace\r\nRaw signed errors are retained.\r\n"
+    assert module.anonymous_document("results/switching/README.md", ordinary)[0] == ordinary
+
+
+def test_excluded_presentation_links_are_redirected_to_included_sources_without_changing_text():
+    raw = ("G=1; all five methods are retained.\n"
+           "[AAMAS integration](../../paper/README.md), "
+           "[frozen CAGE comparison](../cage_adaptation/README.md).\n").encode()
+    projected, details = module.anonymous_document("results/switching/README.md", raw)
+    assert projected == ("G=1; all five methods are retained.\n"
+                         "[AAMAS integration](../../paper/experiments.tex), "
+                         "[frozen CAGE comparison](../cage_adaptation/analysis.json).\n").encode()
+    assert details["author_repository_links_replaced"] == 0
+    assert details["removed_language_navigation"] is False
+    assert sum(row["replacements"] for row in details["excluded_document_links_redirected"]) == 2
+
+
+def add_switching_fixture(root, names, monkeypatch):
+    """Small complete freeze with real checksum links, without replaying learners."""
+    source_names = ["scripts/run_switching_study.py", "src/lowdim_games/switching_tracking.py",
+                    "src/lowdim_games/switching_stress.py", "src/lowdim_games/learners.py",
+                    "src/lowdim_games/geometry.py", "tests/test_switching_tracking.py",
+                    "tests/test_switching_stress.py"]
+    added = module.switching_allowlist() + source_names
+    for name in added:
+        source = root / name
+        source.parent.mkdir(parents=True, exist_ok=True)
+        if source.suffix == ".npz":
+            np.savez_compressed(source, payoff=np.array([-.1, .2]), mode=np.array(["fast", "safe"]))
+        elif source.suffix == ".pdf":
+            source.write_bytes(b"%PDF-1.4\n% Anonymous English figure\n")
+        elif source.suffix == ".png":
+            source.write_bytes(b"\x89PNG\r\n\x1a\n")
+        elif source.suffix == ".json":
+            source.write_bytes(b'{}\n')
+        elif source.suffix == ".csv":
+            source.write_bytes(b"date,Bronx,Brooklyn,Manhattan,Queens,Staten Island\r\n2021-01-01,1,2,3,4,5\r\n")
+        elif source.suffix == ".md":
+            source.write_text("[English](switching_en.md) | [Русский](switching_ru.md)\n\n"
+                              "# Fixed switching studies\nAll five methods are retained.\n", encoding="utf-8")
+        else:
+            source.write_bytes(b"# Frozen causal learner/source check\r\n")
+    provenance = {"years": {}}
+    for year in ("2021", "2022"):
+        filename = f"nyc_forestry_hazard_daily_{year}.csv"
+        provenance["years"][year] = {"csv": filename,
+                                     "csv_sha256": module.digest((root / "data/switching_nyc" / filename).read_bytes())}
+    (root / "data/switching_nyc/provenance.json").write_bytes(module.canonical_json(provenance))
+    protocol = {"source_sha256": {name: module.digest((root / name).read_bytes()) for name in source_names[:5]}}
+    (root / "results/switching/protocol.json").write_bytes(module.canonical_json(protocol))
+    # Include this optional report in the result freeze too, to check that hashes
+    # are verified against source bytes before its navigation derivative is made.
+    report = "results/switching/README.md"
+    (root / report).write_text("# Results\n[Public code](https://github.com/Jew-Yeah/aamas-lowdim-experiments).\n",
+                              encoding="utf-8")
+    result_names = [name for name in added + [report] if name.startswith("results/switching/")
+                    and name != "results/switching/manifest.json"]
+    manifest = {"files_sha256": {name.removeprefix("results/switching/"): module.digest((root / name).read_bytes())
+                                for name in result_names}}
+    (root / "results/switching/manifest.json").write_bytes(module.canonical_json(manifest))
+    monkeypatch.setattr(module, "allowlist", lambda: names + added)
+    return added
+
+
+def test_complete_switching_freeze_is_preserved_and_new_paper_figures_match(tmp_path, monkeypatch):
+    root, names, _ = fixture_repository(tmp_path, monkeypatch)
+    added = add_switching_fixture(root, names, monkeypatch)
+    before = {name: (root / name).read_bytes() for name in added}
+    paper = tmp_path / "paper"
+    paper.mkdir()
+    (paper / "experiments.tex").write_text("\\section{Actual switching}\n", encoding="utf-8")
+    (paper / "ai_assistance.md").write_text("AI helped design and implement these exploratory studies.\n", encoding="utf-8")
+    output = tmp_path / "switching.zip"
+    module.build_supplement(root, output, paper_dir=paper)
+    with zipfile.ZipFile(output) as archive:
+        for name, original in before.items():
+            assert (root / name).read_bytes() == original
+            if name not in module.ENGLISH_DOCUMENTS:
+                assert archive.read(name) == original
+        for figure in module.SWITCHING_FIGURES:
+            for extension in ("png", "pdf"):
+                assert archive.read(f"paper/figures/{figure}.{extension}") == archive.read(
+                    f"results/switching/figures/{figure}.{extension}")
+        assert archive.read("AI_DISCLOSURE.md") == archive.read("paper/ai_assistance.md")
+        manifest = json.loads(archive.read("MANIFEST.json"))
+        assert manifest["switching_input_verification"]["aggregate_csv_files_verified"] == 2
+        assert manifest["switching_input_verification"]["source_code_files_verified"] == 5
+        assert manifest["english_document_projections"]["results/switching/README.md"]["author_repository_links_replaced"] == 1
+        for name, expected in manifest["files_sha256"].items():
+            assert module.digest(archive.read(name)) == expected
+            module.scan_member(name, archive.read(name))
+    (paper / "figures").mkdir()
+    (paper / "figures/switching_nyc_dynamics.pdf").write_bytes(b"%PDF-1.4\n% altered figure\n")
+    with pytest.raises(ValueError, match="differs from the canonical"):
+        module.build_supplement(root, output, paper_dir=paper)
+
+
+@pytest.mark.parametrize("name,role", [
+    ("data/switching_nyc/nyc_forestry_hazard_daily_2021.csv", "aggregate CSV"),
+    ("src/lowdim_games/switching_tracking.py", "source code"),
+    ("results/switching/nyc_2021_2022/one_switch.npz", "result"),
+])
+def test_switching_checksum_mismatch_fails_without_replacing_existing_archive(tmp_path, monkeypatch, name, role):
+    root, names, _ = fixture_repository(tmp_path, monkeypatch)
+    add_switching_fixture(root, names, monkeypatch)
+    (root / name).write_bytes((root / name).read_bytes() + b"modified")
+    output = tmp_path / "existing.zip"
+    output.write_bytes(b"previous valid archive")
+    with pytest.raises(ValueError, match=f"Switching {role} checksum mismatch"):
+        module.build_supplement(root, output)
+    assert output.read_bytes() == b"previous valid archive"
+
+
+def test_conflicting_ai_disclosures_fail_instead_of_shipping_two_versions(tmp_path, monkeypatch):
+    root, _, _ = fixture_repository(tmp_path, monkeypatch)
+    paper = tmp_path / "paper"
+    paper.mkdir()
+    (paper / "ai_assistance.md").write_text("Current experimental design disclosure.\n", encoding="utf-8")
+    override = tmp_path / "old_ai.md"
+    override.write_text("Earlier language-only disclosure.\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="AI disclosure differs"):
+        module.build_supplement(root, tmp_path / "unsafe.zip", paper_dir=paper, ai_statement=override)
+
+
 def test_manuscript_exports_are_mirrored_exactly_and_conflicting_figures_fail(tmp_path, monkeypatch):
     root, names, _ = fixture_repository(tmp_path, monkeypatch)
     new_names = []
