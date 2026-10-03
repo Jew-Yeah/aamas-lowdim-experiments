@@ -1,0 +1,15 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "calibrated_geometry.pdf": "72d641f7090e93d4b51a5e4e0d4882d710691990e7ab3d89946784ab78bbd2f4",
+    "calibrated_geometry.png": "a76c09ea3ba2876ae22e5a1441ae06ac9e24c17fc39685b1a0a4233d874040ee",
+    "captions.tex": "fef9684c6317a4b0b29331772e5d97f509c1af6471b40f95705617b13efaf304",
+    "cumulative_cost_difference.pdf": "fc4cceb5569ffe0a59a1b323ea311ecda00aa6c60abf5627aff32c2d6d99fbb8",
+    "cumulative_cost_difference.png": "6555c8931db18506cd50259f00042eefda5ff3479c5825bd2c957dba016a73a8",
+    "primary_comparison.pdf": "fe364a407e2c2c91a42b2530ac8a000aa2a194ba3e8c2e45f33f888656060d75",
+    "primary_comparison.png": "24f11a9503d2e6a4b43547de6c3ede8463cd491af06e60609ebe7e6356f9abe6",
+    "provenance.json": "3eb12404dfed03dea9e5a0360e80696597f9ee4c58c9db1e788744fadcf4b3c3",
+    "README.md": "f63f7594c066a78bc0556673165cfa6688ac2f0f8708c23ceff667683238400f",
+    "README.ru.md": "df628977056df6f81a77a3729c9ede3b5fc271eb1a9ad1361100970769c23ede"
+  }
+}

@@ -13,6 +13,8 @@ jobs:
           cache: pip
       - run: python -m pip install -e '.[test]'
       - run: python -m pytest -q
+      - name: Validate anonymous AAMAS package
+        run: python scripts/package_aamas_supplement.py --output /tmp/aamas-supplement.zip --ai-statement paper/ai_assistance.md --paper-dir paper
       - run: python -m lowdim_games.cli synthetic --q 1 --horizon 16 --seeds 42 --output /tmp/lowdim-smoke
   cage_smoke:
     runs-on: ubuntu-latest

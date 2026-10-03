@@ -302,6 +302,9 @@ def markdown(analysis, selection, protocol, ru, trace, supplementary=False):
                    if ru else "[Figure gallery and PDFs](figures/README.md): loss dynamics, cumulative differences, four components, path variability, validation sensitivity, and numerical distance to the full vector target."), "",
                   ("Эти проверки описательные и добавлены после завершения основного теста. Параметры и два исходных статистических сравнения сохранены."
                    if ru else "These checks are descriptive and were added after the primary test. The locked parameters and two original statistical comparisons are preserved."), ""]
+    lines += ["## " + ("Материалы AAMAS" if ru else "AAMAS paper materials"), "",
+              ("[Английские графики для статьи](aamas/README.ru.md) содержат накопленную разницу потерь, основные сравнения с компонентами и векторную геометрию. [Раздел LaTeX](../../paper/README.ru.md) предлагает таблицу и накопленную разность для основного текста. [Требования к подаче](../../docs/aamas_submission_ru.md) описывают формат AAMAS 2027 и анонимный пакет."
+               if ru else "[English publication figures](aamas/README.md) include cumulative cost differences, primary contrasts with components, and vector geometry. [The LaTeX section](../../paper/README.md) recommends a table and cumulative comparison for main text. [Submission guidance](../../docs/aamas_submission_en.md) documents AAMAS 2027 formatting and the anonymous package."), ""]
     return "\n".join(lines)
 
 
@@ -374,7 +377,7 @@ def build(run_dir, bank_root, output, protocol_path):
             atomic_bytes(destination / filename, (source / filename).read_bytes())
     # A public-input rebuild also preserves the separately reproducible
     # supplements. They do not change the locked primary analysis.
-    for name in ("geometry", "dynamics", "figures"):
+    for name in ("geometry", "dynamics", "figures", "aamas"):
         source, destination = run_dir / name, output / name
         if source.is_dir() and source.resolve() != destination.resolve():
             for path in sorted(source.rglob("*")):

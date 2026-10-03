@@ -1,0 +1,24 @@
+% English captions for a two-column AAMAS manuscript. Adapt figure paths only.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/primary_comparison.pdf}
+\caption{Native simulator cost at $T=512$. (a) Paired mean differences between our one-switch method and each baseline. Error bars are the original crossed-bootstrap intervals (10,000 draws; 400 held-out simulator seeds and 50 common opponent paths), with approximate simultaneous 95\% coverage for the two prespecified contrasts, conditional on calibration. (b) Additive decomposition into the four native cost components; bars show means without new inferential intervals. Negative differences favor our method. Cost is reported per native simulator step, using separately reset 50-step episodes.}
+\Description{Two panels show native per-step cost of our one-switch method minus each baseline. Against Window the mean difference is positive, about 0.00265; against Hedge it is negative, about minus 0.06182. Error bars retain the original approximate simultaneous intervals. The component panel decomposes the same differences into host compromise, server compromise, operational disruption, and restore cost. Relative to Hedge, our method reduces disruption and server compromise but increases host compromise and restore cost. Negative differences favor our method.}
+\label{fig:cage-primary-comparison}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/calibrated_geometry.pdf}
+\caption{Full-target vector error in the fixed normalized calibration game. (a) Prefixes of all 50 primary paths ($T=512$), using the full realized-hull target $S(Q_t)$. Vertical lines mark curriculum phases; target expansion can also reduce error. (b) Separate announced-horizon runs with 20 common paths each; curriculum lengths and learning-rate formulas scale with $T$. Lines are medians and bands are empirical 10--90\% path ranges, not confidence intervals. Lower strips report the share of numerical upper distances at or below $10^{-10}$; these values are omitted from log axes without adding an epsilon. Numerical checks are not exact-arithmetic proofs, and these data do not identify an asymptotic decay order.}
+\Description{Two upper logarithmic panels compare absolute full-target vector distances for our one-switch method, Window, and Hedge. The left panel uses all 50 primary-path prefixes; the right uses 20 common paths at each separately announced horizon. Medians and empirical path ranges are shown. At horizons of at least 128, all new one-switch and Window paths have numerical upper distances at or below the display floor. Hedge retains a positive distance that decreases with horizon. Lower strips count near-zero paths rather than replacing their errors with an artificial positive value. The metric uses the fixed normalized training game and is distinct from native cost differences.}
+\label{fig:cage-calibrated-geometry}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/cumulative_cost_difference.pdf}
+\caption{Expected cumulative native simulator cost differences, $\Delta C_b(t)=50\sum_{s=1}^{t}(c_s^{(\mathrm{ours})}-c_s^{(b)})$, where $c_s^{(m)}$ is method $m$'s mean native per-step cost at round $s$. Negative values favor our method. Curves use all 50 common paths and 400 held-out simulator-seed tables; bands are descriptive pointwise 95\% crossed-bootstrap intervals (2,000 draws), conditional on calibration and fixed configurations. Panels use different vertical scales. Dotted lines separate the initial mode, exploration, and mode-learning phases. The attacker learns against a uniform reference defense, generating the same exogenous paths for all compared methods. The Window gap is entirely due to the first action and remains constant thereafter.}
+\Description{Two panels show expected cumulative native cost of our one-switch method minus each baseline over 512 policy-selection rounds. Against Window, the positive difference remains about 67.74 after the first round because later actions coincide. Against Hedge, the difference becomes negative and reaches about minus 1582.54. Negative differences indicate lower cost for our method. Each round corresponds to separately reset 50-step episodes. Shading shows descriptive pointwise uncertainty, and dotted vertical lines separate the initial-mode, exploration, and mode-learning phases. The panels use different vertical scales.}
+\label{fig:cage-cumulative-cost}
+\end{figure*}

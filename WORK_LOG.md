@@ -103,3 +103,45 @@ conditions and numerical outputs. The primary builder accepts only this
 specific historical JSON exception, with a matching Git attribute preserving
 its exact bytes on checkout. Complete artifact checksums, source hashes,
 local links, report reconstruction and remote CI are checked on publication.
+
+## AAMAS 2027 publication materials (2026-10-04)
+
+Verified official submission instructions, Q&A and the unchanged 2027 template:
+eight content pages, reference-only extra pages, essential evaluation details in
+main text, a single anonymous supplement up to 25 MB, and methodology-level AI
+disclosure. Caption placement and accessibility descriptions follow the template.
+These requirements are distinguished from our chosen figure/statistics layout.
+
+Added English insertable experimental and supplementary LaTeX, the official
+CAGE-recommended bibliography entry, bilingual integration/submission guidance,
+and an honest AI-assistance record. The main selection is one primary table and
+a two-panel cumulative paired-cost plot. Primary/component differences and
+absolute normalized full-target geometry are supplementary; geometry can enter
+main only if space permits. Every paired difference is ours minus comparator.
+Pointwise curve intervals are distinguished from the two simultaneous primary
+intervals. Reused path-seed IDs across separate horizons are explicitly stated.
+The scalar allowance is denoted rho_sc in manuscript text, distinct from the
+theory's projection gap. Exact selected Hedge and opponent rates are specified.
+
+No algorithms, locked selection, primary numerical fields, or original theory
+manuscript changed. The original manuscript SHA-256 remains
+48d067d64a16c76d674f2f8977fe0f425249d093c3c699249434a7f4194e2a74.
+The existing manuscript fills eight content pages; these fragments do not verify
+a combined page count. Official-template integration previews are saved outside
+the repository. The built-in LaTeX compiler failed because its standard runtime
+directories were unavailable; no successful document compilation is claimed.
+
+Anonymous packaging is deterministic, scans text/NPZ/PDF/PNG metadata, verifies
+its conservative 25,000,000-byte limit, and records all member hashes. The only
+analysis derivative removes publication_scope, retaining every scientific field.
+Original presentation provenance is kept, with the original-to-anonymous input
+checksum mapping explicit. Rebuilds change that presentation input checksum while
+reproducing all six publication PNG/PDF files byte for byte.
+
+Verification: 131 tests passed in the full checkout; 107 passed and three
+simulator-dependent tests skipped in the extracted reviewer package. Both cached
+16-round smoke replays agree. All 115 public manifest entries and 201 local links
+were verified; the public report rebuild includes the new publication pack.
+The reviewer ZIP contains 117 files, 8,055,075 bytes (below 25 MB), SHA-256
+c33efbc88cc55f15a302280435f720efecd265719d6ba90bb37fb392dd5cfecc.
+CI now validates anonymous package creation as part of every push.

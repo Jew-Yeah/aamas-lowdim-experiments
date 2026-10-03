@@ -66,3 +66,7 @@ PDF figures: [means](primary_means.pdf), [differences and intervals](primary_com
 [Figure gallery and PDFs](figures/README.md): loss dynamics, cumulative differences, four components, path variability, validation sensitivity, and numerical distance to the full vector target.
 
 These checks are descriptive and were added after the primary test. The locked parameters and two original statistical comparisons are preserved.
+
+## AAMAS paper materials
+
+[English publication figures](aamas/README.md) include cumulative cost differences, primary contrasts with components, and vector geometry. [The LaTeX section](../../paper/README.md) recommends a table and cumulative comparison for main text. [Submission guidance](../../docs/aamas_submission_en.md) documents AAMAS 2027 formatting and the anonymous package.

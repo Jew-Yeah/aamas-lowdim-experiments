@@ -37,6 +37,18 @@ validation sensitivity, and full-target vector error. English and Russian
 PNG/PDF exports are available. These descriptive additions retain the selected
 parameters and the original primary comparisons.
 
+## AAMAS paper materials
+
+[English publication figures](results/cage_adaptation/aamas/README.md) provide
+three compact figures with explicit units and sign conventions. The
+[experimental LaTeX section](paper/README.md) selects a primary results table
+and the cumulative cost comparison for main text; component and geometric
+diagnostics belong in the supplement. [Submission guidance](docs/aamas_submission_en.md)
+separates official AAMAS 2027 requirements from our editorial choices.
+The anonymous package includes code, data, figure replay and AI methodology
+disclosure. Adding experiments to the existing eight-page theory manuscript
+still requires a separate whole-paper page allocation.
+
 ## Use and reproduce
 
 Python 3.10 or later is required.

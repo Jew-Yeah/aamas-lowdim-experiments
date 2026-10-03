@@ -2,6 +2,13 @@
 
 # Figure gallery
 
+[English AAMAS publication pack](../aamas/README.md) contains three compact
+figures with explicit ours-minus-comparator signs, cost units and separate
+uncertainty definitions. [Insertable LaTeX](../../../paper/README.md) recommends
+a primary table and the cumulative comparison for main text; components and
+geometry are supplementary. [Submission guidance](../../../docs/aamas_submission_en.md)
+records the official 2027 requirements and anonymous artifact policy.
+
 All figures compare the three validation-selected methods: our continuous
 scalar-aware one-switch (W=16, rho=0.25), window (W=16), and Hedge (multiplier 4).
 The original parameters, all 50 primary paths, and both primary comparisons

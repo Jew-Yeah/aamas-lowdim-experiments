@@ -1,0 +1,171 @@
+% Supplementary experimental details, compiled separately from the main paper.
+\providecommand{\AAMASExperimentFigureDir}{figures}
+
+\section{Experimental Protocol and Reproducibility}
+
+\subsection{Simulator, policies, and loss units}
+We use the CAGE Challenge~2 simulator at revision
+\texttt{26ce1c1253fa9e2e73f25e6a7f2da32860c11257}, with its original
+\texttt{Scenario2.yaml} and reward implementation~\cite{kiely2023autonomous}.
+Each policy pair is evaluated in freshly initialized 50-step episodes.
+The six defense policies are \texttt{monitor}, \texttt{react\_remove},
+\texttt{react\_restore}, \texttt{decoy\_cycle}, \texttt{critical\_restore},
+and \texttt{decoy\_react}. The first three use the supplied policies;
+the other three are frozen scripted policies. The attack modes are
+\texttt{sleep}, \texttt{meander}, and \texttt{b\_line}. Source code in the
+supplement specifies every policy action and timing rule.
+
+Native costs are positive counterparts of the simulator's negative rewards.
+Their four components are host compromise, server compromise, operational
+disruption, and restoration, including charged failed restore actions.
+The sum is checked against the native reward at every simulator step.
+Scenario-derived component bounds are $(0.8,4,10,1)$, whose Euclidean norm is
+$10.84619749$. Dividing calibration mean vectors by this fixed constant
+defines the normalized training tensor $u$; held-out outcomes do not change
+the normalization, target response map, or policy menu. Native cost $J_m$
+uses the unnormalized component sum. Vector distance $\delta_t$ is a separate
+measure in the normalized training game.
+
+\subsection{Chronology and sampling units}
+Calibration uses 40 seeds per cell, starting at 20261003. Validation uses
+simulator seeds 38000000--38000099 and path seeds 40000000--40000019. The
+held-out bank uses simulator seeds 39000000--39000399 and path seeds
+41000000--41000049. Each seed table contains all 18 defense--attack cells;
+seed indices are shared across cells, although policies can consume random
+numbers differently. The two new banks contain 9000 simulator episodes
+and 450000 native steps. Reusing a table across decision rounds does not
+create additional independent simulator observations.
+
+The curriculum uses phase fractions $(0.25,0.5,0.25)$ and initial Meander.
+The broad phase reveals each known mode once, then samples modes uniformly.
+The final phase samples from exponential weights mixed with 0.1 uniform
+exploration. Its rewards are calibrated costs against a fixed uniform
+reference defense, updated throughout the path. It learns mode selection
+within a fixed library; it does not learn new native attack tactics or
+react separately to each compared learner. All learner choices precede
+revelation of the current sampled mode.
+
+\subsection{Algorithms and parameter selection}
+The scalar-aware saddle oracle minimizes predicted scalar cost subject to
+the original saddle response constraints with allowance $\rho_{\mathrm{sc}}/\sqrt{t}$.
+Here $\rho_{\mathrm{sc}}$ is stored as \texttt{rho}; it is separate from the
+theoretical projection-gap notation.
+It preserves the original dual saddle mixture and independently checks the
+candidate's primal gap. An unsuccessful candidate returns the original
+numerical saddle pair. The implementation uses floating-point checks with
+oracle tolerance $10^{-9}$ and candidate-gap tolerance at most
+$\max\{20\cdot10^{-9},10^{-8}\}$. These checks are numerical evidence.
+The original one-switch threshold and safe routine are retained; with
+$K=6$ policies, the horizon budget is $G_T=6\sqrt{K-1}T^{3/4}$.
+No restart, safe switch, or scalar-oracle fallback occurs in the primary
+selected-method test.
+
+The validation grid has $W\in\{4,8,16,32,64\}$ and
+$\rho_{\mathrm{sc}}\in\{0,0.25,0.5,1\}$ for our oracle, the same five windows for window
+best response, and Hedge rate multipliers in $\{0.25,0.5,1,2,4\}$.
+Each family independently minimizes mean validation native cost, with exact
+ties resolved by grid order. The selected configuration is serialized with
+input and implementation checksums before accessing final-test outcomes.
+Our method and Hedge initialize uniformly. Window initializes as a best
+response to the known initial mode, then uses only past revealed modes.
+Window is a realizable online comparator.
+
+For learning rates, let $L_{ij}=\frac14\sum_{d=1}^{4}u_{ijd}$ and
+$R=\max_{i,j}L_{ij}-\min_{i,j}L_{ij}$, computed from calibration.
+Selected Hedge uses $\eta_H=4\sqrt{8\log(6)/T}/R$, while the attack-mode
+selector uses $\eta_A=\sqrt{8\log(3)/T}/R$. Reporting $J_m$ uses the
+unnormalized sum of native costs rather than this scalar training table.
+
+\subsection{Statistical analysis}
+The primary contrasts are ours minus window and ours minus Hedge. A crossed
+percentile bootstrap independently resamples 400 whole simulator tables
+and 50 whole paths, sharing the resulting weights across methods. It uses
+10000 draws with seed 44000000 and Bonferroni coverage for two contrasts.
+The resulting approximate simultaneous intervals condition on the fixed
+calibration and selected configuration; calibration and selection uncertainty
+are excluded. No separate round or policy cell is treated as an independent
+resampling unit.
+
+Descriptive dynamics and component figures use 2000 crossed draws, seed
+46000000, with pointwise 95\% intervals. They were added after the primary
+study and do not replace its predeclared contrasts. Dynamics plots use a
+trailing 16-round average solely for display. Cumulative differences use
+the factor 50 for expected total cost of separately reset episodes.
+Path distributions show all 50 path-averaged paired differences conditional
+on the same held-out bank. Validation sensitivity uses the entire original
+20-setting oracle grid and introduces no new parameter selection.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/primary_comparison.pdf}
+  \caption{Primary native per-step cost differences and their component
+  decomposition. Every difference is our method minus the named comparator;
+  negative values favor our method. Panel (a) retains the original two
+  simultaneous primary intervals. Panel (b) decomposes the point estimates
+  into the four native cost components and adds no new hypothesis tests.}
+  \Description{The primary comparison shows our cost minus window slightly above zero and our cost minus Hedge below zero, with the original simultaneous confidence intervals. The component panel explains the difference through host compromise, server compromise, operational disruption, and restoration. Our method reduces disruption and server compromise relative to Hedge while increasing host compromise and restoration cost. All component differences have the same ours-minus-comparator sign convention.}
+  \label{fig:supp-primary-components}
+\end{figure*}
+
+\subsection{Full-target numerical geometry}
+We compute distance to the full closed convex response target $S(Q_t)$,
+including all response cells over interior hull mixtures. Projection tolerance
+is $10^{-11}$; lower and upper distances, squared objective gap, its square
+root, feasibility residual, success, and hull dimension are retained.
+All 50 primary paths are evaluated at 39 shared checkpoints, including
+powers of two, every 16th round, phase boundaries, and first mode appearances.
+Both moving $S(Q_t)$ and retrospective fixed $S(Q_T)$ distances are computed;
+the fixed target is used only for evaluation. The target expands when new
+modes first appear, which can itself reduce the distance.
+
+A separately declared descriptive sweep uses all path seeds
+45000000--45000019 at each horizon $64,128,256,512,1024,2048$, producing
+120 common paths and 360 method trajectories. These are separate announced
+horizon runs. Curriculum phase lengths and original learner/opponent
+learning-rate formulas scale with the horizon; selected parameters stay fixed.
+No new simulator episodes are collected. The median one-switch distance at
+$T=64$ is $1.87074\cdot10^{-4}$, with 5 of 20 paths at the numerical display
+floor. At every $T\ge128$, all one-switch and window distances are near
+machine precision. Hedge medians decline from 0.0153491 to 0.00211179.
+The one-switch and window decay slopes are unidentified. Any descriptive
+Hedge slope concerns this horizon-scaled experiment family.
+
+Values at or below $10^{-10}$ are counted separately in the figures, without
+epsilon substitution for logarithms. Quantile bands whose lower boundary
+reaches that display threshold are omitted from the log panel. Numerical
+uncertainty from projection gaps is distinct from path variability.
+Only realized affine dimension at most two is available in this three-mode
+game, so these checks cannot evaluate the improved $q=4$ exponent.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/calibrated_geometry.pdf}
+  \caption{Absolute distance $\delta$ to the full response target in the
+  normalized calibration game: primary prefixes and separate announced-horizon
+  runs. These are distances, not native cost differences. Lines and
+  empirical path ranges condition on calibration; numerical-floor counts
+  preserve near-zero observations. Ranges show the empirical 10th--90th
+  percentiles across paths and are distinct from confidence intervals.}
+  \Description{The geometry figure compares absolute full-target distances for the three methods over the primary prefixes and separate announced horizons. At horizons of at least 128, all new one-switch and window paths reach the numerical display floor. Hedge retains a positive distance that decreases with horizon. Lower panels count near-zero paths instead of assigning them positive artificial errors. The geometry is measured in the fixed normalized training game.}
+  \label{fig:supp-calibrated-geometry}
+\end{figure*}
+
+\subsection{Reproduction and limits}
+The accompanying README specifies installation, cached-bank smoke tests,
+figure reconstruction, and full simulator recollection. Source hashes,
+software versions, all selected trajectories, complete banks, and locked
+configurations are supplied. A source ledger preserves its original line
+endings and a documented serialization repair; no scientific arrays or
+frozen algorithm bytes were changed. The anonymous presentation removes
+only public archive-link metadata from the primary analysis; both source
+and derivative checksums are recorded and every numerical field is retained.
+AI assistance in methodology and implementation is disclosed in
+\texttt{AI\_DISCLOSURE.md} in the anonymous ZIP, with available prompts and
+record limitations.
+
+This study concerns calibrated full-information policy selection with reset
+episodes and a fixed attacker library. It does not test persistent deployed
+networks, new attack tactics, an advantage from activating the safe fallback,
+or the empirical performance of Marinov et al.'s algorithms. Smaller native
+cost relative to Hedge does not establish superiority over window or prove
+the vector convergence theorem.
