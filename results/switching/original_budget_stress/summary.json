@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "benchmark": "resource_balance_original_budget_mechanism_stress",
+    "T": 16384,
+    "quiet_rounds": 128,
+    "window": 16,
+    "learner_affine_dimension": 1,
+    "switch_threshold": 8688.928127220297,
+    "safe_budget": "B0(h)=6*h^(3/4)",
+    "safe_implementation": "unchanged SafeBlockLearner",
+    "opponent_geometry": "conv{0,e_1,...,e_M} in Euclidean R^M",
+    "opponent_dimension": 16256,
+    "realized_affine_dimension": 16256,
+    "payoff": "p-sum(ell)",
+    "response": "p_star(ell)=sum(ell)",
+    "vertex_payoff_norm_bound": 1.0,
+    "full_strict_target": "{0}, for all mixtures in the full hull",
+    "fast_oracles": "exact closed-form subprobability-space saddle and hull projection",
+    "safe_compression": "[1-r,r], lossless for safe payoffs and updates only",
+    "same_opponent_path_across_methods": true,
+    "mode_names": {
+      "0": "fast",
+      "1": "safe",
+      "2": "baseline"
+    },
+    "lag_safe_certificate": "B0(0)=0; B0(h)=1 for h>=1: sum(p_t-r_t)=p_1-r_h",
+    "limitations": [
+      "Constructed diagnostic; no real CAGE data or empirical attack-learning claim.",
+      "Novel labels have payoff-equivalent unit demands; opponent geometry determines fast residuals.",
+      "High realized dimension; no low-dimensional rate or q=4 validation.",
+      "One-switch improvement is against fast-only; standalone safe and lag can perform better.",
+      "Distance measures signed average imbalance; mean absolute error is reported separately.",
+      "Floating-point implementation of exact closed-form oracles and the original safe routine."
+    ]
+  },
+  "methods": {
+    "one_switch": {
+      "final_distance": 0.6022961476839032,
+      "signed_cumulative_payoff": -9868.02008365307,
+      "mean_absolute_error": 0.6024182179964032,
+      "mean_capacity": 0.389891352316096,
+      "final_cumulative_residual": 8689.0,
+      "switch_round": 8817,
+      "safe_rounds": 7567,
+      "max_saddle_gap": 0.0,
+      "max_projection_gap": 0.0,
+      "fast_prefix_cumulative_payoff": -8688.0,
+      "safe_tail_cumulative_payoff": -1180.020083653083,
+      "safe_tail_horizon": 7567,
+      "safe_tail_budget": 4867.926932557328,
+      "prefix_plus_safe_bound": 0.8273881184422197
+    },
+    "shared_past_hull": {
+      "final_distance": 0.99212646484375,
+      "signed_cumulative_payoff": -16255.0,
+      "mean_absolute_error": 0.99224853515625,
+      "mean_capacity": 6.103515625e-05,
+      "final_cumulative_residual": 16256.0,
+      "switch_round": null,
+      "safe_rounds": 0,
+      "max_saddle_gap": 0.0,
+      "max_projection_gap": 0.0
+    },
+    "block_safe": {
+      "final_distance": 0.1243004061577185,
+      "signed_cumulative_payoff": -2036.5378544880598,
+      "mean_absolute_error": 0.1321129061577187,
+      "mean_capacity": 0.8678870938422817,
+      "final_cumulative_residual": 0.0,
+      "switch_round": null,
+      "safe_rounds": 16384,
+      "max_saddle_gap": null,
+      "max_projection_gap": null
+    },
+    "lag_safe": {
+      "final_distance": 3.0517578125e-05,
+      "signed_cumulative_payoff": -0.5,
+      "mean_absolute_error": 9.1552734375e-05,
+      "mean_capacity": 0.992156982421875,
+      "final_cumulative_residual": 0.0,
+      "switch_round": null,
+      "safe_rounds": 0,
+      "max_saddle_gap": null,
+      "max_projection_gap": null
+    },
+    "last_window": {
+      "final_distance": 0.00048828125,
+      "signed_cumulative_payoff": -8.0,
+      "mean_absolute_error": 0.00054931640625,
+      "mean_capacity": 0.99169921875,
+      "final_cumulative_residual": 0.0,
+      "switch_round": null,
+      "safe_rounds": 0,
+      "max_saddle_gap": null,
+      "max_projection_gap": null
+    }
+  }
+}
