@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "dataset_id": "mu46-p9is",
+  "source_url": "https://data.cityofnewyork.us/Environment/Forestry-Service-Requests/mu46-p9is",
+  "api_url": "https://data.cityofnewyork.us/resource/mu46-p9is.json",
+  "category": "Hazard",
+  "timestamp_field": "createddate",
+  "calendar_interpretation": "Published floating local timestamps; date_trunc_ymd, no UTC conversion",
+  "year": 2022,
+  "fetched_at_utc": "2026-10-03T15:17:29.169968+00:00",
+  "pages": [
+    {
+      "url": "https://data.cityofnewyork.us/resource/mu46-p9is.json?%24select=date_trunc_ymd%28createddate%29+as+day%2C+boroughcode+as+borough%2C+count%28%2A%29+as+requests&%24where=createddate+%3E%3D+%272022-01-01T00%3A00%3A00%27+AND+createddate+%3C+%272023-01-01T00%3A00%3A00%27+AND+srcategory+%3D+%27Hazard%27&%24group=day%2C+borough&%24order=day%2C+borough&%24limit=5000&%24offset=0",
+      "response_sha256": "7f695a98237555b410174664d149626d2b01067aeb7b3aa74e3e926d3aa0c262",
+      "rows": 1752
+    }
+  ],
+  "csv_sha256": "d8d518223879374a90a1799fcc168c19e45387388bb05ed6a0f25056d5ec9aa1",
+  "stored_fields": [
+    "date",
+    "Bronx",
+    "Brooklyn",
+    "Manhattan",
+    "Queens",
+    "Staten Island"
+  ],
+  "not_stored": "Request IDs, addresses, coordinates, names, notes, or request-level records",
+  "interpretation": "Registered Hazard request counts; not staffing effort or counterfactual inspections",
+  "source_aggregate_rows": 1752,
+  "included_requests": 23670,
+  "excluded_unknown_borough_requests": 4,
+  "excluded_unknown_borough_groups": 1,
+  "calendar_days": 365,
+  "zero_demand_days": 1
+}

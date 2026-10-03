@@ -1,2 +1,69 @@
-# aamas-lowdim-experiments
-Reproducible vector-payoff game experiments with low-dimensional opponents, public NYC data, and documentation in English and Russian.
+[English](README.md) | [Русский](README.ru.md)
+
+# Low-dimensional opponent games: experiments
+
+Reproducible experiments for vector-payoff games in which a learner selects an
+action before observing the current opponent action. The repository implements
+the one-switch learner, its explicit block-safe routine, the shared past-hull
+policy related to Marinov et al. (2026), and interpretable allocation heuristics.
+
+The application allocates service quotas across five New York City boroughs
+using public Forestry Hazard request counts. This is a daily allocation model.
+The finite game uses demand profiles fitted on 2019; 2021–2022 are held out.
+Service metrics are also evaluated on the original daily counts, separately
+from target distances in the quantized game.
+
+## Quick start
+
+Python 3.10 or later is required. Use a virtual environment.
+
+```bash
+python -m venv .venv
+# Linux/macOS: source .venv/bin/activate
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install -e ".[test]"
+python -m pytest -q
+python -m lowdim_games.cli synthetic --q 1 2 --horizon 32 --seeds 42 --plots
+```
+
+## Experiments
+
+The repository includes aggregate public-data inputs and their provenance.
+To verify or reuse the cached historical selection (add `--refresh` to fetch a new snapshot):
+
+```bash
+python scripts/download_nyc.py --years 2019 2021 2022
+python -m lowdim_games.cli nyc --profiles 3 6 12 --capacity-ratios 0.6 0.8 1.0
+python -m lowdim_games.cli synthetic --q 1 2 3 4 5 --horizon 128 --seeds 20261003 20261004 20261005
+python -m lowdim_games.cli geometry --q 1 2 3 4 5 --horizons 32 64 128
+```
+
+Outputs include JSON configurations, solver diagnostics, learner actions,
+opponent actions, and PNG/PDF figures. Default outputs are in `results/runs/`.
+The [recorded reference run](results/reference_run/README.md) describes the
+experiments actually completed and their findings.
+
+## Documentation
+
+- [Mathematical algorithms and numerical checks](docs/algorithms_en.md)
+- [Data selection and preprocessing](docs/data_en.md)
+- [Experimental protocol and interpretation](docs/methodology_en.md)
+- [Reference results](results/reference_run/README.md)
+
+The target oracle evaluates the response map over the full realized opponent
+hull, including responses at previously unobserved mixtures. Numerical gaps
+are reported; they provide floating-point accuracy checks rather than formal
+exact-arithmetic certification. The one-switch threshold follows the theorem
+without empirical tuning. For short horizons it may never trigger, in which
+case the one-switch and shared past-hull policies coincide.
+
+## Sources and reuse
+
+Algorithm reference: [Marinov et al., Efficient Opportunistic Approachability](https://arxiv.org/abs/2602.21328).
+Application/data precedent: [Liu and Garg, Redesigning Service Level Agreements](https://arxiv.org/abs/2410.14825).
+The queueing and SLA experiment of Liu and Garg is a separate model; its
+published results are not used as scores for this benchmark.
+
+Code is available under the [MIT License](LICENSE). Public data retain their
+source attribution and terms; see the data documentation. The original article
+and third-party implementations are not included in this repository.
