@@ -341,9 +341,25 @@ def polytope_vertices(
             tight = matrix[globally_tight]
             local_basis = null_space(tight, rcond=1e-11)
             if local_basis.shape[1] < dimension:
-                reduced = polytope_vertices(matrix @ local_basis, bound - matrix @ center, tol,
-                                            max_combinations)
-                return center + reduced @ local_basis.T
+                # These rows define the affine hull, so they must be eliminated
+                # from the reduced inequalities. Their nominally zero product
+                # with the nullspace can be ~1e-17; normalizing that roundoff
+                # would invent an order-one halfspace and destroy a real edge.
+                correction = np.linalg.lstsq(
+                    tight, bound[globally_tight] - tight @ center, rcond=1e-11)[0]
+                affine_origin = center + correction
+                if np.max(np.abs(tight @ affine_origin - bound[globally_tight])) > tol:
+                    raise OracleCertificationError("Cell affine equalities could not be aligned")
+                remaining = np.ones(len(matrix), dtype=bool)
+                remaining[globally_tight] = False
+                reduced = polytope_vertices(
+                    matrix[remaining] @ local_basis,
+                    bound[remaining] - matrix[remaining] @ affine_origin,
+                    tol, max_combinations)
+                lifted = affine_origin + reduced @ local_basis.T
+                if len(lifted) and np.max(matrix @ lifted.T - bound[:, None]) > 10 * tol:
+                    raise OracleCertificationError("Lifted cell vertices violate original inequalities")
+                return lifted
 
     # A finite deterministic fallback, used only on genuinely small cells.
     import math

@@ -11,6 +11,7 @@ dependencies = ["numpy>=1.24,<3", "scipy>=1.10,<2", "matplotlib>=3.7,<4"]
 
 [project.optional-dependencies]
 test = ["pytest>=7,<10"]
+cage = ["paramiko>=3,<6", "PyYAML>=6,<7", "prettytable>=3,<4"]
 
 [project.scripts]
 lowdim-games = "lowdim_games.cli:main"

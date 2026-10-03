@@ -65,6 +65,20 @@ def test_vertices_include_lower_dimensional_response_cell():
     np.testing.assert_allclose(vertices[np.argsort(vertices[:, 0])], [[0.0, 0.0], [1.0, 0.0]], atol=1e-9)
 
 
+def test_rotated_tied_simplex_edge_keeps_both_endpoints():
+    # Unlike axis-aligned equalities, this restriction produces nonzero
+    # floating-point nullspace products. Those rows must be removed explicitly.
+    hull = affine_hull_polytope(np.unique(np.eye(3), axis=0))
+    normal = np.array([0.0, 0.0, 1.0])
+    matrix = np.vstack((hull.matrix, normal @ hull.basis, -normal @ hull.basis))
+    bound = np.r_[hull.bound, -normal @ hull.origin, normal @ hull.origin]
+    vertices = polytope_vertices(matrix, bound)
+    lifted = hull.lift(vertices)
+    assert len(lifted) == 2
+    for endpoint in np.eye(3)[:2]:
+        assert np.min(np.linalg.norm(lifted - endpoint, axis=1)) < 1e-12
+
+
 def test_vertices_square_and_infeasible_cell():
     matrix = np.array([[1.0, 0.0], [-1.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
     vertices = polytope_vertices(matrix, np.array([1.0, 0.0, 1.0, 0.0]))

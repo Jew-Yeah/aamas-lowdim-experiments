@@ -7,11 +7,17 @@ action before observing the current opponent action. The repository implements
 the one-switch learner, its explicit block-safe routine, the shared past-hull
 policy related to Marinov et al. (2026), and interpretable allocation heuristics.
 
-The application allocates service quotas across five New York City boroughs
+One application allocates service quotas across five New York City boroughs
 using public Forestry Hazard request counts. This is a daily allocation model.
 The finite game uses demand profiles fitted on 2019; 2021–2022 are held out.
 Service metrics are also evaluated on the original daily counts, separately
 from target distances in the quantized game.
+
+A second application selects network-defense policies in the official CAGE 2
+simulator against changing attack modes. The recorded experiment includes
+1,440 simulator episodes and compares 13 methods. See the
+[CAGE results](results/cage_reference/README.md) and
+[reproduction instructions](docs/cage_en.md).
 
 ## Quick start
 
@@ -49,6 +55,8 @@ experiments actually completed and their findings.
 - [Data selection and preprocessing](docs/data_en.md)
 - [Experimental protocol and interpretation](docs/methodology_en.md)
 - [Reference results](results/reference_run/README.md)
+- [CAGE 2 defense against changing attackers](docs/cage_en.md)
+- [CAGE 2 recorded results](results/cage_reference/README.md)
 
 The target oracle evaluates the response map over the full realized opponent
 hull, including responses at previously unobserved mixtures. Numerical gaps

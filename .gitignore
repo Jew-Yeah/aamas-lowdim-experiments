@@ -8,3 +8,6 @@ dist/
 data/raw/
 results/runs/
 .env
+# External simulators and their isolated runtime
+.external/
+.venv-cage/

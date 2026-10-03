@@ -14,3 +14,19 @@ jobs:
       - run: python -m pip install -e '.[test]'
       - run: python -m pytest -q
       - run: python -m lowdim_games.cli synthetic --q 1 --horizon 16 --seeds 42 --output /tmp/lowdim-smoke
+  cage_smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -e '.[test,cage]'
+      - name: Fetch pinned public simulator
+        run: |
+          git clone https://github.com/cage-challenge/cage-challenge-2.git .external/cage-challenge-2
+          git -C .external/cage-challenge-2 checkout 26ce1c1253fa9e2e73f25e6a7f2da32860c11257
+      - run: python -m pytest -q tests/test_cage.py
+      - run: python -m lowdim_games.cli cage-calibrate --steps 8 --train-episodes 2 --test-episodes 2 --seed 7 --output /tmp/cage-smoke-input
+      - run: python -m lowdim_games.cli cage --calibration /tmp/cage-smoke-input --scenarios curriculum interactive --horizon 12 --seeds 7 --output /tmp/cage-smoke-output

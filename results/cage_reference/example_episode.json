@@ -1,0 +1,17 @@
+{
+  "blue": "decoy_react",
+  "red": "meander",
+  "seed": 20261003,
+  "episode_steps": 50,
+  "mean_loss": [
+    0.2460000000000001,
+    0.48,
+    0.0,
+    0.2
+  ],
+  "native_episode_loss": 46.3,
+  "reward_reconstruction_max_error": 5.551115123125783e-17,
+  "exactly_reproduces_first_calibration_seed": true,
+  "source_revision": "26ce1c1253fa9e2e73f25e6a7f2da32860c11257",
+  "adapter_snapshot_sha256": "ba367856f7ea6227624b77cd15c1c5cf61a4ccd2a80f73ed3f05897fdb3e6b05"
+}

@@ -143,3 +143,33 @@ def test_small_residual_target_support_dual_is_accurate_on_frozen_allocation_cas
     assert implicit.success and implicit.gap <= 1e-9
     assert abs(explicit.distance - 0.00015623458164897865) < 1e-8
     assert abs(explicit.distance - implicit.distance) < 1e-8
+
+
+def test_tied_simplex_edge_survives_affine_restriction_of_cage_calibration():
+    # Frozen eight-step calibration structure. Winner 0 exists on the full
+    # z_2=0 edge and winner 1 on z_2>0. Nullspace roundoff formerly created
+    # spurious reduced inequalities, losing one or both edge vertices.
+    tensor = 0.0005762388160046009 * np.array([
+        [[0, 0, 0, 0], [1, 0, 0, 0], [10, 30, 0, 0]],
+        [[0, 0, 0, 0], [1, 0, 0, 0], [9, 10, 0, 0]],
+        [[0, 0, 0, 0], [1, 0, 0, 0], [5, 0, 0, 50]],
+        [[0, 0, 0, 0], [2, 0, 0, 0], [11, 40, 0, 0]],
+        [[0, 0, 0, 60], [2, 0, 0, 60], [12, 40, 0, 60]],
+        [[0, 0, 0, 20], [1, 0, 0, 20], [8, 0, 0, 40]],
+    ], dtype=float)
+    game, points = FiniteGame(tensor), np.eye(3)
+    assert [cell.action for cell in game.target_cells(points)] == [0, 1]
+    target = game.target_vertices(points)
+    expected = tensor[1]
+    for vertex in expected:
+        assert np.min(np.linalg.norm(target - vertex, axis=1)) < 1e-12
+    for direction in np.array([[1, 0, 0, 0], [-1, 1, 0, 0], [1, 1, 1, 1], [-2, -1, 0, 3]], float):
+        support = game.target_support(direction, points)
+        assert abs(np.max(target @ direction) - support.value) < 1e-12
+        assert abs(np.max(expected @ direction) - support.value) < 1e-12
+    query = np.array([0.001, 0.002, 0.0001, 0.001])
+    explicit = game.target_projection(query, points)
+    implicit = game.target_projection(query, points, enumerate_vertices=False)
+    assert explicit.success and implicit.success
+    assert explicit.gap <= 1e-9 and implicit.gap <= 1e-9
+    assert abs(explicit.distance - implicit.distance) < 1e-9

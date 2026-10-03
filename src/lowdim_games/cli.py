@@ -109,6 +109,50 @@ def nyc_run(args):
                                             "quantization": quantization, "summaries": records})
 
 
+def cage_calibrate_run(args):
+    from .cage import calibrate_cage
+
+    if args.steps < 1 or args.train_episodes < 2 or args.test_episodes < 2:
+        raise ValueError("Use positive episode steps and at least two seeds per split.")
+    training = list(range(args.seed, args.seed + args.train_episodes))
+    held_out = list(range(args.seed + 1_000_000,
+                          args.seed + 1_000_000 + args.test_episodes))
+    print(f"Calibrating CAGE 2: {args.steps} steps, "
+          f"{len(training)} training and {len(held_out)} held-out episode seeds per cell", flush=True)
+    calibration = calibrate_cage(args.source, episode_steps=args.steps,
+                                 train_seeds=training, test_seeds=held_out,
+                                 output_dir=args.output)
+    print(f"Saved {len(calibration.blue_names)} defensive policies x "
+          f"{len(calibration.red_names)} attacking policies to {args.output}", flush=True)
+
+
+def cage_run(args):
+    from .cage import load_cage_calibration
+    from .policy_experiment import run_policy_comparison
+
+    calibration = load_cage_calibration(args.calibration)
+    if args.initial_red_index < 0 or args.initial_red_index >= len(calibration.red_names):
+        raise ValueError("initial-red-index must identify a calibrated attacking policy")
+    initial = np.eye(len(calibration.red_names))[args.initial_red_index]
+    summaries = []
+    for scenario in args.scenarios:
+        for seed in args.seeds:
+            name = f"cage2_{scenario}_seed{seed}_T{args.horizon}"
+            print(f"Starting {name}", flush=True)
+            manifest = run_policy_comparison(calibration, scenario=scenario,
+                                             horizon=args.horizon, seed=seed,
+                                             output_dir=args.output, name=name,
+                                             initial_distribution=initial)
+            if args.plots:
+                from .policy_plotting import plot_policy_comparison
+                plot_policy_comparison(manifest, args.output)
+            summaries.extend(manifest["summaries"])
+            print(f"Completed {name}", flush=True)
+    write_json(Path(args.output) / "cage_summary.json",
+               {"software": software_versions(), "summaries": summaries,
+                "interpretation": "CAGE 2 simulator-calibrated policy game with separate held-out episode seeds."})
+
+
 def parser():
     root = argparse.ArgumentParser(description="Reproducible finite vector-payoff game experiments")
     commands = root.add_subparsers(dest="command", required=True)
@@ -131,6 +175,24 @@ def parser():
     nyc.add_argument("--seed", type=int, default=20261003)
     nyc.add_argument("--output", default="results/runs/nyc")
     nyc.set_defaults(run=nyc_run)
+    cage_calibration = commands.add_parser("cage-calibrate", help="Estimate a policy game from real CAGE 2 simulator episodes")
+    cage_calibration.add_argument("--source", default=".external/cage-challenge-2")
+    cage_calibration.add_argument("--steps", type=int, default=50)
+    cage_calibration.add_argument("--train-episodes", type=int, default=40)
+    cage_calibration.add_argument("--test-episodes", type=int, default=40)
+    cage_calibration.add_argument("--seed", type=int, default=20261003)
+    cage_calibration.add_argument("--output", default="data/cage2")
+    cage_calibration.set_defaults(run=cage_calibrate_run)
+    cage = commands.add_parser("cage", help="Policy selection against changing CAGE 2 attackers")
+    cage.add_argument("--calibration", default="data/cage2")
+    cage.add_argument("--scenarios", nargs="+", choices=["fixed", "curriculum", "interactive"], default=["fixed", "curriculum", "interactive"])
+    cage.add_argument("--horizon", type=int, default=512)
+    cage.add_argument("--initial-red-index", type=int, default=1,
+                      help="Initial attacking policy: 0=Sleep, 1=Meander, 2=B_line")
+    cage.add_argument("--seeds", nargs="+", type=int, default=[20261003, 20261004, 20261005])
+    cage.add_argument("--output", default="results/runs/cage2")
+    cage.add_argument("--plots", action="store_true")
+    cage.set_defaults(run=cage_run)
     return root
 
 
