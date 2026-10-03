@@ -1,0 +1,42 @@
+{
+  "source_url": "https://data.cityofnewyork.us/Environment/Forestry-Service-Requests/mu46-p9is",
+  "dataset_id": "mu46-p9is",
+  "category": "Hazard",
+  "source_preprocessing_npz_sha256": "ac5b5985d06b81422e3040c0d05a5de761eb1980335bd009d4a357bac306abd9",
+  "source_preprocessing_json_sha256": "e5fe9f1afd3c48d9993634cc9e8afa31335df078ec70dec0ffc0578a1744f84d",
+  "columns": [
+    "date",
+    "Bronx",
+    "Brooklyn",
+    "Manhattan",
+    "Queens",
+    "Staten Island"
+  ],
+  "years": {
+    "2021": {
+      "csv": "nyc_forestry_hazard_daily_2021.csv",
+      "csv_sha256": "f70f3c94ba9289ceeaee85e01deee9ecc34fae2287ceffe805301c9976fd0000",
+      "days": 365,
+      "requests": 26756
+    },
+    "2022": {
+      "csv": "nyc_forestry_hazard_daily_2022.csv",
+      "csv_sha256": "d8d518223879374a90a1799fcc168c19e45387388bb05ed6a0f25056d5ec9aa1",
+      "days": 365,
+      "requests": 23670
+    }
+  },
+  "scope": "Daily registered Hazard request counts, not staffing demand or measured service quality. Aggregate CSVs reconstructed from original cached counts, without fitted quantization.",
+  "groups": [
+    "Brooklyn",
+    "Queens",
+    "Bronx+Manhattan+Staten Island"
+  ],
+  "zero_day_share_convention": "uniform shares after observation; one zero-count day in 2021-2022",
+  "experimental_design": "Post-review exploratory addition; CAGE results do not supply these figures or endpoints.",
+  "aggregate_queries": {
+    "2021": "https://data.cityofnewyork.us/resource/mu46-p9is.json?%24select=date_trunc_ymd%28createddate%29+as+day%2C+boroughcode+as+borough%2C+count%28%2A%29+as+requests&%24where=createddate+%3E%3D+%272021-01-01T00%3A00%3A00%27+AND+createddate+%3C+%272022-01-01T00%3A00%3A00%27+AND+srcategory+%3D+%27Hazard%27&%24group=day%2C+borough&%24order=day%2C+borough&%24limit=5000&%24offset=0",
+    "2022": "https://data.cityofnewyork.us/resource/mu46-p9is.json?%24select=date_trunc_ymd%28createddate%29+as+day%2C+boroughcode+as+borough%2C+count%28%2A%29+as+requests&%24where=createddate+%3E%3D+%272022-01-01T00%3A00%3A00%27+AND+createddate+%3C+%272023-01-01T00%3A00%3A00%27+AND+srcategory+%3D+%27Hazard%27&%24group=day%2C+borough&%24order=day%2C+borough&%24limit=5000&%24offset=0"
+  },
+  "query_note": "Original aggregate query specification; cached counts are frozen and were recovered from the recorded preprocessing archive, not downloaded anew for this replay."
+}
