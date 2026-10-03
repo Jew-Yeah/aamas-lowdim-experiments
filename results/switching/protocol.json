@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "study": "post-review full switching trajectory audit",
+  "created_at_utc": "2026-10-03T20:39:29.443610+00:00",
+  "selection": "Exploratory scenario additions after reviewing the non-switching CAGE experiment; no confirmatory holdout claim.",
+  "tracking_windows": [
+    16
+  ],
+  "tracking_years": [
+    2021,
+    2022
+  ],
+  "tracking_primary": "entire chronological 2021-2022 trace",
+  "tracking_safe_base": "Exact lag telescoping, B0(h)=1 for h>0; G=1 known before each run.",
+  "stress": {
+    "T": 16384,
+    "quiet_rounds": 128,
+    "window": 16,
+    "budget": "original 6*T^(3/4)",
+    "payoff_equivalent_novel_labels": true
+  },
+  "inference": "Descriptive deterministic traces. No iid-day bootstrap, p-values, or confidence bands.",
+  "source": {
+    "source_url": "https://data.cityofnewyork.us/Environment/Forestry-Service-Requests/mu46-p9is",
+    "dataset_id": "mu46-p9is",
+    "category": "Hazard",
+    "source_preprocessing_npz_sha256": "ac5b5985d06b81422e3040c0d05a5de761eb1980335bd009d4a357bac306abd9",
+    "source_preprocessing_json_sha256": "e5fe9f1afd3c48d9993634cc9e8afa31335df078ec70dec0ffc0578a1744f84d",
+    "columns": [
+      "date",
+      "Bronx",
+      "Brooklyn",
+      "Manhattan",
+      "Queens",
+      "Staten Island"
+    ],
+    "years": {
+      "2021": {
+        "csv": "nyc_forestry_hazard_daily_2021.csv",
+        "csv_sha256": "f70f3c94ba9289ceeaee85e01deee9ecc34fae2287ceffe805301c9976fd0000",
+        "days": 365,
+        "requests": 26756
+      },
+      "2022": {
+        "csv": "nyc_forestry_hazard_daily_2022.csv",
+        "csv_sha256": "d8d518223879374a90a1799fcc168c19e45387388bb05ed6a0f25056d5ec9aa1",
+        "days": 365,
+        "requests": 23670
+      }
+    },
+    "scope": "Daily registered Hazard request counts, not staffing demand or measured service quality. Aggregate CSVs reconstructed from original cached counts, without fitted quantization.",
+    "groups": [
+      "Brooklyn",
+      "Queens",
+      "Bronx+Manhattan+Staten Island"
+    ],
+    "zero_day_share_convention": "uniform shares after observation; one zero-count day in 2021-2022",
+    "experimental_design": "Post-review exploratory addition; CAGE results do not supply these figures or endpoints.",
+    "aggregate_queries": {
+      "2021": "https://data.cityofnewyork.us/resource/mu46-p9is.json?%24select=date_trunc_ymd%28createddate%29+as+day%2C+boroughcode+as+borough%2C+count%28%2A%29+as+requests&%24where=createddate+%3E%3D+%272021-01-01T00%3A00%3A00%27+AND+createddate+%3C+%272022-01-01T00%3A00%3A00%27+AND+srcategory+%3D+%27Hazard%27&%24group=day%2C+borough&%24order=day%2C+borough&%24limit=5000&%24offset=0",
+      "2022": "https://data.cityofnewyork.us/resource/mu46-p9is.json?%24select=date_trunc_ymd%28createddate%29+as+day%2C+boroughcode+as+borough%2C+count%28%2A%29+as+requests&%24where=createddate+%3E%3D+%272022-01-01T00%3A00%3A00%27+AND+createddate+%3C+%272023-01-01T00%3A00%3A00%27+AND+srcategory+%3D+%27Hazard%27&%24group=day%2C+borough&%24order=day%2C+borough&%24limit=5000&%24offset=0"
+    },
+    "query_note": "Original aggregate query specification; cached counts are frozen and were recovered from the recorded preprocessing archive, not downloaded anew for this replay."
+  },
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "source_sha256": {
+    "scripts/run_switching_study.py": "418e77db08feae36f09e288e9710a38f18ab7587fc06443989446d02d2d48be5",
+    "src/lowdim_games/learners.py": "b0bf3e464f7d4286fb83ec0fb0a2a0fa97b32e4a512eb5e50b4e9f2b5aa4bb8e",
+    "src/lowdim_games/geometry.py": "bc5acdb9a25b39411241ab7094603b3fe0e2f2d4160c931e1dad085d1a48a690",
+    "src/lowdim_games/switching_tracking.py": "91d37d6a15d4f6bf79b283593b2d8bafa7b2a422a3c959f71fbde689f1681ef3",
+    "src/lowdim_games/switching_stress.py": "d7e80344be40db29150b8fd5322a798f5e3bfcd7c45637501bd0f827ddbbb4b3"
+  },
+  "provenance_documentation_update": "Added exact original aggregate queries after replay; actions, metrics and figure data unchanged."
+}
