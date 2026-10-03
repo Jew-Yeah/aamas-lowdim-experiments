@@ -42,3 +42,32 @@ Eliminating proved affine equalities before row normalization fixed the oracle
 without relaxing tolerances. All 55 tests pass. Rechecking 2,574 projections
 from the nine main runs changes distances by at most 5.55e-17, so the saved
 experiment outputs remain valid. Maximum checked support gap is 7.63e-11.
+
+## Extended CAGE statistical study
+
+The local analysis plan was fixed before evaluation of the new banks
+(`docs/cage_study_protocol.json`, SHA256
+`9a3ecc45704e42976c3fd3a2333b0b0ec13e1310fb4b2b5e57b65be0ad08357a`).
+Collected 14,400 additional official simulator episodes, totalling 1,098,000
+internal steps. Primary evaluation retains the original 40-seed calibration
+and uses 400 new held-out seed tables and 50 common attack paths. Six primary
+contrasts use shared crossed-bootstrap draws, simultaneous Bonferroni
+intervals, and additional approximate Holm-adjusted p-values.
+
+Primary native loss is 1.19373 for our method, 1.25799 for Hedge, 1.23157
+for official reactive restore, 1.08057 for the window response, and 1.10039
+for frozen decoys with reaction. The difference to Hedge is -0.06425, with
+simultaneous interval [-0.10811, -0.02170]. The restore comparison remains
+uncertain; both window response and fixed decoy-reaction outperform our method.
+All primary inferences condition on the frozen fit. At meta-horizon 2048 the
+descriptive Hedge contrast includes zero. Three independent calibrations,
+episode lengths 100/150, and additional attack schedules are exploratory.
+
+All 13 groups completed. Their 220 path slots correspond to 182 saved path
+checkpoints and 2,366 method trajectories; repeated deterministic paths add
+no independent observations. Independent replay of every occupancy gave zero
+error, and vector-payoff replay error was at most 1.11e-16. No switches occurred;
+master and shared fast actions agree within 2.22e-16. Serial replay of two
+actual simulator cells exactly matched the parallel bank. Original article
+and upstream tracked source hashes remain unchanged. All 66 local tests pass.
+The bilingual report and figures are saved under `results/cage_study`.

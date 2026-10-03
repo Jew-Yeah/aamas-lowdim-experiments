@@ -19,6 +19,10 @@ simulator against changing attack modes. The recorded experiment includes
 [CAGE results](results/cage_reference/README.md) and
 [reproduction instructions](docs/cage_en.md).
 
+The [extended CAGE study](results/cage_study/README.md) adds an independent
+test bank, more attacker paths, paired statistical comparisons, and checks
+of episode lengths and calibration sensitivity.
+
 ## Quick start
 
 Python 3.10 or later is required. Use a virtual environment.
@@ -57,6 +61,8 @@ experiments actually completed and their findings.
 - [Reference results](results/reference_run/README.md)
 - [CAGE 2 defense against changing attackers](docs/cage_en.md)
 - [CAGE 2 recorded results](results/cage_reference/README.md)
+- [Extended CAGE protocol and statistics](docs/cage_study_en.md)
+- [Extended CAGE results](results/cage_study/README.md)
 
 The target oracle evaluates the response map over the full realized opponent
 hull, including responses at previously unobserved mixtures. Numerical gaps
