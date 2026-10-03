@@ -1,200 +1,135 @@
 [English](cage_en.md) | [Русский](cage_ru.md) | [Home](../README.md)
 
-# CAGE 2: defense against changing attack policies
+# CAGE 2 environment and quick start
 
-This benchmark tests whether selecting among complete defensive policies helps
-when an attacker changes its behavior across episodes. It uses the official
-CAGE Challenge 2 / CybORG simulator and its manufacturing-network scenario.
-The inputs are simulator episodes with public source code; they are not a
-historical record of attacks on an operational network.
+The benchmark selects complete defensive policies in the official CAGE Challenge
+2 / CybORG manufacturing-network scenario. Inputs are simulator episodes with
+public source code. Every policy-selection round starts a new 50-step episode.
+The learner selects a distribution over six frozen policies before the current
+attack mode is disclosed. Mixture losses average whole-episode outcomes.
 
-The experiment adds a policy-selection game above the simulator. A round is a
-fresh episode of 50 simulator steps. The defender chooses a distribution over
-six frozen policies before the current attacking policy is revealed. Each
-selected policy controls the entire episode. Mixture losses average complete
-episode outcomes; they do not describe switching native actions independently
-at every internal simulator step.
+## Frozen policies
 
-## Frozen policy menu
-
-| Defender policy | Behavior |
+| Blue policy | Behavior |
 |---|---|
 | `monitor` | Unmodified upstream `BlueMonitorAgent`. |
 | `react_remove` | Unmodified upstream `BlueReactRemoveAgent`. |
 | `react_restore` | Unmodified upstream `BlueReactRestoreAgent`. |
-| `decoy_cycle` | Cycle eight native decoy types across `Op_Server0`, `Enterprise2`, `Enterprise1`, and `Enterprise0`; do not restore. |
-| `critical_restore` | Restore `Op_Server0` and `Enterprise2` alternately on steps 1, 4, 7, ...; monitor on other steps. |
-| `decoy_react` | Restore hosts with a process identifier in the latest partial Blue observation, prioritizing the four listed critical hosts; allow at least three steps between restores of the same host. Deploy cyclic decoys otherwise. |
+| `decoy_cycle` | Cycle native decoys across four specified critical hosts. |
+| `critical_restore` | Restore `Op_Server0` and `Enterprise2` alternately on steps 1, 4, 7, …; monitor otherwise. |
+| `decoy_react` | Respond to process alerts with rate-limited restores; deploy cyclic decoys otherwise. |
 
-The last three policies are explicitly defined heuristics in this repository.
-They are fixed before calibration and use no simulator true-state compromise
-oracle. A process alert can represent legitimate activity, so `decoy_react` can
-restore unnecessarily. Unsupported decoy placements can fail under the native
-simulator rules; these failures are included in the measured outcomes.
+The last three are fixed heuristics defined in this repository. They use allowed
+partial Blue observations. Process alerts can refer to legitimate activity;
+unsupported decoy placements and failed restores remain in the measured scores.
+The Red menu contains the upstream `SleepAgent`, `RedMeanderAgent`, and
+`B_lineAgent`. The attacker learns to choose among these modes; their internal
+tactics remain fixed. The curriculum starts with Meander.
 
-The three attacking policies are the upstream `SleepAgent`, `RedMeanderAgent`,
-and `B_lineAgent`, in that order. Sleep is inactive. Meander explores the network;
-B-line uses prior network knowledge to pursue the operational server. The
-experiment learns which fixed attacking policy to select. It does not train
-new attack tactics within those policies. Meander is the default initial mode;
-the label "weak" denotes its position in the curriculum and does not assert
-that it causes less loss against every defense.
+## Loss model and feedback
 
-## Losses and calibration
+The four positive loss coordinates are host compromise, server compromise,
+operational disruption, and Restore cost. Their negative sum is checked against
+the simulator's native reward at every step. The primary reported endpoint is
+this **sum per native simulator step**, in simulator reward units.
 
-The four positive loss coordinates reproduce the native negative reward:
+The component bounds `(0.8, 4, 10, 1)` give the a priori vector normalization
+`sqrt(117.64)`. Forty calibration episodes per defense/attack cell estimate the
+known vector-loss tensor. Only that training model is used for learner updates
+and attack-mode selection. The public validation and final-test banks are kept
+separate from calibration. Their provenance includes upstream revision, seed
+ranges, software versions, source hashes, and reward-accounting checks.
 
-1. `host_compromise`: privileged attacker access to non-server hosts, including
-   `Defender`;
-2. `server_compromise`: privileged access to the three Enterprise servers and
-   `Op_Server0`;
-3. `operational_disruption`: the penalty on every step while the operational
-   service is absent;
-4. `restore`: the executed Restore action's cost, including failed restores.
+All compared methods receive the same calibrated table and learn the realized
+attack label after choosing. This feedback supplies a mode label and permits
+model-based counterfactual scoring; ordinary partial network observations would
+require an additional mode-recognition model. Within an episode, the frozen Blue
+policies retain their ordinary partial observations.
 
-Every simulator step checks that the negative sum of the reconstructed vector
-equals the native scalar reward. These are simulator reward units, not money.
-Episode losses are averaged per step. Multiplying the sum of their four
-coordinates by the episode length gives the negative official episode reward.
+The final curriculum has an initial Meander phase, a middle phase exposing and
+sampling the three modes, and a final exponential-weights attacker trained
+against a fixed uniform defender reference. The final attacker mixes 90% learned
+weights with 10% uniform exploration. All methods face the same realized path.
 
-The pinned scenario gives component bounds `(0.8, 4, 10, 1)`. The entire vector
-is divided by their Euclidean norm, `sqrt(117.64)`, so normalized vertex losses
-have norm at most one. This bound is derived before observing calibration or
-held-out outcomes. It also covers unsuccessful Restore actions.
+## Recommended implementation
 
-For each of the 18 defense/attack cells, 40 calibration episodes estimate its
-mean vector loss. A separate bank of 40 held-out episodes per cell evaluates
-the frozen selection policies. Seeds are set before constructing a new simulator
-instance, because construction randomizes the initial network. Seed indices
-are shared across cells for paired evaluation; different policies can consume
-random numbers differently, so paired episodes need not follow identical paths.
-The default bank contains 1,440 simulator episodes and 72,000 internal steps.
+The public API `lowdim_games.RecommendedOneSwitchLearner` fixes the validated
+forecast window to 16 and `rho` to 0.25. It runs continuously, with a uniform
+first action. The constructor is:
 
-Only calibration means define the known tensor, response map, and learning
-updates. The response minimizes the equally weighted scalar loss, with the
-smallest action index resolving a tie. Internally these weights are normalized
-to sum to one. Consequently, `mean_test_weighted_loss` is the mean of the four
-raw coordinates, whereas their sum is the native per-step total loss.
+```python
+from lowdim_games import RecommendedOneSwitchLearner
 
-The held-out bank is never supplied to either learner or attacker updates.
-Calibration, policy menus, scalar weights, and normalization remain fixed
-throughout the policy-selection run. Changing them after looking at held-out
-performance requires a new independent test bank.
-
-## Causal scenarios
-
-The default horizon is 512 meta-rounds. The three phase boundaries are at 25%,
-75%, and 100% of the horizon.
-
-| Scenario | Opponent protocol |
-|---|---|
-| `fixed` | Use the initial mode throughout; by default this is Meander. |
-| `curriculum` | Begin with the initial mode. In the middle phase, explicitly expose each of the three modes and then sample modes uniformly. In the final phase, use an exponential-weights attacker trained against a fixed uniform defender reference. All methods face the same realized path. |
-| `interactive` | Use the same initial and broad phases. In the final phase, the exponential-weights attacker selects modes using losses of that method's previous defender mixtures. Each method therefore has its own interaction path. |
-
-The attacker accumulates calibration-based information during all three phases.
-Its final-phase distribution combines 90% exponential weights and 10% uniform
-exploration. It maximizes the equally weighted calibration scalar loss. Its
-learning rate is `sqrt(8 log(M) / T) / R`, where `R` is the global scalar
-calibration loss range. It commits to the current mode using only past
-information. The learner also chooses before receiving that mode.
-
-The three attacking policies and their estimated loss table are known to all selection
-methods. The current mode is revealed after the choice. This is a full-feedback
-meta-game assumption: the original challenge's partial Blue observations do
-not themselves reveal an attack-policy label or all counterfactual losses.
-Inside each episode the frozen defensive policy still uses only its allowed
-partial observations. Thus the experiment evaluates selection between complete
-policies under model-informed feedback.
-
-## Comparisons
-
-The selection methods are the manuscript's `one_switch`, `shared_past_hull`,
-and `block_safe`; the uniform distribution over defense policies; the fixed
-calibration response to the initial attack mode (`historical_best`); the response
-to the last 16 revealed modes (`last_window`); Hedge; and all six pure fixed
-defense policies. The scalar weights and feedback are common across methods.
-
-Hedge minimizes calibration scalar loss with learning rate
-`sqrt(8 log(K) / T) / R`. Its reported bound is
-`R sqrt(T log(K) / 2)` for cumulative calibration regret to the best fixed
-policy. Held-out regret is measured separately and is not covered by that bound.
-No learning rate is selected using the held-out bank.
-
-The fast past-hull policy is shared with the geometric method discussed in the
-article's comparison with Marinov et al. The one-switch master uses the original
-budget `G_T = 6 sqrt(K - 1) T^(3/4)`. In this benchmark every revealed opponent
-action is a pure mode. Only first appearances can lie outside the past hull,
-so the cumulative residual is at most `2(M - 1) = 4`. The default switch is
-therefore impossible for these three-mode paths, at any horizon. The one-switch
-and shared past-hull actions should coincide. These runs examine adaptation
-of the fast policy; they do not demonstrate its safe-switch mechanism.
-
-## Evaluation and interpretation
-
-The practical outputs are the four held-out losses, their scalar combination,
-and phase-specific outcomes. Every method is also compared with the best fixed
-policy on its realized path. For interactive runs this is a descriptive replay:
-deploying that fixed policy would generally change the attacker's future path.
-Cross-method interactive scores compare complete interactions under the same
-attacker rule, rather than responses to a common attack sequence.
-
-Target distances use the calibration game and its fixed response map. They
-include the full response target over the realized hull, with independent
-support-LP residual checks. A second distance uses the full three-mode library
-as a common target. This second target can be less restrictive than a realized
-hull target. Report both distances alongside practical losses; a smaller target
-distance does not by itself establish better security or lower restore cost.
-The opponent's affine dimension is at most two because of the stated menu.
-This is a design property, not evidence that real cyber attacks are inherently
-two-dimensional.
-
-The held-out episode bank provides conditional 95% Student-t intervals. For a
-fixed learned path, occupancy weights combine the entire payoff table for each
-held-out seed. Paired differences use matching seed indices. The independent
-sample count is the held-out seed count; replaying its cell means for 512 rounds
-does not generate 512 new simulator samples. These intervals condition on the
-calibrated tensor and paths and omit calibration uncertainty. They are
-approximate sampling intervals, not formal numerical certificates.
-
-The finite tensor is a Monte Carlo estimate. Guarantees and numerical target
-checks concern the resulting calibrated game; they do not prove guarantees for
-the unknown exact simulator expectations. This is an exploratory benchmark
-with a small menu of frozen heuristics. Its scores are not directly comparable
-with the original challenge leaderboard or its trained RL submissions.
-
-## Reproduction
-
-Run the following commands from the repository root. The source checkout is
-revision-pinned and calibration rejects tracked modifications to it.
-
-```bash
-python -m pip install -e ".[test,cage]"
-git clone https://github.com/cage-challenge/cage-challenge-2 .external/cage-challenge-2
-git -C .external/cage-challenge-2 checkout 26ce1c1253fa9e2e73f25e6a7f2da32860c11257
-python -m lowdim_games.cli cage-calibrate --steps 50 --train-episodes 40 --test-episodes 40 --seed 20261003 --output data/cage2
-python -m lowdim_games.cli cage --calibration data/cage2 --scenarios fixed curriculum interactive --horizon 512 --seeds 20261003 20261004 20261005 --initial-red-index 1 --plots
-python -m pytest -q
+learner = RecommendedOneSwitchLearner(
+    tensor, response, horizon,
+    weights=weights, initial_prior=initial_prior,
+)
+# On each round: p = learner.choose(); then learner.observe(ell).
+# ell is the one-hot vector of the mode revealed after choosing p.
 ```
 
-Calibration seeds are `20261003` through `20261042`; held-out seeds are
-`21261003` through `21261042`. The three policy-selection seeds govern mode
-sampling and do not create additional calibration episode banks.
+`tensor` and `response` describe the training game. Forecast weights and an
+initial prior may be supplied; the prior does not replace the uniform first
+move. The scalar-aware choice retains the original hull, witness, direction
+update, switch threshold, and safe tail. [Mathematical details](algorithms_en.md).
+The recorded validation establishes the defaults for this CAGE experiment;
+other applications need separate validation.
 
-`data/cage2/calibration.npz` stores the separate episode banks, cell means,
-normalized tensor, policy names, weights, and seeds. `provenance.json` records
-the clean upstream revision, source hashes, reward-accounting checks, units,
-and software versions. `cell_statistics.json` contains means, standard
-deviations, and standard errors. Each run saves its manifest and actions,
-opponent modes, payoffs, occupancy weights, and oracle diagnostics under
-`results/runs/cage2`. Runtime includes post-hoc evaluation.
+## Run from the published banks
 
-The [reference report](../results/cage_reference/README.md) records completed
-runs and measured results. Methodology alone does not assert an advantage for
-any method.
+Run from the repository root with Python 3.10 or later:
+
+```bash
+python -m venv .venv
+# Linux/macOS: source .venv/bin/activate
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install -e ".[test,cage]"
+python -m pytest -q
+python -m lowdim_games.cli cage-selected --horizon 16 --seeds 41000000 --output results/runs/cage_selected_smoke
+```
+
+This is a short reproducibility check using the unchanged calibration, selected
+configurations, and public final-test bank. It performs no new parameter search.
+The full recorded horizon and 50 path seeds are the command defaults:
+
+```bash
+python -m lowdim_games.cli cage-selected --output results/runs/cage_selected
+```
+
+The runner produces the selected one-switch, selected window, and selected
+Hedge results. A changed horizon or seed set is a new run, distinct from the
+locked primary analysis. See the [primary report](../results/cage_adaptation/README.md)
+and [validation and analysis protocol](cage_adaptation_en.md).
+
+## Collect simulator episodes again
+
+Episode collection additionally requires a clean pinned upstream checkout:
+
+```bash
+git clone https://github.com/cage-challenge/cage-challenge-2 .external/cage-challenge-2
+git -C .external/cage-challenge-2 checkout 26ce1c1253fa9e2e73f25e6a7f2da32860c11257
+```
+
+Collection rejects tracked modifications to the pinned simulator. Exact bank
+commands are recorded in the validation protocol. Published aggregate inputs
+are sufficient for policy-selection reruns; the external checkout is needed
+only when invoking the simulator collector.
+
+## Interpretation
+
+The opponent's affine dimension is at most two because the menu has three modes.
+This is a property of the defined game. Scores are conditional on a finite
+calibrated model and frozen policies, and do not establish guarantees for the
+simulator's unknown exact expectations. They are not directly comparable with
+trained challenge leaderboard agents.
+
+The reported final study evaluates scalar loss. It does not rebuild vector
+target geometry. There are no safe switches: with pure observations from three
+modes, the cumulative novelty residual is at most four, below the standard
+budget. The measured behavior therefore exercises the fast oracle.
 
 ## Sources
 
-- [Official CAGE Challenge 2 source and evaluation protocol](https://github.com/cage-challenge/cage-challenge-2).
+- [Official CAGE Challenge 2 source and protocol](https://github.com/cage-challenge/cage-challenge-2).
 - [Pinned simulator source](https://github.com/cage-challenge/cage-challenge-2/tree/26ce1c1253fa9e2e73f25e6a7f2da32860c11257/CybORG).
-- [Kiely et al., On Autonomous Agents in a Cyber Defence Environment](https://arxiv.org/abs/2309.07388), the challenge's recommended citation.
+- [Kiely et al., On Autonomous Agents in a Cyber Defence Environment](https://arxiv.org/abs/2309.07388).

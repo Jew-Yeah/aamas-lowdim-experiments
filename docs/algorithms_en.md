@@ -1,92 +1,76 @@
-# Algorithms and experimental protocol
+[English](algorithms_en.md) | [Русский](algorithms_ru.md) | [Home](../README.md)
 
-[Русская версия](algorithms_ru.md) · [Data and preprocessing](data_en.md)
+# Mathematical implementation
 
-## Finite game and response rule
+The recommended implementation is the one-switch master with a scalar-aware
+choice among its admissible saddle responses. The original core learners remain
+as implementation dependencies and controls. Validation selected `W = 16` and
+`rho = 0.25` for the CAGE application; these are empirical defaults for this
+benchmark, rather than universal theorem constants.
 
-The learner chooses a distribution $p_t\in\Delta_K$ over $K$ fixed
-allocation schedules. The opponent chooses a distribution
-$\ell_t\in\Delta_M$ over $M$ fixed demand profiles. The public tensor
-$A\in\mathbb R^{K\times M\times d}$ defines the biaffine payoff
+## Finite game and target
 
-$$
-u(p,\ell)=\sum_{a=1}^K\sum_{j=1}^M p_a\ell_j A_{a,j,:}.
-$$
-
-The allocation benchmark has seven loss coordinates: five borough
-shortfalls, resource cost, and disparity between the largest and smallest
-borough shortfalls. Shortfalls and disparity are divided by baseline
-capacity $C$. Resource cost is $0.25\sum_b s_{a,b}/C$, where $s_a$
-is schedule $a$. These are stated model choices. The first seven schedules
-allocate $C$; the eighth offers a reserve option allocating $1.25C$.
-Thus $C$ denotes baseline capacity, and the feasible menu includes the
-specified reserve option.
-
-All tensor entries are divided by a single
-$b=\max\{1,\max_{a,j}\|u_{\rm raw}(e_a,e_j)\|_2\}$. Consequently
-$\|u(p,\ell)\|_2\le1$ for every pair of mixtures. Every method uses
-the same tensor, menu, profiles, weights, and feedback. The response rule is
+The learner chooses $p_t\in\Delta_K$ before observing
+$\ell_t\in\Delta_M$. A fixed known tensor defines
 
 $$
-p^\star(\ell)=e_{\min\operatorname{argmin}_a
- w^\top u(e_a,\ell)},\qquad
-w=\frac{(1,1,1,1,1,1,0.5)}{6.5}.
+u(p,\ell)=\sum_{a=1}^K\sum_{j=1}^M p_a\ell_j A_{a,j,:},
+\qquad \|u(p,\ell)\|_2\le1.
 $$
 
-Here the minimum selects the smallest schedule index among exact ties in
-the supplied floating-point scores. The common weight normalization leaves
-the minimizing schedule unchanged. The response is computed by scanning
-all schedules.
+CAGE uses six defensive policies, three attack modes, and four loss coordinates.
+Its tensor normalization is fixed before validation or testing. The response map
+is fixed throughout play:
 
-## Compared methods
+$$
+p^\star(\ell)=e_{\min\operatorname{argmin}_a w^\top u(e_a,\ell)}.
+$$
 
-| Run identifier | Action rule | Role |
-|---|---|---|
-| `one_switch` | Past-hull policy followed, if its residual threshold is crossed, by a fresh safe run | Manuscript's master algorithm |
-| `shared_past_hull` | Past-hull policy throughout the horizon | Shared geometric fast policy |
-| `block_safe` | Known-horizon block routine throughout the run | Manuscript's explicit safe routine |
-| `uniform` | Fixed schedule assigning $C/5$ to each borough | Allocation reference |
-| `historical_share` | Fixed schedule assigning $C$ in training-period demand proportions | Allocation reference |
-| `reserve` | Fixed training-share schedule with the permitted $1.25C$ reserve | Capacity-control reference |
-| `last_week` | Weighted best response to the mean of up to seven previously revealed profiles | Causal allocation heuristic |
+The smallest action index resolves exact ties in supplied floating-point scores.
+CAGE gives the four coordinates equal weight. The manuscript's target is
 
-The `uniform` reference is a single equal-allocation schedule. The first
-round of each mathematical learner instead uses the uniform distribution
-over the entire schedule menu. `last_week` starts with the equal-allocation
-schedule. Its seven-round window is a fixed design choice. The allocation
-references have no asserted opportunistic approachability bound.
+$$
+Q_t=\operatorname{conv}\{\ell_1,\ldots,\ell_t\},\qquad
+S(Q_t)=\operatorname{cl}\operatorname{conv}
+\{u(p^\star(z),z):z\in Q_t\},
+$$
 
-The past-hull policy is shared with the geometric method in
-[Marinov et al., *Efficient Opportunistic Approachability*](https://proceedings.mlr.press/v313/marinov26a.html),
-Section 5. The runs use one shared implementation; assigning an additional
-prior-work label to it would duplicate the same policy. The explicit safe
-routine instantiates the epoch construction underlying that paper's
-Theorem 14. Theorem 14 gives a general $\widetilde O(T^{-1/4})$ rate;
-Theorem 21 gives $\widetilde O(T^{-1/3})$ using an exponential-size
-expert cover. The latter algorithm remains outside this implementation.
-These comparisons refer to the
-[full proceedings paper](https://raw.githubusercontent.com/mlresearch/v313/main/assets/marinov26a/marinov26a.pdf).
+and its error is the distance of the average vector payoff to $S(Q_t)$.
+The full hull includes previously unobserved mixtures. The final scalar-loss
+experiment does not measure this target distance.
 
-## Shared past-hull policy
+## Fast hull policy and scalar-aware oracle
 
-Let $H_t=\operatorname{conv}\{\ell_1,\ldots,\ell_{t-1}\}$.
-Round 1 uses any permissible initial mixture, chosen here as uniform.
-After observing $\ell_1$, set
+Round 1 uses a uniform mixture. After observing $\ell_1$, initialize
 $s_1=u(p^\star(\ell_1),\ell_1)$, $E_1=0$, and $\lambda_2=0$.
+At $t\ge2$, set $H_t=\operatorname{conv}\{\ell_s:s<t\}$ and
+$B_{a,s}=\langle\lambda_t,u(e_a,\ell_s)\rangle$.
+The learner minimizes and the opponent maximizes this matrix game.
 
-For each $t\ge2$, before observing $\ell_t$, form the scalar matrix
-$B_{a,s}=\langle\lambda_t,u(e_a,\ell_s)\rangle$, $s<t$.
-The row player minimizes and the column player maximizes this matrix game.
-Two linear programs give mixtures $p_t$ and $\zeta_t$, with
-$\ell_t^\star=\sum_{s<t}\zeta_{t,s}\ell_s$. The implementation checks
-the independently recomputed saddle gap
+First compute its original minimax dual distribution $z^*$ and
+$L=\min_a(Bz^*)_a$. Let $c_t$ contain each defense's calibrated scalar loss
+against the empirical distribution of the previous at most $W$ revealed modes.
+The recommended oracle solves
 
 $$
-g_t=\max_s(p_t^\top B)_s-\min_a(B\zeta_t)_a.
+\min_{p\in\Delta_K}c_t^\top p\quad\text{subject to}\quad
+B^\top p\le\bigl(L+\rho/\sqrt t\bigr)\mathbf1,
+\qquad 0\le\rho\le1.
 $$
 
-After the opponent action is revealed, project it onto the past hull and
-set
+The same dual distribution defines $\ell_t^\star$ and its response witness.
+The actual saddle gap is independently recomputed:
+
+$$
+g_t=\max_s(p_t^\top B)_s-\min_a(Bz^*)_a.
+$$
+
+The allowed slack lies within the manuscript's $t^{-1/2}$ oracle allowance.
+An invalid or failed forecast LP falls back to the original saddle pair.
+Repeated observations can be removed from the hull representation without
+changing its geometry; the forecast retains their chronological frequencies.
+
+After revealing the current opponent action, update
 
 $$
 \begin{aligned}
@@ -96,144 +80,73 @@ a_t&=u(p_t,\widehat\ell_t)-s_t,&
 r_t&=u(p_t,\ell_t)-u(p_t,\widehat\ell_t),\\
 E_t&=E_{t-1}+\|r_t\|_2,&
 \lambda_{t+1}&=\operatorname{proj}_{\mathbb B_d(1)}
-  \left(\lambda_t+\frac{a_t}{2\sqrt t}\right).
+\left(\lambda_t+\frac{a_t}{2\sqrt t}\right).
 \end{aligned}
 $$
 
-Both the saddle mixture and its response witness lie in the past hull.
-Under exact hull projection,
-$E_T\le K_u V_T$, where
+Under exact projection, $E_T\le K_uV_T$, where
 $V_T=\sum_{t=2}^T\operatorname{dist}(\ell_t,H_t)$.
-The recorded `h_t` is the computed hull distance. The runner sums it only
-on rounds when the fast policy is active.
+Forecast updates occur only after the current action has been chosen.
 
-## Safe block routine
+## One-switch master and safe continuation
 
-Write $k=K-1$ for the learner's affine dimension. A fresh run of known
-length $h$ uses
-
-$$
-m_h=\max\{1,\lfloor\sqrt h/k\rfloor\},\qquad
-n_h=\lfloor h/m_h\rfloor,\qquad r_h=h-m_hn_h.
-$$
-
-The outer direction starts at zero and remains fixed for each block of
-$n_h$ rounds. Within a block, initialize the learner mixture to uniform,
-play the current mixture before seeing that round's opponent action, and
-then perform
+Write $k=K-1$. The known-horizon safe routine has nominal cumulative bound
+$B_0(h)=6\sqrt{k}\,h^{3/4}$. The master uses the unchanged threshold
 
 $$
-p_{t+1}=\operatorname{proj}_{\Delta_K}
- \left(p_t-\frac{c_t}{K\sqrt{n_h}}\right),\qquad
-(c_t)_a=\langle\lambda_e,u(e_a,\ell_t)\rangle.
+G_T=6\sqrt{k}\,T^{3/4}.
 $$
 
-This probability-coordinate step follows from the manuscript's
-$k/\sqrt{n_h}$ step in its well-rounded affine coordinates. Centering
-the regular simplex at its uniform mixture and scaling the tangent
-coordinates by $\sqrt{K(K-1)}$ gives
-$\mathbb B_k(1)\subseteq P\subseteq\mathbb B_k(k)$.
-Projection and the chain rule then give the factor $1/K$ above.
-
-At the end of block $e$, compute its opponent mean $\bar\ell_e$,
-the response witness $s_e=u(p^\star(\bar\ell_e),\bar\ell_e)$, and
-$v_e=n_h^{-1}\sum_{t\in I_e}u(p_t,\ell_t)-s_e$. Update
-
-$$
-\lambda_{e+1}=\operatorname{proj}_{\mathbb B_d(1)}
- \left(\lambda_e+\frac{v_e}{2\sqrt{m_h}}\right).
-$$
-
-Reset the inner mixture at the next block. The $r_h$ remainder rounds
-use the uniform mixture, corresponding to the origin in the affine
-coordinates. In the manuscript's exact oracle model the cumulative
-approachability error is at most
-
-$$
-B_0(h)=6\sqrt{k}\,h^{3/4}.
-$$
-
-The supplied allocation menu has $K=8$, hence $k=7$. The implementation
-also handles the singleton menu separately.
-
-## One-switch master
-
-The horizon $T$ is supplied before play. The experimental threshold is
-fixed by the stated safe guarantee:
-
-$$
-G_T=\max_{0\le h\le T}B_0(h)=6\sqrt{k}\,T^{3/4}.
-$$
-
-At the first round $\tau$ satisfying $E_\tau>G_T$, retain that round
-in the fast prefix. If $\tau<T$, start a fresh safe routine of length
-$T-\tau$ on the next round; its block indices are local to this new
-run. The master never returns to fast mode. Its exact-oracle bound is
+The first round $\tau$ satisfying $E_\tau>G_T$ remains in the fast prefix.
+If $\tau<T$, a fresh safe routine of length $T-\tau$ starts next round;
+there is no return to fast mode. Its exact-oracle bound is
 
 $$
 T\delta_T\le10\sqrt T+2\min\{K_uV_T,G_T\}+2.
 $$
 
-The default threshold is conservative. Normalization implies
-$E_T\le2(T-1)$; therefore a crossing is impossible for
-$T\le81k^2$. With $K=8$, this covers all horizons up to 3969,
-including the 730-day NYC holdout. Those runs necessarily have identical
-`one_switch` and `shared_past_hull` actions and measure the fast branch.
-The switch logic is separately checked on a constructed game with a valid
-zero-error safe base. Experimental runs use the stated default budget.
-
-## Causal protocol and target evaluation
-
-Every run follows `choose()` and then `observe(ell)`. Profile fitting,
-baseline capacity, historical shares, the action menu, normalization, and
-weights are fixed from training data or a generated static game before test
-play. Evaluation may process checkpoint targets ahead of the simulation;
-these targets are never supplied to a learner.
-
-At each checkpoint $t$, the evaluated target is
+For a safe run of length $h$, the block schedule is
+$m_h=\max\{1,\lfloor\sqrt h/k\rfloor\}$,
+$n_h=\lfloor h/m_h\rfloor$, and $r_h=h-m_hn_h$.
+The outer direction is fixed within each block. The inner mixture starts
+uniformly and updates after observing the current mode:
 
 $$
-Q_t=\operatorname{conv}\{\ell_1,\ldots,\ell_t\},\qquad
-S(Q_t)=\operatorname{cl}\operatorname{conv}
- \{u(p^\star(z),z):z\in Q_t\},\qquad
-\delta_t=\operatorname{dist}\left(\frac1t\sum_{s=1}^t
- u(p_s,\ell_s),S(Q_t)\right).
+p_{t+1}=\operatorname{proj}_{\Delta_K}
+\left(p_t-\frac{f_t}{K\sqrt{n_h}}\right),\qquad
+(f_t)_a=\langle\lambda_e,u(e_a,\ell_t)\rangle.
 $$
 
-The target oracle intersects the full opponent hull with response cells.
-It respects the fixed tie rule, retaining closures of actual winner cells.
-Projection uses either their payoff vertices or support-LP column
-generation. Independent support LPs over the full cells check the resulting
-projection gap. This includes responses to unobserved mixtures in $Q_t$.
+Here $f_t$ is the safe routine's direction-weighted vector. At the block end,
+with opponent mean
+$\bar\ell_e$ and witness $s_e=u(p^\star(\bar\ell_e),\bar\ell_e)$,
+set $v_e=n_h^{-1}\sum_{t\in I_e}u(p_t,\ell_t)-s_e$ and
+$\lambda_{e+1}=\operatorname{proj}_{\mathbb B_d(1)}
+(\lambda_e+v_e/(2\sqrt{m_h}))$. Remainder rounds use the uniform mixture.
+The factor $1/K$ follows from the regular-simplex affine-coordinate transform.
 
-The Euclidean Lipschitz bound recorded in each manifest is
-$K_u=\max_a\|A_a^\top(I-\mathbf1\mathbf1^\top/M)\|_{\rm op}$.
-It bounds payoff changes uniformly over learner mixtures on the opponent
-simplex. The realized dimension is a numerical rank with a stated tolerance.
+No safe switches occur in the recorded three-mode CAGE paths: only first
+appearances are novel, so $E_T\le2(M-1)=4<G_T$. The recommended method
+therefore evaluates the fast policy on these inputs. Exploratory repeated
+restarts are separate algorithms and are preserved in the
+[full-study archive](https://github.com/Jew-Yeah/aamas-lowdim-experiments/blob/e8c85cb2e7be49032c1c2d014b6f19084ea064a8/docs/cage_restart_theory_en.md).
 
-On the NYC benchmark, $\delta_t$ concerns the game built from training
-centroids. Raw held-out request counts provide separate shortfall, cost,
-disparity, and service-fraction diagnostics. Quantization errors are
-reported in the data artifacts; the game's bound applies to its centroid
-payoffs. Controlled regime paths study adaptation at a known realized
-dimension, while the separate geometric constructions study hull growth.
-Neither protocol by itself establishes a minimax exponent.
+## Numerical and statistical scope
 
-## Numerical evidence and recorded results
+Every learner follows `choose()` then `observe(ell)`. For a projection gap $g$,
+the implementation records $\alpha_t=\sqrt{\max\{g,0\}}$; for a saddle gap
+it records $\beta_t=\max\{0,g_t-t^{-1/2}\}$. Diagnostics include feasibility,
+actual gap, fallback, residual, and switch counts. Floating-point checks do not
+constitute exact-arithmetic certificates.
 
-The solver uses floating-point LP/QP calculations. Feasibility checks,
-saddle gaps, and squared-distance primal–dual gaps are recorded as numerical
-diagnostics. For a past-hull projection gap $g$, the implementation
-records $\alpha_t=\sqrt{\max\{g,0\}}$; it also records
-$\beta_t=\max\{0,g_t-t^{-1/2}\}$. The exact-arithmetic theorem and
-these numerical checks have distinct scopes, especially near response
-ties and nearly degenerate hulls. A failed required oracle check stops the
-run.
+The target oracle, when requested by the core experiment API, intersects the
+full opponent hull with the response cells and checks projection gaps using
+independent support LPs. It includes responses at unobserved mixtures. The
+primary CAGE report uses held-out scalar loss and conditional bootstrap
+inference; favorable scalar loss does not establish a smaller vector target
+distance or a guarantee for unknown exact simulator expectations.
 
-Result manifests contain configurations, seeds supplied by the caller,
-software versions, a normalized-tensor hash, target-oracle mode, final and
-checkpoint distances, applied metrics, switch round, and oracle residuals.
-Action arrays are saved separately. Reported wall time includes each
-method's evaluation; shared target construction is timed separately. This
-timing is an end-to-end measurement, so evaluation costs must be accounted
-for when interpreting computational comparisons.
+The shared geometric fast policy is related to Section 5 of
+[Marinov et al., Efficient Opportunistic Approachability](https://proceedings.mlr.press/v313/marinov26a.html).
+The exponential expert-cover algorithm is not implemented. CAGE is the
+simulator environment, not the name of an independent comparison algorithm.

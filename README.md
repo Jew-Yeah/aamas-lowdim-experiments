@@ -1,90 +1,90 @@
 [English](README.md) | [Русский](README.ru.md)
 
-# Low-dimensional opponent games: experiments
+# One-switch adaptation in CAGE 2
 
-Reproducible experiments for vector-payoff games in which a learner selects an
-action before observing the current opponent action. The repository implements
-the one-switch learner, its explicit block-safe routine, the shared past-hull
-policy related to Marinov et al. (2026), and interpretable allocation heuristics.
+Reproducible experiments for a one-switch learner with a scalar-aware admissible
+saddle oracle. The recommended implementation uses a **16-round forecast window
+and `rho = 0.25`**, selected on separate validation data. The final benchmark
+compares this implementation with independently tuned window and Hedge policies
+in the official CAGE 2 simulator.
 
-One application allocates service quotas across five New York City boroughs
-using public Forestry Hazard request counts. This is a daily allocation model.
-The finite game uses demand profiles fitted on 2019; 2021–2022 are held out.
-Service metrics are also evaluated on the original daily counts, separately
-from target distances in the quantized game.
+## Validated result
 
-A second application selects network-defense policies in the official CAGE 2
-simulator against changing attack modes. The recorded experiment includes
-1,440 simulator episodes and compares 13 methods. See the
-[CAGE results](results/cage_reference/README.md) and
-[reproduction instructions](docs/cage_en.md).
+Mean native loss per simulator step, averaged over 400 held-out simulator seeds
+and 50 common attacker paths of 512 policy-selection rounds. Lower is better.
 
-The [extended CAGE study](results/cage_study/README.md) adds an independent
-test bank, more attacker paths, paired statistical comparisons, and checks
-of episode lengths and calibration sensitivity.
+| Method | Mean loss |
+|---|---:|
+| Selected scalar-aware one-switch | **1.10418** |
+| Selected window, 16 rounds | **1.10154** |
+| Selected Hedge, learning-rate multiplier 4 | 1.16600 |
 
-The [oracle tuning and restart study](results/cage_adaptation/README.md)
-uses separate validation and final-test seeds to compare a scalar-aware
-admissible saddle oracle, tuned window and Hedge baselines, and both
-fresh-history and retained-history restarts in blocks of 1000 meta-rounds.
-See the [methodology](docs/cage_adaptation_en.md) and
-[segment bounds](docs/cage_restart_theory_en.md).
+The selected one-switch reduces loss by **5.3% against tuned Hedge**. The
+simultaneous 95% interval for its paired loss difference is
+`[-0.08010, -0.04421]`. Window performs **0.24% better**: the interval for
+one-switch minus window is `[0.00254, 0.00275]`. All 50 test paths have identical
+one-switch and window actions after the first round. Their first actions differ:
+one-switch starts uniformly, while window responds to the known initial mode.
 
-## Quick start
+These results support near-window scalar performance and an advantage over
+tuned Hedge in this benchmark. They do not establish superiority over window.
+The [complete primary report](results/cage_adaptation/README.md) includes figures,
+input hashes, locked parameters, and the two primary comparisons.
 
-Python 3.10 or later is required. Use a virtual environment.
+## Use and reproduce
+
+Python 3.10 or later is required.
 
 ```bash
 python -m venv .venv
 # Linux/macOS: source .venv/bin/activate
 # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install -e ".[test]"
+python -m pip install -e ".[test,cage]"
 python -m pytest -q
-python -m lowdim_games.cli synthetic --q 1 2 --horizon 32 --seeds 42 --plots
+python -m lowdim_games.cli cage-selected --horizon 16 --seeds 41000000 --output results/runs/cage_selected_smoke
 ```
 
-## Experiments
+The [CAGE setup](docs/cage_en.md) explains the pinned simulator and the frozen
+policy menu. The [validation protocol](docs/cage_adaptation_en.md) records the
+grid, seed ranges, selection chronology, statistical analysis, and reproduction
+commands. Published aggregate banks allow scalar results to be reconstructed
+without collecting the simulator episodes again.
 
-The repository includes aggregate public-data inputs and their provenance.
-To verify or reuse the cached historical selection (add `--refresh` to fetch a new snapshot):
+`cage-selected` runs the recommended `RecommendedOneSwitchLearner` and the two
+selected baselines without retuning. The short command above is a functional
+check; omit `--horizon` and `--seeds` to use the recorded 512-round, 50-path setup.
 
-```bash
-python scripts/download_nyc.py --years 2019 2021 2022
-python -m lowdim_games.cli nyc --profiles 3 6 12 --capacity-ratios 0.6 0.8 1.0
-python -m lowdim_games.cli synthetic --q 1 2 3 4 5 --horizon 128 --seeds 20261003 20261004 20261005
-python -m lowdim_games.cli geometry --q 1 2 3 4 5 --horizons 32 64 128
-```
+## Method and scope
 
-Outputs include JSON configurations, solver diagnostics, learner actions,
-opponent actions, and PNG/PDF figures. Default outputs are in `results/runs/`.
-The [recorded reference run](results/reference_run/README.md) describes the
-experiments actually completed and their findings.
+The learner chooses before the current attack mode is revealed. Its forecast
+uses only previous observations. The oracle minimizes forecast scalar loss
+among saddle responses satisfying the manuscript's allowed error. The hull,
+direction update, response witness, and theorem-derived switch budget are kept.
+See the [mathematical implementation](docs/algorithms_en.md).
 
-## Documentation
+Every compared method receives the same calibrated loss table. Attack-mode
+labels are disclosed after each choice. A round chooses a complete defense
+policy for a separately reset 50-step simulator episode; mixture scores average
+whole-episode outcomes. Red selects among three fixed attack modes. These are
+model-informed simulator experiments, not deployed-network attack logs.
 
-- [Mathematical algorithms and numerical checks](docs/algorithms_en.md)
-- [Data selection and preprocessing](docs/data_en.md)
-- [Experimental protocol and interpretation](docs/methodology_en.md)
-- [Reference results](results/reference_run/README.md)
-- [CAGE 2 defense against changing attackers](docs/cage_en.md)
-- [CAGE 2 recorded results](results/cage_reference/README.md)
-- [Extended CAGE protocol and statistics](docs/cage_study_en.md)
-- [Extended CAGE results](results/cage_study/README.md)
+The reported endpoint is scalar loss. The manuscript concerns vector target
+distance; this final benchmark does not measure that distance or demonstrate a
+benefit from the vector guarantee. No safe switches occurred in these paths.
+Numerical oracle residuals provide floating-point checks rather than formal
+exact-arithmetic certification.
 
-The target oracle evaluates the response map over the full realized opponent
-hull, including responses at previously unobserved mixtures. Numerical gaps
-are reported; they provide floating-point accuracy checks rather than formal
-exact-arithmetic certification. The one-switch threshold follows the theorem
-without empirical tuning. For short horizons it may never trigger, in which
-case the one-switch and shared past-hull policies coincide.
+## Previous studies and reuse
 
-## Sources and reuse
+The main branch focuses on the selected implementation and the primary
+comparison. The [full-study archive](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/archive/full-study-2026-10-04)
+preserves earlier implementations, results, and unsuccessful comparisons,
+including the original one-switch and exploratory restarts. Restarts had
+scenario-dependent effects and are not part of the recommended configuration.
+The [snapshot commit](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/e8c85cb2e7be49032c1c2d014b6f19084ea064a8)
+fixes the complete pre-cleanup study independently of future branch changes.
 
-Algorithm reference: [Marinov et al., Efficient Opportunistic Approachability](https://arxiv.org/abs/2602.21328).
-Application/data precedent: [Liu and Garg, Redesigning Service Level Agreements](https://arxiv.org/abs/2410.14825).
-The queueing and SLA experiment of Liu and Garg is a separate model; its
-published results are not used as scores for this benchmark.
-
-Code is available under the [MIT License](LICENSE). Public data retain their
-source attribution and terms; see the data documentation. The original article
-and third-party implementations are not included in this repository.
+Algorithmic context: [Marinov et al., Efficient Opportunistic Approachability](https://proceedings.mlr.press/v313/marinov26a.html).
+Simulator: [official CAGE Challenge 2](https://github.com/cage-challenge/cage-challenge-2).
+Code is available under the [MIT License](LICENSE). Source attributions and
+provenance accompany the data. The original manuscript is outside this repository.

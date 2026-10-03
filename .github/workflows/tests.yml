@@ -27,6 +27,6 @@ jobs:
         run: |
           git clone https://github.com/cage-challenge/cage-challenge-2.git .external/cage-challenge-2
           git -C .external/cage-challenge-2 checkout 26ce1c1253fa9e2e73f25e6a7f2da32860c11257
-      - run: python -m pytest -q tests/test_cage.py tests/test_cage_bank.py tests/test_cage_study.py tests/test_cage_adaptations.py tests/test_cage_adaptation_study.py tests/test_cage_alternating_cache.py
+      - run: python -m pytest -q tests/test_cage.py tests/test_cage_bank.py tests/test_cage_study.py tests/test_cage_adaptations.py tests/test_cage_adaptation_study.py tests/test_cage_alternating_cache.py tests/test_recommended.py
       - run: python -m lowdim_games.cli cage-calibrate --steps 8 --train-episodes 2 --test-episodes 2 --seed 7 --output /tmp/cage-smoke-input
-      - run: python -m lowdim_games.cli cage --calibration /tmp/cage-smoke-input --scenarios curriculum interactive --horizon 12 --seeds 7 --output /tmp/cage-smoke-output
+      - run: python -m lowdim_games.cli cage-selected --horizon 16 --seeds 41000000 --output /tmp/cage-selected-smoke

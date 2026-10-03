@@ -1,85 +1,62 @@
 [English](README.md) | [Русский](README.ru.md)
 
-# CAGE 2 oracle tuning and block restarts
+# CAGE 2: selected one-switch and primary references
 
-Results from a new test after tuning on separate validation data. The original article and previous results are preserved. The outcome is the sum of four native loss components per simulator step; lower is better.
+Our one-switch with a scalar-aware oracle (W=16, rho=0.25) has 5.30% lower mean loss than tuned Hedge and 0.24% higher mean loss than tuned window. Both findings are supported by the predeclared simultaneous intervals. This experiment establishes neither superiority over window nor statistical equivalence.
 
-Configurations were locked before final outcomes were read. Validation uses 100 seeds and 20 common paths. Final testing uses 400 new seeds and 50 new paths at horizon 512. A total of 9000 new 50-step simulator episodes were collected.
-
-## Selected configurations
-
-- scalar: {"family": "scalar", "grid_index": 9, "kind": "scalar", "name": "scalar_w16_r0p25", "rho": 0.25, "window": 16}
-- window: {"family": "window", "grid_index": 22, "kind": "window", "name": "window_w16", "window": 16}
-- hedge: {"eta_multiplier": 4, "family": "hedge", "grid_index": 29, "kind": "hedge", "name": "hedge_eta4"}
+The metric is the sum of four native loss components per simulator step: host compromise, server compromise, operational disruption, and restore cost. Lower is better.
 
 ## Primary test
 
+All three configurations were selected on separate data and locked before final outcomes were read. Validation uses 100 simulator seeds and 20 common paths. The final test uses 400 new seeds and all 50 predeclared new paths at horizon 512. The two banks contain 9000 new 50-step episodes. Every pair of six defenses and three attack modes is evaluated on every simulator seed.
+
 | Method | Mean loss |
 |---|---:|
-| selected_scalar_one_switch | 1.10418 |
-| selected_window | 1.10154 |
-| selected_hedge | 1.16600 |
-| original_one_switch | 1.20665 |
-| original_window16 | 1.10154 |
-| original_hedge | 1.27458 |
+| Our one-switch (W=16, rho=0.25) | 1.10418 |
+| Window (W=16) | 1.10154 |
+| Hedge (eta multiplier=4) | 1.16600 |
 
-| Selected scalar oracle minus reference | Difference | Simultaneous interval | Decision |
+| Our method minus reference | Difference | Simultaneous interval | Finding |
 |---|---:|---:|---|
-| selected_window | 0.00265 | [0.00254, 0.00275] | disadvantage |
-| selected_hedge | -0.06182 | [-0.08010, -0.04421] | advantage |
+| Window (W=16) | +0.00265 | [+0.00254, +0.00275] | Our method has higher loss |
+| Hedge (eta multiplier=4) | -0.06182 | [-0.08010, -0.04421] | Our method has lower loss |
 
-Intervals are approximate: 10,000 paired crossed bootstrap draws with simultaneous family level 95% for two contrasts. Dependence within each seed table and each path is preserved. Inference is conditional on the original calibration and locked configurations. Comparisons with original untuned methods are descriptive.
+The intervals are approximate: 10,000 paired crossed bootstrap draws with simultaneous family level 95% for two comparisons (Bonferroni correction). Whole simulator-seed tables and whole common paths are resampled, preserving dependence within them. Inference is conditional on the original calibration and locked configurations; calibration and selection uncertainty are excluded.
 
-Across all 50 final paths, the selected scalar oracle and selected window actions are exactly equal after the first round. The loss difference is entirely due to the oracle's first uniform action: the window responds immediately to the known initial mode. Changing the arbitrary first action is theoretically permitted but was outside the locked tuning plan. This observation does not establish superiority over the window.
+![Mean losses](primary_means.png)
 
-## Restarts
+The mean-loss chart starts at zero. Uncertainty of the predeclared differences is shown separately below.
 
-Each block contains 1000 complete-policy selection rounds, corresponding to 50,000 internal steps across reset episodes. Horizon 3000 contains three blocks. Calibration is preserved; direction, residual, local clock and switch state are reset. Both fresh and retained history are tested. These comparisons are exploratory.
+![Predeclared comparisons](primary_comparisons.png)
 
-Deterministic alternating paths are identical; repetitions do not increase independent path variation.
+## Why performance is close to window
 
-| Method | curriculum | alternating500 |
-|---|---:|---:|
-| original_one_switch | 1.19995 | 1.33833 |
-| fresh_restart1000 | 1.20448 | 1.29304 |
-| retained_restart1000 | 1.20440 | 1.30769 |
-| selected_scalar_one_switch | 1.10438 | 1.29484 |
-| scalar_fresh_restart1000 | 1.10774 | 1.29424 |
-| scalar_retained_restart1000 | 1.10648 | 1.29499 |
-| selected_window | 1.10507 | 1.29439 |
-| selected_hedge | 1.14614 | 1.39779 |
+In all 50 final paths, our method and window take exactly the same actions from round 2. Both use a forecast from the last 16 already disclosed attack modes and the same trained loss table. Our method additionally enforces the oracle admissibility condition; it does not alter subsequent actions on these data.
 
-curriculum: switch counts {"original_one_switch": 0, "fresh_restart1000": 0, "retained_restart1000": 0, "selected_scalar_one_switch": 0, "scalar_fresh_restart1000": 0, "scalar_retained_restart1000": 0, "selected_window": 0, "selected_hedge": 0}; restart counts {"original_one_switch": 0, "fresh_restart1000": 40, "retained_restart1000": 40, "selected_scalar_one_switch": 0, "scalar_fresh_restart1000": 40, "scalar_retained_restart1000": 40, "selected_window": 0, "selected_hedge": 0}.
+The loss difference is entirely due to our algorithm's first uniform action. Window immediately responds to the known initial mode. Changing the first action was outside the locked tuning plan; neither the parameters nor this action were changed after test inspection. The action-equality diagnostic is descriptive and was performed after configuration selection.
 
-| Restart minus uninterrupted variant | Difference | Descriptive 95% interval |
-|---|---:|---:|
-| fresh_restart1000-minus-original_one_switch | 0.00452 | [0.00296, 0.00621] |
-| retained_restart1000-minus-original_one_switch | 0.00445 | [0.00305, 0.00585] |
-| scalar_fresh_restart1000-minus-selected_scalar_one_switch | 0.00336 | [0.00277, 0.00398] |
-| scalar_retained_restart1000-minus-selected_scalar_one_switch | 0.00210 | [0.00158, 0.00263] |
+## Implementation and limits
 
-alternating500: switch counts {"original_one_switch": 0, "fresh_restart1000": 0, "retained_restart1000": 0, "selected_scalar_one_switch": 0, "scalar_fresh_restart1000": 0, "scalar_retained_restart1000": 0, "selected_window": 0, "selected_hedge": 0}; restart counts {"original_one_switch": 0, "fresh_restart1000": 40, "retained_restart1000": 40, "selected_scalar_one_switch": 0, "scalar_fresh_restart1000": 40, "scalar_retained_restart1000": 40, "selected_window": 0, "selected_hedge": 0}.
+The implementation is continuous one-switch without restarts: forecast window W=16 and permitted gap fraction rho=0.25. Window is also selected with W=16; Hedge uses learning-rate multiplier 4. The full selection grid is retained. The primary test has no safe switches, scalar-oracle fallbacks, or nominal oracle-contract violations. Numerical residual checks provide numerical evidence rather than an exact-arithmetic certificate.
 
-| Restart minus uninterrupted variant | Difference | Descriptive 95% interval |
-|---|---:|---:|
-| fresh_restart1000-minus-original_one_switch | -0.04528 | [-0.04787, -0.04270] |
-| retained_restart1000-minus-original_one_switch | -0.03063 | [-0.03158, -0.02966] |
-| scalar_fresh_restart1000-minus-selected_scalar_one_switch | -0.00060 | [-0.00065, -0.00056] |
-| scalar_retained_restart1000-minus-selected_scalar_one_switch | 0.00015 | [0.00012, 0.00018] |
+This is a simulator experiment with a known training model and attack-mode disclosure after defense selection. Mixtures represent expected outcomes of whole independently reset episodes. The attacker selects among three frozen modes and learns no new tactics. Vector target geometry is not evaluated here: scalar loss close to window does not by itself demonstrate the practical benefit of the paper's vector guarantee. These results do not establish general superiority over other CAGE methods or on a live network.
 
+## Reproducibility and archive
 
-Restarting does not modify the theorem for the original uninterrupted algorithm. A restarted variant needs a sum-of-segments bound; a fixed block length does not inherit the original global-horizon rate. Resetting only a counter changes no actions when no switch occurs. Novelty is bounded for three known pure modes, so counter resets alone need not have an effect.
+This is a focused presentation of an already completed study, created after its outcomes were inspected. The primary test, all 50 paths, configurations, and both predeclared comparisons are preserved. Exploratory restart checks and untuned variants remain available in the full archive.
 
-## Reproducibility and limitations
+[Full study archive](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/e8c85cb2e7be49032c1c2d014b6f19084ea064a8/results/cage_adaptation) · `archive/full-study-2026-10-04` (branch)
 
-This is a simulator experiment with a known training model and disclosure of the attack mode after defense selection. Mixtures represent expected complete-episode outcomes; vector target geometry is not evaluated in this extension. A scalar improvement is not a new theorem.
+The retained primary NPZ contains all six originally evaluated methods as provenance data. This report and its plots display only the three validation-selected methods. `analysis.json` explicitly records this projection and the full source-analysis SHA-256; the original NPZ, protocol, and selection are not replaced.
 
-[Methodology](../../docs/cage_adaptation_en.md) · [Restart theory](../../docs/cage_restart_theory_en.md)
+[Methodology](../../docs/cage_adaptation_en.md)
 
-[Protocol](protocol.json) · [Locked selection](selection.json) · [Validation scores](validation_grid.json) · [Analysis](analysis.json) · [Group aggregates](groups/) · [Input banks](../../data/cage2_adaptation/)
+[Protocol](protocol.json) · [Locked selection](selection.json) · [Selection checksum](selection.sha256.json) · [Full validation grid](validation_grid.json) · [Primary analysis](analysis.json) · [Action diagnostic](trace_diagnostics.json) · [Aggregate inputs](groups/) · [Episode banks](../../data/cage2_adaptation/) · [Artifact checksums](SHA256SUMS.json)
 
-![Primary comparisons](primary_comparisons.png)
+To regenerate this report from published aggregates without running the simulator:
 
-![Restart means](restart_losses.png)
+```powershell
+python scripts/build_cage_adaptation_report.py --run-dir results/cage_adaptation --bank-root data/cage2_adaptation --output results/runs/focused_report
+```
 
-![Validation grid](validation_grid.png)
+PDF figures: [means](primary_means.pdf), [differences and intervals](primary_comparisons.pdf).

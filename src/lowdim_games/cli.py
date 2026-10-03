@@ -156,6 +156,15 @@ def cage_run(args):
 def parser():
     root = argparse.ArgumentParser(description="Reproducible finite vector-payoff game experiments")
     commands = root.add_subparsers(dest="command", required=True)
+    selected = commands.add_parser("cage-selected", help="Selected scalar-aware one-switch, tuned window and Hedge")
+    selected.add_argument("--calibration", default="data/cage2")
+    selected.add_argument("--bank", default="data/cage2_adaptation/test50")
+    selected.add_argument("--selection", default="results/cage_adaptation/selection.json")
+    selected.add_argument("--protocol", default="docs/cage_adaptation_protocol.json")
+    selected.add_argument("--horizon", type=int, default=512)
+    selected.add_argument("--seeds", nargs="+", type=int, default=list(range(41000000, 41000050)))
+    selected.add_argument("--output", default="results/runs/cage_selected")
+    selected.set_defaults(run=cage_selected_run)
     synthetic = commands.add_parser("synthetic", help="Unknown-regime adaptation comparison")
     synthetic.add_argument("--q", nargs="+", type=int, default=[1, 2, 3, 4, 5])
     synthetic.add_argument("--horizon", type=int, default=128)
@@ -194,6 +203,15 @@ def parser():
     cage.add_argument("--plots", action="store_true")
     cage.set_defaults(run=cage_run)
     return root
+
+
+def cage_selected_run(args):
+    from .recommended import run_selected_cage
+
+    summary = run_selected_cage(calibration=args.calibration, bank=args.bank,
+                                selection=args.selection, protocol=args.protocol,
+                                horizon=args.horizon, seeds=args.seeds, output=args.output)
+    print(json.dumps(summary["native_loss_means"], indent=2), flush=True)
 
 
 def main(argv=None):

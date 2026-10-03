@@ -1,65 +1,147 @@
-[English](cage_adaptation_en.md) | [Русский](cage_adaptation_ru.md)
+[English](cage_adaptation_en.md) | [Русский](cage_adaptation_ru.md) | [Home](../README.md)
 
-# Scalar-aware oracle selection and block restarts
+# Selected implementation: validation and final test
 
-This study examines two implementation choices in the calibrated CAGE 2 policy-selection game: choosing a forecast-aware admissible saddle response and restarting one-switch in blocks. It preserves the original article, the original learners and the previous reports. The [protocol](cage_adaptation_protocol.json) was saved before validation scores were evaluated.
+The main report presents continuous scalar-aware one-switch with **W = 16,
+rho = 0.25**, the selected 16-round window, and selected Hedge with learning-rate
+multiplier 4. Parameters were chosen on validation before final outcomes were
+read. The [frozen protocol](cage_adaptation_protocol.json),
+[locked selection](../results/cage_adaptation/selection.json), and
+[validation grid](../results/cage_adaptation/validation_grid.json) are preserved.
 
-## Forecast-aware saddle response
+## Oracle and baselines
 
-Let B be the direction-weighted payoff matrix over the full past opponent hull. First compute the original minimax dual distribution z*, and set L = min_a (B z*)_a. Among probability vectors satisfying
+The scalar-aware oracle minimizes the calibrated loss against recent empirical
+mode frequencies among saddle responses satisfying
+`B.T @ p <= L + rho / sqrt(t)`. It preserves the original minimax dual witness,
+full past hull, direction update, uniform first move, and theorem-derived switch
+budget. Failed candidate checks fall back to the original saddle pair. See the
+[mathematical implementation](algorithms_en.md).
 
-```text
-B.T @ p <= L + rho / sqrt(t),    0 <= rho <= 1,
-```
+Window responds directly to the frequencies of the last W disclosed modes.
+Before any observation it responds to the known initial Meander mode. Hedge
+updates its exponential defense weights using the same calibrated scalar
+losses. It uses the original learning-rate formula multiplied by the selected
+factor. All methods share training information and post-choice mode disclosure.
+None receives final-bank outcomes during its updates.
 
-choose one minimizing the calibrated scalar loss against the empirical distribution of the previous W attack modes. The same z* provides the target witness; the full hull, projection, direction update and certified switch budget remain in use. The initial action remains uniform, matching the original implementation.
+## Separate banks and locked selection
 
-The inequality bounds the saddle gap by rho/sqrt(t), within the manuscript's permitted error. The code recomputes the actual gap independently, records numerical excesses and falls back to the original pair when the forecast LP fails its checks. Floating-point checks are numerical evidence, rather than formal exact-arithmetic certificates. This choice changes the implemented oracle selection; it does not introduce a new convergence theorem.
+The unchanged training fit uses 40 simulator seeds in `data/cage2` for each of
+18 defense/attack cells. Every episode has 50 native steps. The primary outcome
+is the sum of the four native loss coordinates per simulator step; lower is better.
 
-## Validation and final evaluation
+The new banks contain:
 
-The training model remains the original 40-seed fit in data/cage2. All simulator episodes have 50 internal steps and use the frozen six Blue policies and three Red modes. The native sum of the four loss components is the outcome; lower is better.
+| Bank | Simulator seeds | Role |
+|---|---|---|
+| Validation | 38000000–38000099, 100 seeds | Configuration selection |
+| Final test | 39000000–39000399, 400 seeds | Final performance measurement |
 
-A new 100-seed validation bank, seeds 38000000–38000099, selects parameters on 20 common curriculum paths, seeds 40000000–40000019, with 512 meta-rounds. The grid contains:
+These banks total **9000 new simulator episodes and 450000 native steps**.
+Seed indices are shared across cells. Whole cell tables remain paired during
+analysis; different policies may consume random numbers differently.
 
-- Forecast-aware oracle: W in {4, 8, 16, 32, 64} and rho in {0, 0.25, 0.5, 1}.
-- Window baseline: the same five window lengths.
-- Hedge baseline: multipliers {0.25, 0.5, 1, 2, 4} of its original learning rate.
+Validation evaluates 20 common curriculum paths, seeds 40000000–40000019, at
+horizon 512. Its declared grid has 30 configurations:
 
-Each family's lowest mean validation native loss selects its configuration; exact ties follow the declared grid order. The configuration and validation input hashes are locked in selection.json before final outcomes are read.
+- Scalar-aware oracle: W in {4, 8, 16, 32, 64}, rho in {0, 0.25, 0.5, 1}.
+- Window: the same five W values.
+- Hedge: multipliers {0.25, 0.5, 1, 2, 4} of the original learning rate.
 
-The final bank contains 400 new seeds, 39000000–39000399. Fifty new common paths, 41000000–41000049, evaluate the locked configurations at horizon 512. The two primary contrasts compare the selected oracle with the selected window and selected Hedge. There are 10,000 paired crossed bootstrap draws, seed 44000000, with Bonferroni simultaneous family level 95%. Whole simulator seed tables and whole paths are resampled. The intervals are approximate and conditional on the fitted model and the selected configuration; they do not include training uncertainty. Advantage requires a simultaneous interval strictly below zero for method minus reference. Previous test outcomes do not participate in selection.
+Each family's lowest mean validation loss selects its configuration. Exact ties
+use the declared grid order. Input and implementation hashes and selected
+parameters were locked before accessing final-bank scores. Original and
+exploratory comparisons do not determine the final choice. No further parameter
+search or first-action change was made after inspecting the final results.
 
-## Block experiments
+## Final comparisons
 
-A block is 1000 meta-rounds, each choosing a complete policy for a independently reset simulator episode. A horizon of 3000 therefore contains three blocks, rather than 3000 steps in one persistent network.
+Fifty new common curriculum paths, seeds 41000000–41000049, evaluate the locked
+configurations at horizon 512. The two primary contrasts are selected one-switch
+minus selected window, and selected one-switch minus selected Hedge. A paired
+crossed bootstrap resamples whole simulator seed tables and whole paths, with
+10000 draws and seed 44000000. Bonferroni adjustment gives simultaneous family
+coverage of approximately 95% for the two reported intervals.
 
-Both variants retain the calibration. At every block boundary they reset the direction, cumulative residual, safe mode and local clock, with the budget computed for the new block's actual length:
+| Method | Mean native loss |
+|---|---:|
+| Selected one-switch | 1.1041833342 |
+| Selected window | 1.1015373414 |
+| Selected Hedge | 1.1660012489 |
 
-- Fresh history clears the past attack hull and forecast history.
-- Retained history preserves all previously revealed attack modes, including those observed in a safe tail, while resetting the algorithm's state.
+| Contrast | Mean difference | Simultaneous 95% interval |
+|---|---:|---:|
+| One-switch − window | +0.0026459928 | [+0.0025386010, +0.0027535403] |
+| One-switch − Hedge | −0.0618179146 | [−0.0800977015, −0.0442132772] |
 
-The first action of each block remains uniform. The original and selected scalar-aware methods are tested with both restart variants, along with selected window and Hedge. Twenty curriculum paths start at seed 42000000; twenty alternating paths start at 43000000 and alternate Meander and B-line every 500 rounds. These use the same new final simulator bank. Restart comparisons have descriptive paired 95% intervals and are secondary analyses.
+The selected method improves on tuned Hedge by about 5.3%; window has about
+0.24% lower loss. All 50 test paths have **exactly identical one-switch and
+window actions after round 1**. The first uniform one-switch move explains the
+entire gap. A prior-informed first move was not part of the locked experiment.
+There are no safe switches, fallbacks, or excesses over the nominal saddle-gap
+allowance on the primary test. [Trace diagnostics](../results/cage_adaptation/trace_diagnostics.json)
+record the action comparison and checkpoint hashes.
 
-The alternating path is deterministic. Its twenty repetitions are identical and do not create twenty independent sources of path variation.
+The intervals are approximate and conditional on the original fitted training
+model and selected parameters. They omit training and model-selection uncertainty.
+Reusing cell means over 512 rounds does not create 512 new simulator samples.
 
-Resetting only the residual counter, while preserving all other state, changes no actions when the switch threshold is never crossed. A full restart can change actions. Its guarantee accumulates over blocks; fixed-length restarts do not inherit the original global-horizon convergence rate. See the [restart theory note](cage_restart_theory_en.md).
+## Reproduce the published analysis
 
-## Interpretation
-
-This remains a model-informed simulator experiment. Red learns to choose among three fixed modes, and its mode is disclosed after each policy choice. Policy mixtures mean expected outcomes of complete reset episodes. These tests do not establish performance on deployed attack logs or a network with persistent state across meta-rounds.
-
-A tuned method can match a strong window baseline without proving an advantage over it. Report every primary comparison and the actual switch and restart counts. Favorable changes in scalar loss also do not establish a smaller vector target distance; the extended study evaluates scalar loss without rebuilding target geometry.
-
-## Reproduction
-
-Use the pinned simulator and dependencies described in [CAGE setup](cage_en.md). The following commands regenerate the separate validation/test banks and execute validation, selection, test trajectories, restarts and analysis in that order:
+After [installing the package](cage_en.md), rebuild the focused report from the
+published aggregate inputs:
 
 ```bash
-python scripts/collect_cage_bank.py --steps 50 --seed 38000000 --count 100 --partition external --exclude-calibration data/cage2 --workers 4 --output results/runs/cage_adaptation/banks/validation50
-python scripts/collect_cage_bank.py --steps 50 --seed 39000000 --count 400 --partition heldout --exclude-calibration data/cage2 --workers 8 --output results/runs/cage_adaptation/banks/test50
-python scripts/run_cage_adaptation_study.py --stage all --workers 8 --output results/runs/cage_adaptation/selection
-python scripts/build_cage_adaptation_report.py
+python scripts/build_cage_adaptation_report.py --run-dir results/cage_adaptation --bank-root data/cage2_adaptation --output results/runs/focused_report
 ```
 
-Full path checkpoints remain under the ignored runtime directory. Published bank inputs, selected parameters, validation scores, group occupancies and figures are sufficient to reconstruct the scalar comparisons. Existing checkpoints can be resumed only with the same code, protocol and calibration. Use a new output directory for a changed configuration.
+The builder checks bank, selection, and aggregate hashes and independently
+reconstructs the primary means. It keeps both primary comparisons and creates
+PNG/PDF figures. The raw aggregate file retains the original six-method primary
+run; the presentation highlights the three selected methods.
+
+To rerun the selected trajectories without retuning:
+
+```bash
+python -m lowdim_games.cli cage-selected --output results/runs/cage_selected
+```
+
+For a short functional check use `--horizon 16 --seeds 41000000`. A short run
+is not evidence for the locked statistical comparison.
+
+To reproduce the original validation and test stages from the public banks:
+
+```bash
+python scripts/run_cage_adaptation_study.py --stage validation --bank-root data/cage2_adaptation --output results/runs/cage_adaptation_replay --workers 8
+python scripts/run_cage_adaptation_study.py --stage select --bank-root data/cage2_adaptation --output results/runs/cage_adaptation_replay
+python scripts/run_cage_adaptation_study.py --stage test --bank-root data/cage2_adaptation --output results/runs/cage_adaptation_replay --workers 8
+```
+
+A clean pinned simulator checkout is required only for collecting episodes again:
+
+```bash
+python scripts/collect_cage_bank.py --steps 50 --seed 38000000 --count 100 --partition external --exclude-calibration data/cage2 --workers 4 --output results/runs/recollected_banks/validation50
+python scripts/collect_cage_bank.py --steps 50 --seed 39000000 --count 400 --partition heldout --exclude-calibration data/cage2 --workers 8 --output results/runs/recollected_banks/test50
+```
+
+Full trajectory checkpoints remain in ignored runtime directories. Changed
+configurations require a new directory. The frozen runner and learning modules
+remain byte-identical to those used for selection and testing.
+
+## Presentation cleanup and limitations
+
+The main branch focuses on the validated primary result. The
+[immutable full-study snapshot](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/e8c85cb2e7be49032c1c2d014b6f19084ea064a8)
+and [archive branch](https://github.com/Jew-Yeah/aamas-lowdim-experiments/tree/archive/full-study-2026-10-04)
+preserve previous applications, original-method results, and all restart studies.
+The original one-switch had higher scalar loss. Restarts helped the original
+implementation under alternating attacks but hurt it under gradual changes;
+they are exploratory and are excluded from the recommended configuration.
+The original protocol and primary raw aggregates remain available on main.
+
+This study measures model-informed policy selection in independently reset
+simulator episodes. Red selects fixed modes, and its mode is disclosed after
+choice. It does not evaluate deployed attack logs, persistent network state, new
+learned tactics, or vector target-distance superiority. Oracle diagnostics are
+floating-point evidence. The original manuscript has not been edited.
