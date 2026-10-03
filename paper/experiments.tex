@@ -1,105 +1,93 @@
-% Insert before the conclusion in the main AAMAS manuscript.
-% Requires booktabs and graphicx, both supported by the official template.
-% Copy the English figures into figures/, or define the directory before input.
+% Experimental section for the main AAMAS manuscript.
 \providecommand{\AAMASExperimentFigureDir}{figures}
 
 \section{Experimental Evaluation}
 \label{sec:cage-experiments}
+\label{sec:switching-experiments}
 
-\paragraph{Setting and scope.}
-We evaluate policy selection in the CAGE Challenge~2 simulator~\cite{kiely2023autonomous},
-using six fixed defense policies, three known attack modes, and four native
-cost components: host compromise, server compromise, operational disruption,
-and restoration. Each decision round selects a distribution over complete
-defense policies for a separately reset 50-step episode; mixture outcomes are
-evaluated in expectation. The finite payoff model is calibrated beforehand,
-and the current attack mode is disclosed after the defense choice.
-For $T=512$, a common attacker curriculum uses Meander for rounds 1--128,
-explores the three modes in rounds 129--384, and then uses an exponential-weights
-mode selector trained against a fixed uniform reference defense. Thus the
-compared methods face the same external paths.
+\paragraph{Observed demand shares.}
+We replay 730 chronological days of NYC Forestry Service Requests in the
+Hazard category, 2021--2022~\cite{nycforestry2026}. Daily counts are grouped
+as Brooklyn, Queens, and the other three boroughs and normalized to
+$\ell_t\in\Delta_3$; the single zero-count day uses uniform shares.
+These administrative counts define a modeled allocation objective, rather
+than measured staffing needs or service outcomes. For
+$P=L=\Delta_3$, set
+\[
+ u(p,\ell)=(p-\ell)/\sqrt2,\qquad p^\star(\ell)=\ell.
+\]
+Thus $S(Q)=\{0\}$ for every nonempty $Q$, including all interior mixtures,
+and $q_T\le2$.
 
-\paragraph{Methods and validation.}
-Our implementation retains the one-switch master and its safe budget, and
-uses a scalar forecast to choose among numerically admissible saddle responses.
-The forecast averages the last $W$ revealed modes; the saddle-error allowance
-is $\rho_{\mathrm{sc}}/\sqrt{t}$. The scalar allowance parameter
-$\rho_{\mathrm{sc}}$ (serialized as \texttt{rho}) is distinct from the
-projection-gap notation in the theory. Separate validation selects $W=16$
-and $\rho_{\mathrm{sc}}=0.25$,
-a window best response with $W=16$, and Hedge with learning-rate multiplier~4.
-Our method and Hedge start uniformly; window responds to the known initial
-Meander mode. Calibration uses 40 simulator seeds per policy pair.
-Validation uses 100 seed tables and 20 common paths; the final test uses
-400 new seed tables and 50 new common paths. Parameters are frozen before
-final-test evaluation.
+\paragraph{Certified budget and controls.}
+A fresh lag base starts uniformly at $p_0$ and then plays the previous
+observed share. On any adaptive $h$-round continuation,
+$\sum_{j=1}^h u(p_j,\ell_j)=(p_0-\ell_h)/\sqrt2$, whose norm is at most one.
+Consequently $B_0(0)=0$, $B_0(h)=1$ for $h>0$, and $G_T=1$ are valid
+before observing the trace. This instantiates Theorem~\ref{thm:master}
+with a game-specific base; it is separate from the block routine of
+Proposition~\ref{prop:safe}.
+We compare the master, fast-only, lag-safe-only, a trailing-mean window
+($W=16$), and block-safe-only. Every method starts uniformly, chooses
+before observing that day's share, and runs continuously for the announced
+$T=730$. The window and budgets are fixed, without tuning on this trace.
 
-\paragraph{Metrics and uncertainty.}
-Let $c_t^{(m)}$ be method $m$'s native per-step cost at round $t$, averaged
-over the shared test tables and paths, and let
-$J_m=T^{-1}\sum_{t=1}^{T}c_t^{(m)}$. The native cost is the sum of the four
-components, with smaller values preferred. For comparator $b$, the paired
-difference is $\Delta J_b=J_{\mathrm{ours}}-J_b$; negative values favor our
-method. The two predeclared contrasts use 10,000 crossed bootstrap draws of
-whole simulator seed tables and whole paths, retaining pairing across methods.
-Bonferroni adjustment gives approximate simultaneous 95\% intervals,
-conditional on the fixed calibration and selected parameters.
+\paragraph{Metrics and results.}
+We report $\delta_t=\|t^{-1}\sum_{s\le t}u_s\|_2$ and the additional daily
+mismatch $M_T=T^{-1}\sum_{t\le T}\|u_t\|_2$. The former permits cancellation
+of signed allocation imbalances; the latter measures daily tracking.
+The master crosses its budget on day 44 (13 February 2021), with
+$E_{44}=1.090736$, and uses the fresh lag base for the remaining 686 days.
+Table~\ref{tab:switching-nyc} and Figure~\ref{fig:switching-nyc} show different
+rankings: switching reduces daily mismatch relative to fast-only, while
+fast-only has a smaller terminal $\delta_T$. Lag and window controls have
+smaller daily mismatch than the master. These are exploratory fixed-trace
+comparisons; no confidence intervals or statistical-superiority claims are made.
 
 \begin{table}[t]
-  \caption{Held-out native per-step cost and predeclared paired differences.
-  Negative differences favor our method; the intervals cover the two
-  contrasts simultaneously at approximately 95\%.}
-  \label{tab:cage-primary}
+  \caption{NYC request-share tracking over 730 days. Lower values are better;
+  terminal average-payoff distance and mean daily mismatch are distinct metrics.}
+  \label{tab:switching-nyc}
   \centering
-  \begin{tabular}{lr}
+  \begin{tabular}{lrr}
     \toprule
-    Method & $J_m$ \\
+    Method & $\delta_T$ & $M_T$ \\
     \midrule
-    Our one-switch ($W=16$, $\rho_{\mathrm{sc}}=0.25$) & 1.10418 \\
-    Window ($W=16$) & 1.10154 \\
-    Hedge (rate multiplier 4) & 1.16600 \\
-    \bottomrule
-  \end{tabular}
-  \par\smallskip
-  \begin{tabular}{lr}
-    \toprule
-    Comparator $b$ & $\Delta J_b$ [simultaneous interval] \\
-    \midrule
-    Window & $+0.00265$ [$+0.00254$, $+0.00275$] \\
-    Hedge & $-0.06182$ [$-0.08010$, $-0.04421$] \\
+    One-switch (lag base) & $9.40\cdot10^{-4}$ & 0.155910 \\
+    Fast only & $6.44\cdot10^{-4}$ & 0.573865 \\
+    Lag safe only & $1.67\cdot10^{-4}$ & 0.131153 \\
+    Window ($W=16$) & $1.31\cdot10^{-3}$ & 0.104084 \\
+    Block safe only & $3.47\cdot10^{-2}$ & 0.109093 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/cumulative_cost_difference.pdf}
-  \caption{Expected cumulative native cost difference,
-  $\Delta C_b(t)=50\sum_{s=1}^{t}(c_s^{(\mathrm{ours})}-c_s^{(b)})$,
-  over separately reset 50-step episodes. Negative values favor our method.
-  Panels compare with window and Hedge, respectively; vertical lines mark
-  attacker phases. Shading shows descriptive pointwise 95\% intervals from
-  2,000 crossed whole-table/whole-path bootstrap draws. These bands differ
-  from the simultaneous primary intervals in Table~\ref{tab:cage-primary}.}
-  \Description{Two panels show cumulative native cost of our method minus each baseline over 512 decision rounds. Against window, the positive difference remains about 67.74 after the first round. Against Hedge, the difference becomes negative and reaches about minus 1582.54. Negative differences mean lower cost for our method. Shading represents descriptive pointwise uncertainty; vertical lines separate the three attacker phases.}
-  \label{fig:cage-cumulative}
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/switching_nyc_dynamics.pdf}
+  \caption{NYC switching dynamics. (a) Monitored residual $E_t$ and budget
+  $G_T=1$; the fast-only counterfactual continues after the master's crossing.
+  (b) Absolute full-target distances $\delta_t$, displaying values below
+  $10^{-5}$ at that floor; no slopes are fitted.
+  (c,d) Cumulative daily mismatch differences
+  $\sum_{s\le t}(\|u_s^{\rm ours}\|_2-\|u_s^{b}\|_2)$ against fast-only and
+  window; negative values favor the master on daily mismatch.
+  The dotted line marks day 44; safe mode starts on day 45. No uncertainty bands.}
+  \Description{Four panels show a real threshold crossing at day 44 on the fixed NYC demand-share trace. The master's residual stops accumulating when safe mode begins. Absolute average-payoff distances are shown for all five methods. Cumulative daily mismatch is lower for the master than fast-only and higher than window. The vertical dotted line marks the crossing; the shaded later region is safe mode.}
+  \label{fig:switching-nyc}
 \end{figure*}
 
-\paragraph{Results and interpretation.}
-Our native cost is 5.3\% lower than tuned Hedge and 0.24\% higher than window
-(Table~\ref{tab:cage-primary}). Every test path has identical one-switch and
-window actions after round one; the entire window deficit comes from the
-different initialization, explaining the plateau in
-Figure~\ref{fig:cage-cumulative}. No safe switch occurs on these paths.
-Separate descriptive full-target checks compute
-$\delta_t=\operatorname{dist}(\bar u_t,S(Q_t))$ in the normalized calibration
-game, including responses to all mixtures in the realized hull.
-With three attack modes, $q_T\le2$. In 20 new paths at each announced horizon
-$T\in\{64,128,256,512,1024,2048\}$, all one-switch and window terminal
-distances are at numerical precision for $T\ge128$; their empirical decay
-exponents cannot be estimated. These experiments illustrate behavior in a
-calibrated policy game; they do not test the $q=4$ improvement, establish a
-benefit of switching, or compare with the algorithms of Marinov et al.
-The anonymous supplement supplies configurations, seeds, software versions,
-source checksums, additional figures, replay instructions, and a description
-of AI assistance in experimental design and implementation.
+\paragraph{Original-budget diagnostic.}
+To exercise Proposition~\ref{prop:safe} unchanged, a constructed scalar game
+uses $P=[0,1]$, $L=\operatorname{conv}\{0,e_1,\ldots,e_m\}$,
+$u(p,\ell)=p-\sum_i\ell_i$, and $p^\star(\ell)=\sum_i\ell_i$.
+For $T=16384$, 128 zero-demand rounds precede distinct unit types.
+With $k=1$, $G_T=6T^{3/4}=8688.9281$; crossing occurs at $t=8817$,
+leaving 7567 block-safe rounds. Terminal distances are 0.602296 for
+the master, 0.992126 for fast-only, and 0.124300 for block-safe-only;
+lag and window controls are below $5\cdot10^{-4}$.
+The new labels have identical aggregate payoffs: this deliberately
+pathological geometry tests switching execution, rather than realistic
+opponent learning or minimax rates. The supplement supplies all trajectories,
+separate-year NYC checks, numerical diagnostics, and the earlier frozen CAGE
+study, which has no switch. Neither new test evaluates the $q=4$ exponent.

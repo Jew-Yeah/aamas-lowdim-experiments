@@ -1,19 +1,309 @@
 % Supplementary experimental details, compiled separately from the main paper.
 \providecommand{\AAMASExperimentFigureDir}{figures}
 
-\section{Experimental Protocol and Reproducibility}
+\section{Switching Studies: Protocol and Reproducibility}
+\label{sec:supp-switching}
+
+These studies were added after reviewing the earlier non-switching CAGE
+experiment. They are exploratory comparisons on fixed chronological or
+constructed paths, rather than a new confirmatory held-out study.
+Both exercise an observed budget crossing, but use different safe bases.
+All methods receive the same path, act before its current observation,
+and have the horizon announced in advance.
+
+\subsection{NYC source and modeled allocation objective}
+The source is NYC Open Data's Forestry Service Requests dataset,
+\texttt{mu46-p9is}~\cite{nycforestry2026}. Frozen daily aggregates of registered
+Hazard requests cover 1 January 2021 through 31 December 2022, with 365 days
+per year and 26756 and 23670 requests, respectively. The reproduction archive
+includes the recovered aggregate CSVs and provenance checksums.
+The three coordinate groups are Brooklyn, Queens, and Bronx plus Manhattan
+plus Staten Island. For counts $N_{t,j}$, set
+$\ell_{t,j}=N_{t,j}/\sum_iN_{t,i}$. The single zero-count day uses uniform
+shares after observation. No quantization or fitted regimes are used.
+
+The learner chooses modeled unit resource shares $p_t\in\Delta_3$ before
+observing that day's request shares. Counts are an administrative proxy;
+staffing needs, workload intensity, costs, and service quality are not
+measured. Each day has equal weight in this share-tracking game.
+Let $P=L=\Delta_3$ and
+\[
+ u(p,\ell)=\frac{p-\ell}{\sqrt2},\qquad p^\star(\ell)=\ell.
+\]
+Every pure payoff $(e_i-e_j)/\sqrt2$ has norm at most one, hence the game is
+normalized. Since $u(p^\star(z),z)=0$ for every $z$, the full strict target
+is $S(Q)=\{0\}$ for every nonempty convex $Q$, including all interior
+mixtures. The realized affine dimension is at most two.
+
+\subsection{Game-specific safe certificate and causal controls}
+A fresh $h$-round lag base plays $p_1=p_0=(1/3,1/3,1/3)$ and
+$p_j=\ell_{j-1}$ for $j\ge2$. For every adaptive continuation,
+\[
+ \sum_{j=1}^h u(p_j,\ell_j)=\frac{p_0-\ell_h}{\sqrt2},\qquad
+ h\operatorname{dist}(\bar u_h,S(Q_h))
+ \le\frac{\operatorname{diam}(\Delta_3)}{\sqrt2}=1.
+\]
+Thus $B_0(0)=0$, $B_0(h)=1$ for $h>0$, and $G_T=1$ are certified before
+observing data. This conservative diameter bound is sufficient; the tighter
+$1/\sqrt3$ bound available for uniform $p_0$ is not used.
+The base starts fresh, with a uniform first safe action and empty local lag
+memory. It instantiates the abstract master with a game-specific base,
+rather than the main paper's block-safety proposition.
+
+The five methods are one-switch with this lag base, uninterrupted shared
+past-hull, standalone lag-safe, window, and standalone original block-safe.
+Window plays the mean of the previous at most $W=16$ observed shares and
+also starts uniformly. No window or budget is tuned on these traces.
+Block-safe retains the original block sizes, coordinate scaling, step sizes,
+and certificate with learner dimension $k=2$. The master retains the original
+fast update and observable residual trigger.
+Its existing floating-point saddle LP and hull QP implementations check
+numerical gaps; these diagnostics are numerical evidence, rather than
+machine-verified exact-arithmetic certificates.
+
+The primary replay is one continuous 730-day run. Separate fresh 365-day
+runs over 2021 and 2022 check chronology-dependent behavior. They overlap
+the combined trace and are not independent statistical trials.
+No annual restart is inserted into the combined replay.
+All methods use identical uniform initialization and post-choice monitoring.
+
+\subsection{Metrics, complete traces, and crossings}
+For each method $a$, retain actions, payoffs, prefix sums, mode, projection
+and saddle diagnostics, residuals, and safe local indices.
+The distinct metrics are
+\[
+ \delta_t^{(a)}=\left\|\frac1t\sum_{s=1}^t u_s^{(a)}\right\|_2,\qquad
+ M_T^{(a)}=\frac1T\sum_{t=1}^T\|u_t^{(a)}\|_2.
+\]
+The first is distance to the exact full strict target, allowing cancellation
+of signed allocation errors. The second measures daily mismatch.
+Cumulative differences are
+\[
+ D_b(t)=\sum_{s=1}^t
+ \bigl(\|u_s^{(\mathrm{ours})}\|_2-\|u_s^{(b)}\|_2\bigr),
+\]
+where negative values favor the master on daily tracking. This is separate
+from a target-distance difference or a native simulator cost.
+
+On the combined trace, crossing occurs at $t=44$, 13 February 2021,
+with $E_{44}=1.090736034998>1$. Round 44 remains fast; a fresh 686-round
+lag base starts on round 45. The monitored residual then freezes.
+The uninterrupted fast-only run supplies a separately labelled
+counterfactual residual curve; uncalled fast residuals are not treated as
+observed safe-mode quantities.
+The annual 2021 replay also crosses at day 44, leaving 321 safe rounds;
+the fresh 2022 replay crosses at day 26, leaving 339.
+The combined run's logged projection-error estimates sum to about
+$1.875\cdot10^{-7}$, and its additional saddle errors are zero.
+These estimates are separate from the exact lag-base proof.
+
+\begin{table*}[t]
+  \caption{Descriptive NYC replays. Each pair gives terminal strict-target
+  distance $\delta_T$ and mean daily mismatch $M_T$. Annual runs are separate
+  fresh checks and are not independent of the combined trace.}
+  \label{tab:supp-nyc-replays}
+  \centering
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    & \multicolumn{2}{c}{2021--2022 ($T=730$)}
+    & \multicolumn{2}{c}{2021 ($T=365$)}
+    & \multicolumn{2}{c}{2022 ($T=365$)} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+    Method & $\delta_T$ & $M_T$ & $\delta_T$ & $M_T$ & $\delta_T$ & $M_T$ \\
+    \midrule
+    One-switch & $9.40\cdot10^{-4}$ & 0.155910 & $1.44\cdot10^{-3}$ & 0.180285 & $9.91\cdot10^{-4}$ & 0.155650 \\
+    Fast only & $6.44\cdot10^{-4}$ & 0.573865 & $7.88\cdot10^{-4}$ & 0.568609 & $2.14\cdot10^{-3}$ & 0.567111 \\
+    Lag safe only & $1.67\cdot10^{-4}$ & 0.131153 & $6.44\cdot10^{-4}$ & 0.130770 & $3.35\cdot10^{-4}$ & 0.130960 \\
+    Window ($W=16$) & $1.31\cdot10^{-3}$ & 0.104084 & $1.49\cdot10^{-3}$ & 0.106466 & $3.33\cdot10^{-4}$ & 0.101497 \\
+    Block safe only & $3.47\cdot10^{-2}$ & 0.109093 & $3.23\cdot10^{-2}$ & 0.108896 & $4.48\cdot10^{-2}$ & 0.112273 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/switching_nyc_dynamics.pdf}
+  \caption{NYC fixed-trace dynamics. (a) Monitored residual and certified unit
+  budget, with an uninterrupted fast-only counterfactual. (b) Absolute
+  full-target distances; values below $10^{-5}$ are drawn at that display
+  floor, and no slopes are fitted. (c,d) Cumulative daily mismatch differences,
+  one-switch minus fast-only and window, ending at $-305.11$ and $+37.83$.
+  Negative means lower daily mismatch. The dotted line is the crossing at
+  day 44; shading begins with safe mode on day 45. No confidence bands.}
+  \Description{Four panels distinguish a genuine budget crossing, full-target distances, and cumulative daily mismatch differences on one fixed real-data trace. At day 44 the unit budget is crossed; the monitored sum stops and a fresh lag base starts next day. The master has lower accumulated daily mismatch than fast-only but higher mismatch than window. Five methods appear in the distance panel, with values below one times ten to the minus five displayed at that floor.}
+  \label{fig:supp-switching-nyc}
+\end{figure*}
+
+There are no p-values, confidence intervals, or asymptotic slope estimates
+for these fixed traces. Smaller $\delta_T$ need not mean better daily
+tracking: fast-only has a smaller combined terminal distance than the master
+but much larger $M_T$. Lag-safe and window are stronger daily tracking
+controls here. No universal superiority is claimed.
+
+\subsection{Diagnostic with the original block routine and budget}
+This test retains the original block-safe implementation and
+$G_T=6\sqrt{k}T^{3/4}$. Take $P=[0,1]$ and the Euclidean subprobability
+simplex $L=\operatorname{conv}\{0,e_1,\ldots,e_m\}\subset\mathbb R^m$.
+Set $r(\ell)=\sum_i\ell_i\in[0,1]$ and
+\[
+ u(p,\ell)=p-r(\ell),\qquad p^\star(\ell)=r(\ell).
+\]
+The response prescribes capacity balancing. This scalar payoff is normalized
+and biaffine; $S(Q)=\{0\}$ for every nonempty convex $Q$, and $k=1$.
+
+For $T=16384$, 128 zero actions precede $e_1,\ldots,e_{16256}$, so $m=16256$.
+The labels have identical aggregate unit demand. Their payoff-equivalent
+identities deliberately remain in the fast opponent geometry; compressing
+the entire game to $r(\ell)$ would remove the pathology.
+This is an oracle/geometry diagnostic, rather than realistic attack learning,
+fixed-game minimax difficulty, or a low-dimensional rate test.
+
+Fast saddles and projections have closed forms. After zero is observed,
+each new orthogonal basis vector projects to zero in the preceding hull,
+giving unit residual. Scalar saddle maximization uses only the smallest
+and largest previously observed aggregate demands. The zero-direction tie
+uses the original uniform two-action mixture, i.e., capacity $1/2$.
+With
+\[
+ G_T=6(16384)^{3/4}=8688.928127,
+\]
+crossing is at $128+\lfloor G_T\rfloor+1=8817$, with $E_{8817}=8689$.
+The crossing round remains fast and a fresh original block routine runs
+for 7567 rounds. Its lossless representation $(1-r,r)\in\Delta_2$ preserves
+responses, gradients, block means, coordinate steps, and payoffs.
+The fast projection retains the original subprobability-space geometry.
+
+Every method starts at capacity $1/2$. Alongside fast-only and standalone
+block-safe, lag plays the preceding demand and window its trailing 16-round
+mean. Both use past aggregate demand, without an artificial restriction
+to irrelevant labels.
+Lag has its own stronger telescope $\sum_t(p_t-r_t)=p_1-r_T$; the tested
+master retains the original block base.
+
+\begin{table}[t]
+  \caption{Original-budget diagnostic over 16384 rounds. Distance is absolute
+  signed mean imbalance; $M_T$ is mean absolute imbalance. All controls remain.}
+  \label{tab:supp-original-budget}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Method & $\delta_T$ & $M_T$ \\
+    \midrule
+    One-switch & 0.602296 & 0.602418 \\
+    Fast only & 0.992126 & 0.992249 \\
+    Block safe only & 0.124300 & 0.132113 \\
+    Lag safe only & $3.05\cdot10^{-5}$ & $9.16\cdot10^{-5}$ \\
+    Window ($W=16$) & $4.88\cdot10^{-4}$ & $5.49\cdot10^{-4}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The master's prefix cumulative payoff is $-8688$, and its safe tail
+cumulative payoff is $-1180.020084$. The latter's absolute value is below
+$6(7567)^{3/4}=4867.926933$. Its terminal distance 0.602296 is below the
+prefix-plus-certified-tail bound 0.827388.
+The master improves over fast-only while remaining worse than the standalone
+block base and the lag/window controls.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/switching_original_budget.pdf}
+  \caption{Original-budget diagnostic. (a) Actual residual, certified
+  $G_T=8688.9281$, and fast-only counterfactual. Crossing is at $t=8817$;
+  safe mode starts at 8818. (b) Absolute full-target distances for five controls.
+  (c,d) Cumulative absolute imbalance differences, one-switch minus fast-only
+  and standalone block-safe, ending at $-6386.98$ and $+7705.48$.
+  Negative values favor one-switch on absolute imbalance. This constructed
+  fixed path has no confidence bands or empirical decay-rate claim.}
+  \Description{The original block budget is crossed after repeated new orthogonal labels with identical aggregate demand. Four panels show residual monitoring, exact full-target distances, and cumulative absolute imbalance differences. One-switch improves over fast-only, but standalone block-safe is better. Crossing is at round 8817 and the shaded safe tail begins at 8818. This pathological geometry is a mechanism diagnostic rather than a realistic adversary benchmark.}
+  \label{fig:supp-original-budget}
+\end{figure*}
+
+\subsection{Reproduction and boundaries}
+The script \texttt{scripts/run\_switching\_study.py} checks aggregate hashes,
+reruns combined and annual NYC traces and the original-budget diagnostic,
+and exports full NPZ trajectories, JSON summaries, software versions,
+source checksums, and both English figures.
+The window, budget, and scenarios are fixed; there is no configuration search.
+The singleton target is evaluated analytically for every prefix.
+Safe local indices, fresh-tail initialization, crossing flags, and masks
+for uncalled fast residuals are retained.
+
+Neither test evaluates the $q=4$ improvement. NYC uses real administrative
+counts for a modeled tracking objective with a separately certified base.
+The original-budget diagnostic exercises the original switch with exact
+fast oracles but intentionally artificial high-dimensional labels.
+Available author direction and AI technical assistance for this added
+experimental design are recorded in the accompanying assistance ledger.
+
+\section{Secondary Frozen CAGE Policy-Selection Study}
+\label{sec:supp-cage-secondary}
+
+This earlier calibrated benchmark is retained separately. Its scientific
+inputs and selected outputs are unchanged, and no safe switch occurred.
+The terms primary, validation, and held-out below refer to the earlier CAGE
+protocol, rather than the new exploratory replays.
+
+\begin{table}[t]
+  \caption{Earlier held-out CAGE native per-step cost and paired differences
+  with approximate simultaneous 95\% intervals. Negative differences favor
+  the selected scalar-aware method. No safe switch occurred.}
+  \label{tab:cage-primary}
+  \centering
+  \begin{tabular}{lr}
+    \toprule
+    Method & $J_m$ \\
+    \midrule
+    One-switch ($W=16$, $\rho_{\mathrm{sc}}=0.25$) & 1.10418 \\
+    Window ($W=16$) & 1.10154 \\
+    Hedge (rate multiplier 4) & 1.16600 \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip
+  \begin{tabular}{lr}
+    \toprule
+    Comparator $b$ & $\Delta J_b$ [simultaneous interval] \\
+    \midrule
+    Window & $+0.00265$ [$+0.00254$, $+0.00275$] \\
+    Hedge & $-0.06182$ [$-0.08010$, $-0.04421$] \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{\AAMASExperimentFigureDir/cumulative_cost_difference.pdf}
+  \caption{Earlier expected cumulative native CAGE cost differences:
+  $\Delta C_b(t)=50\sum_{s=1}^t(c_s^{(\mathrm{ours})}-c_s^{(b)})$.
+  Negative values favor the selected method. Panels compare with window
+  and Hedge; bands retain the original 2000-draw descriptive pointwise 95\%
+  crossed-bootstrap intervals, distinct from Table~\ref{tab:cage-primary}'s
+  simultaneous intervals. These are simulator cost differences, distinct
+  from the new studies' daily tracking differences.}
+  \Description{The frozen CAGE comparison has a small positive cumulative cost difference against window and a negative difference against Hedge. Pointwise bootstrap bands condition on the original calibration and selected parameters. No safe switch occurs in this study.}
+  \label{fig:cage-cumulative}
+\end{figure*}
+
+
+% Supplementary experimental details, compiled separately from the main paper.
+\providecommand{\AAMASExperimentFigureDir}{figures}
+
+
 
 \subsection{Simulator, policies, and loss units}
 We use the CAGE Challenge~2 simulator at revision
 \texttt{26ce1c1253fa9e2e73f25e6a7f2da32860c11257}, with its original
-\texttt{Scenario2.yaml} and reward implementation~\cite{kiely2023autonomous}.
-Each policy pair is evaluated in freshly initialized 50-step episodes.
+\texttt{Scenario2.yaml} and reward implementation~\cite{kiely2023autonomous,cagechallenge2}.
+The payoff banks are newly generated rollouts of this published open-source
+benchmark. They are not a pre-existing published dataset of external network
+outcomes. Each policy pair is evaluated in freshly initialized 50-step episodes.
 The six defense policies are \texttt{monitor}, \texttt{react\_remove},
 \texttt{react\_restore}, \texttt{decoy\_cycle}, \texttt{critical\_restore},
 and \texttt{decoy\_react}. The first three use the supplied policies;
 the other three are frozen scripted policies. The attack modes are
 \texttt{sleep}, \texttt{meander}, and \texttt{b\_line}. Source code in the
 supplement specifies every policy action and timing rule.
+The listed policy and mode orders fix their indices throughout the experiment.
 
 Native costs are positive counterparts of the simulator's negative rewards.
 Their four components are host compromise, server compromise, operational
@@ -25,6 +315,22 @@ defines the normalized training tensor $u$; held-out outcomes do not change
 the normalization, target response map, or policy menu. Native cost $J_m$
 uses the unnormalized component sum. Vector distance $\delta_t$ is a separate
 measure in the normalized training game.
+Specifically, with the native per-step calibration mean vector $g_{ij}$ for policy $i$ and
+mode $j$, $P=\Delta_6$, $L=\Delta_3$, $B=\|(0.8,4,10,1)\|_2$, and
+\[
+ u(p,\ell)=B^{-1}\sum_{i=1}^6\sum_{j=1}^3p_i\ell_jg_{ij}.
+\]
+Writing $\mathbf 1\in\mathbb R^4$ for the all-ones vector, the benchmark is
+\[
+ \begin{aligned}
+ i^\star(\ell)=\min\arg\min_{i\in[6]}
+ \frac{1}{4B}\sum_{j=1}^3\ell_j\mathbf 1^\top g_{ij},\\
+ p^\star(\ell)=e_{i^\star(\ell)}.
+ \end{aligned}
+\]
+It minimizes the equally weighted mean of the four components, with the
+lowest policy index resolving exact ties. This fixed response map determines
+the full target $S(Q)$ used for all geometric diagnostics.
 
 \subsection{Chronology and sampling units}
 Calibration uses 40 seeds per cell, starting at 20261003. Validation uses
@@ -57,8 +363,20 @@ oracle tolerance $10^{-9}$ and candidate-gap tolerance at most
 $\max\{20\cdot10^{-9},10^{-8}\}$. These checks are numerical evidence.
 The original one-switch threshold and safe routine are retained; with
 $K=6$ policies, the horizon budget is $G_T=6\sqrt{K-1}T^{3/4}$.
-No restart, safe switch, or scalar-oracle fallback occurs in the primary
-selected-method test.
+The selected $\rho_{\mathrm{sc}}=0.25$ lies below one, so its saddle allowance
+is within the nominal $t^{-1/2}$ contract rather than an additional
+theoretical $\beta_t$ error. Floating-point certification remains a separate
+implementation limitation.
+Within each primary path, one learner is initialized once and retains its
+state throughout all $T=512$ policy-selection rounds. Independent simulator
+episode resets do not reset the learner. The forecast window $W=16$ is also
+not a batch length or restart interval. No restart, safe switch, or
+scalar-oracle fallback occurs in the primary selected-method test.
+At $T=512$, $G_T=1444.07159$ exceeds the normalized residual upper bound
+$2(T-1)=1022$, so a threshold crossing is impossible at this horizon.
+Moreover, with three sampled pure modes, hull-expansion residuals occur only
+when a previously unseen mode first appears; this protocol cannot exercise
+continuing geometric novelty or demonstrate the benefit of safe switching.
 
 The validation grid has $W\in\{4,8,16,32,64\}$ and
 $\rho_{\mathrm{sc}}\in\{0,0.25,0.5,1\}$ for our oracle, the same five windows for window
@@ -68,13 +386,35 @@ ties resolved by grid order. The selected configuration is serialized with
 input and implementation checksums before accessing final-test outcomes.
 Our method and Hedge initialize uniformly. Window initializes as a best
 response to the known initial mode, then uses only past revealed modes.
-Window is a realizable online comparator.
+Meander is the announced initial-mode convention; Window receives no future
+mode path. Its first-action advantage reflects the differing initialization
+rules. Window is a realizable online comparator.
 
-For learning rates, let $L_{ij}=\frac14\sum_{d=1}^{4}u_{ijd}$ and
+The Hedge comparator uses full-information exponential weights, following
+the classical method~\cite{freund1997hedge}; it receives the same calibrated
+scalar loss table and post-choice mode information as the other methods.
+For learning rates, let $L_{ij}=\mathbf 1^\top g_{ij}/(4B)$ and
 $R=\max_{i,j}L_{ij}-\min_{i,j}L_{ij}$, computed from calibration.
 Selected Hedge uses $\eta_H=4\sqrt{8\log(6)/T}/R$, while the attack-mode
 selector uses $\eta_A=\sqrt{8\log(3)/T}/R$. Reporting $J_m$ uses the
 unnormalized sum of native costs rather than this scalar training table.
+
+\subsection{Separation from exploratory learner restarts}
+Separate exploratory studies use $T=3000$ policy-selection rounds and
+predeclared learner blocks of length $L=1000$. They compare clearing the
+revealed-mode history with retaining its full global history. A full learner
+restart resets the direction, accumulated residual budget, safe state, and
+local clock; the calibration stays fixed. The first move of each new block
+is uniform under the same initialization rule. Thus state restarts occur
+at rounds 1001 and 2001. In the alternating scenario, attack modes change
+every 500 rounds; this is distinct from the 1000-round learner restart.
+
+These restarted variants are separate from the selected continuous method.
+Their outcomes do not supply the primary $T=512$ cost table, confidence
+intervals, or figures in this paper. No archived restart endpoint is imported
+into those comparisons. A restarted learner would require a separately
+stated segment-wise guarantee rather than inheriting the uninterrupted
+master's global-horizon statement.
 
 \subsection{Statistical analysis}
 The primary contrasts are ours minus window and ours minus Hedge. A crossed
@@ -159,8 +499,8 @@ endings and a documented serialization repair; no scientific arrays or
 frozen algorithm bytes were changed. The anonymous presentation removes
 only public archive-link metadata from the primary analysis; both source
 and derivative checksums are recorded and every numerical field is retained.
-AI assistance in methodology and implementation is disclosed in
-\texttt{AI\_DISCLOSURE.md} in the anonymous ZIP, with available prompts and
+An account of author direction and AI technical assistance is supplied in
+\texttt{supplement/experiments/AI\_ASSISTANCE.md} in this project, with available prompts and
 record limitations.
 
 This study concerns calibrated full-information policy selection with reset

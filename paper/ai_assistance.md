@@ -64,3 +64,29 @@ this statement using their retained records.
 
 This record follows the [AAMAS 2027 AI policy](https://warwick.ac.uk/fac/sci/dcs/aamas2027/guidelines-and-policies/instructions/)
 and [Q&A on unavailable records and multi-turn interactions](https://warwick.ac.uk/fac/sci/dcs/aamas2027/guidelines-and-policies/qa/).
+
+## Added complete switching studies (4 October 2026)
+
+The author requested an actual budget crossing and the entire subsequent safe
+continuation, with dynamic plots and a revised experimental description. The
+available instruction is retained verbatim:
+
+> Блин, это серьезный косяк на самом деле. Давай перезапустим и описание эксперимента как раз возьмем весь процесс вместе с переключением. Графики именно отражающие динамику как сейчас в статье. Сделай это. Действительно процесс переключения имеет значение. Нет переключения - нет смысла статьи (текущий эксперимент как будто больше будет относится к исходной Marinov)
+
+Under that direction, Codex helped identify why the frozen three-mode CAGE
+paths cannot cross the original block budget, proposed the added tracking game
+and constructed geometry diagnostic, derived the lag-base telescope and the
+closed-form stress oracles, implemented and tested the causal runs, recovered
+the public aggregate inputs from the recorded cache, and drafted the protocols,
+figures, and experimental text. This includes assistance with experimental
+design and mathematical implementation, in addition to search and programming.
+The authors retain scientific responsibility and the final decision on use.
+
+These post-review additions are exploratory. The NYC tracking master uses a
+separately certified conservative lag-base budget; the constructed diagnostic
+keeps the original block routine and budget. Neither is represented as the
+earlier locked CAGE test or evidence for the q=4 rate. All five controls and
+mixed outcomes are reported. No confidence intervals or p-values are attached
+to the fixed traces. The theoretical statements of the manuscript were not
+changed in this revision. The model-version and incomplete-history limitations
+above still apply.
