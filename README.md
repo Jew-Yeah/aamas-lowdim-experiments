@@ -23,6 +23,13 @@ The [extended CAGE study](results/cage_study/README.md) adds an independent
 test bank, more attacker paths, paired statistical comparisons, and checks
 of episode lengths and calibration sensitivity.
 
+The [oracle tuning and restart study](results/cage_adaptation/README.md)
+uses separate validation and final-test seeds to compare a scalar-aware
+admissible saddle oracle, tuned window and Hedge baselines, and both
+fresh-history and retained-history restarts in blocks of 1000 meta-rounds.
+See the [methodology](docs/cage_adaptation_en.md) and
+[segment bounds](docs/cage_restart_theory_en.md).
+
 ## Quick start
 
 Python 3.10 or later is required. Use a virtual environment.

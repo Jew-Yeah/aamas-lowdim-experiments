@@ -1,0 +1,374 @@
+{
+  "protocol_sha256": "a1c8976415eb867bb179dfada83c4a4e9fa0b8667f2c1883aa4044f199fb7de3",
+  "calibration_sha256": "29866e57ac18413b5e5bbe4f4b3cbea17237f03e5f42eb6aab532ae001188935",
+  "tensor_sha256": "8500f4c1e2f92bc9cb2091b1aed71ac29d959a9dc734ea23440dd44791b8c22d",
+  "runner_sha256": "f22666353442a80c67f4d0f7b6b878c7f6e7070f14ba08c10321ef5543874ad3",
+  "implementation_sha256": {
+    "cage_adaptations.py": "780b1c884ca8f98673fe5c9074c8943d88a826e982d42bfb05acb0bc55f38a9c",
+    "cage_study.py": "1c3a731778ac2d486cdf04febd5469250c7291a7b8db16c9b1bc1588a0330bab",
+    "learners.py": "b0bf3e464f7d4286fb83ec0fb0a2a0fa97b32e4a512eb5e50b4e9f2b5aa4bb8e",
+    "policy_experiment.py": "2d6701cc6545f99e7b3702d04f573c1d8b896259a1f7befbc0f06e1e87ecb6f4",
+    "game.py": "bfc80c16a066c1ce4d37254e510c1a041540197f9f05c35bacebd460de7936d5",
+    "geometry.py": "bc5acdb9a25b39411241ab7094603b3fe0e2f2d4160c931e1dad085d1a48a690"
+  },
+  "name": "validation",
+  "scenario": "curriculum",
+  "horizon": 512,
+  "path_seeds": [
+    40000000,
+    40000001,
+    40000002,
+    40000003,
+    40000004,
+    40000005,
+    40000006,
+    40000007,
+    40000008,
+    40000009,
+    40000010,
+    40000011,
+    40000012,
+    40000013,
+    40000014,
+    40000015,
+    40000016,
+    40000017,
+    40000018,
+    40000019
+  ],
+  "configurations": [
+    {
+      "name": "scalar_w4_r0",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 0,
+      "window": 4,
+      "rho": 0
+    },
+    {
+      "name": "scalar_w4_r0p25",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 1,
+      "window": 4,
+      "rho": 0.25
+    },
+    {
+      "name": "scalar_w4_r0p5",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 2,
+      "window": 4,
+      "rho": 0.5
+    },
+    {
+      "name": "scalar_w4_r1",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 3,
+      "window": 4,
+      "rho": 1
+    },
+    {
+      "name": "scalar_w8_r0",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 4,
+      "window": 8,
+      "rho": 0
+    },
+    {
+      "name": "scalar_w8_r0p25",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 5,
+      "window": 8,
+      "rho": 0.25
+    },
+    {
+      "name": "scalar_w8_r0p5",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 6,
+      "window": 8,
+      "rho": 0.5
+    },
+    {
+      "name": "scalar_w8_r1",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 7,
+      "window": 8,
+      "rho": 1
+    },
+    {
+      "name": "scalar_w16_r0",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 8,
+      "window": 16,
+      "rho": 0
+    },
+    {
+      "name": "scalar_w16_r0p25",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 9,
+      "window": 16,
+      "rho": 0.25
+    },
+    {
+      "name": "scalar_w16_r0p5",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 10,
+      "window": 16,
+      "rho": 0.5
+    },
+    {
+      "name": "scalar_w16_r1",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 11,
+      "window": 16,
+      "rho": 1
+    },
+    {
+      "name": "scalar_w32_r0",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 12,
+      "window": 32,
+      "rho": 0
+    },
+    {
+      "name": "scalar_w32_r0p25",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 13,
+      "window": 32,
+      "rho": 0.25
+    },
+    {
+      "name": "scalar_w32_r0p5",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 14,
+      "window": 32,
+      "rho": 0.5
+    },
+    {
+      "name": "scalar_w32_r1",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 15,
+      "window": 32,
+      "rho": 1
+    },
+    {
+      "name": "scalar_w64_r0",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 16,
+      "window": 64,
+      "rho": 0
+    },
+    {
+      "name": "scalar_w64_r0p25",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 17,
+      "window": 64,
+      "rho": 0.25
+    },
+    {
+      "name": "scalar_w64_r0p5",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 18,
+      "window": 64,
+      "rho": 0.5
+    },
+    {
+      "name": "scalar_w64_r1",
+      "family": "scalar",
+      "kind": "scalar",
+      "grid_index": 19,
+      "window": 64,
+      "rho": 1
+    },
+    {
+      "name": "window_w4",
+      "family": "window",
+      "kind": "window",
+      "grid_index": 20,
+      "window": 4
+    },
+    {
+      "name": "window_w8",
+      "family": "window",
+      "kind": "window",
+      "grid_index": 21,
+      "window": 8
+    },
+    {
+      "name": "window_w16",
+      "family": "window",
+      "kind": "window",
+      "grid_index": 22,
+      "window": 16
+    },
+    {
+      "name": "window_w32",
+      "family": "window",
+      "kind": "window",
+      "grid_index": 23,
+      "window": 32
+    },
+    {
+      "name": "window_w64",
+      "family": "window",
+      "kind": "window",
+      "grid_index": 24,
+      "window": 64
+    },
+    {
+      "name": "hedge_eta0p25",
+      "family": "hedge",
+      "kind": "hedge",
+      "grid_index": 25,
+      "eta_multiplier": 0.25
+    },
+    {
+      "name": "hedge_eta0p5",
+      "family": "hedge",
+      "kind": "hedge",
+      "grid_index": 26,
+      "eta_multiplier": 0.5
+    },
+    {
+      "name": "hedge_eta1",
+      "family": "hedge",
+      "kind": "hedge",
+      "grid_index": 27,
+      "eta_multiplier": 1
+    },
+    {
+      "name": "hedge_eta2",
+      "family": "hedge",
+      "kind": "hedge",
+      "grid_index": 28,
+      "eta_multiplier": 2
+    },
+    {
+      "name": "hedge_eta4",
+      "family": "hedge",
+      "kind": "hedge",
+      "grid_index": 29,
+      "eta_multiplier": 4
+    }
+  ],
+  "train_seeds": [
+    20261003,
+    20261004,
+    20261005,
+    20261006,
+    20261007,
+    20261008,
+    20261009,
+    20261010,
+    20261011,
+    20261012,
+    20261013,
+    20261014,
+    20261015,
+    20261016,
+    20261017,
+    20261018,
+    20261019,
+    20261020,
+    20261021,
+    20261022,
+    20261023,
+    20261024,
+    20261025,
+    20261026,
+    20261027,
+    20261028,
+    20261029,
+    20261030,
+    20261031,
+    20261032,
+    20261033,
+    20261034,
+    20261035,
+    20261036,
+    20261037,
+    20261038,
+    20261039,
+    20261040,
+    20261041,
+    20261042
+  ],
+  "initial_red_index": 1,
+  "phase_fractions": [
+    0.25,
+    0.5,
+    0.25
+  ],
+  "attacker_exploration": 0.1,
+  "normalization_scale": 10.846197490364998,
+  "status": "complete",
+  "context_signature": "1fe8111c55deef23ecaca57e8e8c2b90b9de136348e10194c4852b00580a2593",
+  "started_utc": "2026-10-03T17:21:23.982488+00:00",
+  "completed_seeds": [
+    40000000,
+    40000001,
+    40000002,
+    40000003,
+    40000004,
+    40000005,
+    40000006,
+    40000007,
+    40000008,
+    40000009,
+    40000010,
+    40000011,
+    40000012,
+    40000013,
+    40000014,
+    40000015,
+    40000016,
+    40000017,
+    40000018,
+    40000019
+  ],
+  "resumed_seeds": 0,
+  "heldout_feedback_to_learners_or_attacker": false,
+  "target_geometry_evaluated": false,
+  "completed_utc": "2026-10-03T17:23:11.109405+00:00",
+  "elapsed_seconds_this_run": 107.1273128001485,
+  "aggregate_sha256": "f58e97b42ca20e4ed133f30ddf12ec6155d0a719cbee3579cb53673b7deb97d6",
+  "path_sha256": {
+    "seed_40000000.npz": "aae14dc344b31ec9090c9617018c578d8f31f7a7fd77905df54e4db923ef4e9c",
+    "seed_40000001.npz": "ffe046d6a1c44f13cb4a67d5aa035fd8dc46ee3af19642c376ba4244a55bcb39",
+    "seed_40000002.npz": "892e0ba19140082c984407bdf2ae2a8bfa4b13f5864cee1794e39d833dfc238e",
+    "seed_40000003.npz": "dc8ad6b984838d5431dfaf134aec3a057095ab6d8d5073c93ce4d534189ebd11",
+    "seed_40000004.npz": "8ddfddf16a08e3a4539cab7b6eac803aaabb0fa5829bfecbc1cea604c83727e2",
+    "seed_40000005.npz": "20fdcd3ebdf60548989984939c5ee62c940387505ce8dd0732b48cab57bc4f18",
+    "seed_40000006.npz": "0f9956b1b0cd2dc8d71826d9f77981c6f886e61f9573ddce4d0a49da82628c18",
+    "seed_40000007.npz": "708fa1f2feed8cd0b115cd9af227629b34313b9219a2e8004527eef16ea0ee07",
+    "seed_40000008.npz": "b84f59869417453e1d90abf318ff1d31bb0acdf2af40ec104f8782ce7256f1cc",
+    "seed_40000009.npz": "d2da0dd9e7f7db7f5c664bf157b15224243e9031537e6afafdae48c820d8fb12",
+    "seed_40000010.npz": "b76853f64358351c0ac62af9e87515c20916a6cc9a6d22c9b39b27bf738be2c9",
+    "seed_40000011.npz": "a7f1cbef0366272643373c7eba9a61a094dd77c9371b7ef0a1175fdfcaa68366",
+    "seed_40000012.npz": "5c273456105d77f676d2ab073445fe5a54d2c344044541a7abd1bc31d0ce28bc",
+    "seed_40000013.npz": "0f6e2cf60d66e357f1d6265fbbf5887610227eebef806481ee556a5d61f057d1",
+    "seed_40000014.npz": "6b8376ed957b117368f6735fae5cde83308b365630122d4b16e0ad9c39f3b834",
+    "seed_40000015.npz": "fe91ec2408d255e834dcae44693fa998d7fe5d554acf054d913716ccd34aa237",
+    "seed_40000016.npz": "af7ad201e914e143d57c89cc8f590a2da676c29b7f4ac793cbbd8b331a84e498",
+    "seed_40000017.npz": "f9906fa38e25b21f58ab09fcd7ac1d54a80ac77dbc413b6ed2cf781842536ff2",
+    "seed_40000018.npz": "d968d46632e4fea7a96e1c3d809be555cd58f5774f78e83caf13d3d32d8cf307",
+    "seed_40000019.npz": "65f58d53a9238ee21b13d0aaba1f1fab016479633f8dc09f90129b94faff9c00"
+  }
+}

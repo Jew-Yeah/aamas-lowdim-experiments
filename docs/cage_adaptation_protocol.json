@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-03 17:14:07 UTC",
+  "repository_parent_commit": "a9d5e3d77cca8ad234028a0027e55c767ec8e7c1",
+  "scope": "Separate experimental extension; original article, learners, data and reports preserved",
+  "training": {
+    "calibration": "data/cage2",
+    "calibration_npz_sha256": "29866e57ac18413b5e5bbe4f4b3cbea17237f03e5f42eb6aab532ae001188935",
+    "train_count": 40,
+    "episode_steps": 50
+  },
+  "banks": {
+    "validation": {
+      "seed_start": 38000000,
+      "count": 100,
+      "episode_steps": 50
+    },
+    "test": {
+      "seed_start": 39000000,
+      "count": 400,
+      "episode_steps": 50
+    }
+  },
+  "fixed": {
+    "defender_policies": [
+      "monitor",
+      "react_remove",
+      "react_restore",
+      "decoy_cycle",
+      "critical_restore",
+      "decoy_react"
+    ],
+    "red_policies": [
+      "sleep",
+      "meander",
+      "b_line"
+    ],
+    "weights": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "normalization": "Original a priori component bounds; no empirical rescaling",
+    "initial_red_index": 1,
+    "phase_fractions": [
+      0.25,
+      0.5,
+      0.25
+    ],
+    "attacker_exploration": 0.1,
+    "safe_budget": "Original certified 6 sqrt(K-1) h^(3/4), using actual fresh block length",
+    "first_action": "Original uniform initialization, retained for all adapted fast variants",
+    "saddle_epsilon": "rho / sqrt(local t), 0 <= rho <= 1; full historical hull and original witness/update, independently recomputed gap with fallback"
+  },
+  "validation": {
+    "horizon": 512,
+    "path_seed_start": 40000000,
+    "path_count": 20,
+    "scenario": "curriculum",
+    "scalar_windows": [
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "scalar_rhos": [
+      0,
+      0.25,
+      0.5,
+      1
+    ],
+    "window_grid": [
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "hedge_eta_multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "selection": "For each family minimize mean native total loss over fixed validation bank and common paths; exact ties follow declared grid order",
+    "lock": "Write selection.json with validation inputs, scores, config and hashes before loading final bank or evaluating final outcomes"
+  },
+  "primary_test": {
+    "horizon": 512,
+    "path_seed_start": 41000000,
+    "path_count": 50,
+    "scenario": "curriculum",
+    "contrasts": [
+      "selected_scalar_one_switch-minus-selected_window",
+      "selected_scalar_one_switch-minus-selected_hedge"
+    ],
+    "family_alpha": 0.05,
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 44000000,
+    "ci": "Approximate paired crossed percentile bootstrap of whole simulator seed tables and whole common paths, Bonferroni family of two; conditional on original calibration and validation-selected config",
+    "advantage_rule": "Upper simultaneous interval strictly below zero",
+    "additional_methods": [
+      "original_one_switch",
+      "original_window16",
+      "original_hedge"
+    ]
+  },
+  "restarts": {
+    "horizon": 3000,
+    "block_length": 1000,
+    "scenarios": {
+      "curriculum": {
+        "path_seed_start": 42000000,
+        "path_count": 20
+      },
+      "alternating500": {
+        "path_seed_start": 43000000,
+        "path_count": 20,
+        "attack_block_length": 500,
+        "initial_red_index": 1,
+        "other_red_index": 2
+      }
+    },
+    "methods": [
+      "original_one_switch",
+      "fresh_restart1000",
+      "retained_restart1000",
+      "selected_scalar_one_switch",
+      "scalar_fresh_restart1000",
+      "scalar_retained_restart1000",
+      "selected_window",
+      "selected_hedge"
+    ],
+    "uncertainty": "Descriptive paired crossed 95% intervals, no additional primary superiority claims",
+    "semantics": "One operation is a meta-round selecting a complete policy for a reset CAGE episode. Full state restart resets direction, residual E, safe mode, local clock; retain_history additionally preserves full past attack history/hull and scalar forecast history. Calibration always remains fixed."
+  },
+  "inference": {
+    "no_optional_stopping": true,
+    "old_test_data_excluded": true,
+    "training_uncertainty": "Excluded from primary intervals; no new calibration fits",
+    "no_live_network": true,
+    "attack_mode_disclosed_after_choice": true,
+    "mixtures": "Expected outcomes of whole independently reset policy episodes, not native action mixtures",
+    "red_learning": "Mode selection among three frozen policies, no new tactics",
+    "safe_switching": "Retain honest actual switch counts; novelty still bounded for known finite pure modes"
+  },
+  "article": {
+    "path": "C:/Math/aamas_revision/main.tex",
+    "sha256": "48d067d64a16c76d674f2f8977fe0f425249d093c3c699249434a7f4194e2a74",
+    "edit": false
+  }
+}

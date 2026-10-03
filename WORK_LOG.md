@@ -71,3 +71,47 @@ master and shared fast actions agree within 2.22e-16. Serial replay of two
 actual simulator cells exactly matched the parallel bank. Original article
 and upstream tracked source hashes remain unchanged. All 66 local tests pass.
 The bilingual report and figures are saved under `results/cage_study`.
+
+## Scalar-aware oracle and restart study
+
+Saved a separate protocol before validation analysis (`docs/cage_adaptation_protocol.json`,
+SHA256 `a1c8976415eb867bb179dfada83c4a4e9fa0b8667f2c1883aa4044f199fb7de3`).
+The original article, calibration, learners and previous reports remain unchanged.
+Collected 9,000 new 50-step simulator episodes (450,000 internal steps): 100
+validation seeds and 400 final-test seeds, each covering all 18 policy pairs.
+Validation used 20 new 512-round paths and 30 configurations across the scalar
+oracle, window and Hedge families. The selection was locked before final-test
+outcome access (SHA256 `3e8f87ea1babcf7b2328fb6eed9aecb5314ffdc996be19f34667c31861ee4cc4`).
+Selected parameters: oracle window 16, rho 0.25; window baseline 16; Hedge eta
+multiplier 4. Fifty new final paths gave native losses 1.10418, 1.10154 and
+1.16600, respectively; original one-switch gave 1.20665. Two simultaneous
+approximate primary contrasts favor the selected oracle over tuned Hedge and
+favor tuned window over the oracle. The oracle and window actions are exactly
+equal after round one on all 50 paths; the oracle's initial uniform action
+accounts for their entire difference. No initial-action retuning was performed.
+
+Two secondary 3,000-round scenarios compare fresh and retained-history
+1,000-round restarts. Both worsen losses on the curriculum. On deterministic
+500-round attack alternation, original fresh restart improves the mean from
+1.33833 to 1.29304; retained history gives 1.30769. These are exploratory
+comparisons, not additional primary claims. Actual safe switches are zero;
+each restarted path has two state restarts. The reset of the residual counter
+alone therefore cannot explain improvement.
+
+The alternating scenario has one deterministic path represented by 20 declared
+slots. After curriculum completion, the queued alternating stage was stopped
+before any alternating checkpoint completed; a checked helper computed one
+source trajectory and memoized the other 19 slots. The frozen runner and
+selection were unchanged. Published cache metadata discloses this reuse, which
+adds no independent path variation and changes no simulator episode counts.
+In total, 110 nominal path slots represent 91 computed path checkpoints and
+1,068 method trajectories retained in those checkpoints (1,220 nominal
+trajectory slots).
+
+The forecast LP preserves the saddle dual, full hull and update and independently
+checks its allowed gap with fallback. Separate notes derive segment bounds for
+both restart histories and explain why fixed block length does not retain the
+original global-horizon convergence rate. All 89 correctness tests passed.
+The report under `results/cage_adaptation` includes bilingual findings, selection
+and input hashes, group occupancies, three scientific figures and their PDF
+exports. Plot layout and contrast were visually checked.
