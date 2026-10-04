@@ -1,0 +1,1059 @@
+{
+  "protocol_sha256": "9fafd7cce7c9250fbc3981bba40f792791937ab9903b2461dcbcb1f5c3c1930b",
+  "scenarios": {
+    "primary": {
+      "n": 200,
+      "methods": {
+        "one_switch": {
+          "terminal_delta": {
+            "mean": 0.39518123056875654,
+            "std": 0.0001361538143541949
+          },
+          "pre_mean_delta": {
+            "mean": 0.0003660172441512617,
+            "std": 6.41299658610369e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.44072214632635237,
+            "std": 0.01511497072576048
+          },
+          "pre_terminal_delta": {
+            "mean": 7.257792429897389e-05,
+            "std": 2.0048626033395454e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.15011383336508094,
+            "std": 0.06043074664108368
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta": {
+            "mean": 0.5203190173435016,
+            "std": 0.0004908058464236444
+          },
+          "pre_mean_delta": {
+            "mean": 0.0003660172441512617,
+            "std": 6.41299658610369e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.557829497481494,
+            "std": 0.015112424011980768
+          },
+          "pre_terminal_delta": {
+            "mean": 7.257792429897389e-05,
+            "std": 2.0048626033395454e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.15011383336508094,
+            "std": 0.06043074664108368
+          }
+        },
+        "block_safe": {
+          "terminal_delta": {
+            "mean": 0.04968643391617597,
+            "std": 0.00020445075386634612
+          },
+          "pre_mean_delta": {
+            "mean": 0.2194458741736431,
+            "std": 0.02273521253881407
+          },
+          "mean_absolute_error": {
+            "mean": 0.15755702322248108,
+            "std": 0.004625057423561589
+          },
+          "pre_terminal_delta": {
+            "mean": 0.12576215315415554,
+            "std": 0.01912500194700812
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.17546579012666502,
+            "std": 0.00302487232101036
+          }
+        },
+        "lag_response": {
+          "terminal_delta": {
+            "mean": 2.6063232581713452e-05,
+            "std": 1.9182671671330324e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.0002665420335558361,
+            "std": 2.0582793802636843e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.028137824492709195,
+            "std": 0.00010055576837801515
+          },
+          "pre_terminal_delta": {
+            "mean": 2.5430088974036413e-05,
+            "std": 2.2176612028607536e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 3.560506727596359e-05,
+            "std": 2.2176612028607532e-06
+          }
+        },
+        "last_window": {
+          "terminal_delta": {
+            "mean": 7.68490405980168e-05,
+            "std": 2.2430853813667605e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.00017008482915882743,
+            "std": 6.255663572213572e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.021616600247682017,
+            "std": 6.22828178507208e-05
+          },
+          "pre_terminal_delta": {
+            "mean": 1.3325882455221443e-05,
+            "std": 7.483500716803372e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 4.771700020040056e-05,
+            "std": 7.497311525670434e-06
+          }
+        }
+      },
+      "paired_differences": {
+        "pre_mean_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.21907985692949183,
+          "sample_standard_deviation": 0.0226801997225979,
+          "standard_error": 0.0016037323022514227,
+          "t_statistic": -136.6062506952897,
+          "t_ci_95": [
+            -0.22224234733814446,
+            -0.2159173665208392
+          ],
+          "t_ci_family": [
+            -0.22295188870620955,
+            -0.21520782515277412
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 1.1833628554508641e-198,
+          "log_p_value": -455.7434881500447,
+          "negative_log10_p_value": 197.92688206690443,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -9.65952062191088,
+          "bootstrap_mean_ci_95": [
+            -0.22214559774052076,
+            -0.2159527275520115
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.22284753593799364,
+            -0.21526999910024483
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "holm_p_value": 1.1833628554508641e-198,
+          "significant_at_family_0_05": true
+        },
+        "terminal_delta__shared_past_hull": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.12513778677474505,
+          "sample_standard_deviation": 0.00045056461351178785,
+          "standard_error": 3.185972935768811e-05,
+          "t_statistic": -3927.7730632871135,
+          "t_ci_95": [
+            -0.12520061277655004,
+            -0.12507496077294006
+          ],
+          "t_ci_family": [
+            -0.12521470851804187,
+            -0.12506086503144823
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 0.0,
+          "log_p_value": -1123.080897895433,
+          "negative_log10_p_value": 487.7478366869359,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -277.7354968012177,
+          "bootstrap_mean_ci_95": [
+            -0.1252009832301237,
+            -0.12507495065397012
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.12521362863714672,
+            -0.12506106261061053
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true
+        },
+        "terminal_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": 0.3454947966525806,
+          "sample_standard_deviation": 0.00023729044989187565,
+          "standard_error": 1.6778968622935194e-05,
+          "t_statistic": 20590.94360426441,
+          "t_ci_95": [
+            0.3454617092555988,
+            0.34552788404956236
+          ],
+          "t_ci_family": [
+            0.34545428571469067,
+            0.3455353075904705
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 0.0,
+          "log_p_value": -1452.7786352723135,
+          "negative_log10_p_value": 630.9337447257026,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 1455.9995853605133,
+          "bootstrap_mean_ci_95": [
+            0.3454616190125296,
+            0.345527285780143
+          ],
+          "bootstrap_mean_ci_family": [
+            0.34545452389125425,
+            0.345533889536461
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 200,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true
+        }
+      },
+      "switch_count": 200,
+      "switch_fraction": 1.0,
+      "switch_fraction_ci_95": [
+        0.9817246596448638,
+        1.0
+      ],
+      "switch_quantiles_05_50_95": [
+        51749.95,
+        51808.0,
+        51872.15
+      ],
+      "mean_safe_rounds": 13729.58,
+      "all_safe_tail_certificates_hold": true
+    },
+    "late_change": {
+      "n": 200,
+      "methods": {
+        "one_switch": {
+          "terminal_delta": {
+            "mean": 0.3468330458261735,
+            "std": 0.0003706097717184945
+          },
+          "pre_mean_delta": {
+            "mean": 0.00021079173972772452,
+            "std": 3.8083549141632856e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.4217022464087418,
+            "std": 0.030977797774013736
+          },
+          "pre_terminal_delta": {
+            "mean": 4.009008096637212e-05,
+            "std": 1.1077709002421908e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.14977833301080232,
+            "std": 0.061999880107906344
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta": {
+            "mean": 0.3468330458261735,
+            "std": 0.0003706097717184945
+          },
+          "pre_mean_delta": {
+            "mean": 0.00021079173972772452,
+            "std": 3.8083549141632856e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.4217022464087418,
+            "std": 0.030977797774013736
+          },
+          "pre_terminal_delta": {
+            "mean": 4.009008096637212e-05,
+            "std": 1.1077709002421908e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.14977833301080232,
+            "std": 0.061999880107906344
+          }
+        },
+        "block_safe": {
+          "terminal_delta": {
+            "mean": 0.04190157166936324,
+            "std": 0.0005609472403502689
+          },
+          "pre_mean_delta": {
+            "mean": 0.15908597205119598,
+            "std": 0.020917923064743507
+          },
+          "mean_absolute_error": {
+            "mean": 0.1711844428585424,
+            "std": 0.003626249543511871
+          },
+          "pre_terminal_delta": {
+            "mean": 0.0786628315229347,
+            "std": 0.017620380504380074
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.149743189340111,
+            "std": 0.007743025884112196
+          }
+        },
+        "lag_response": {
+          "terminal_delta": {
+            "mean": 1.9660406514206904e-05,
+            "std": 1.684081818363173e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.0001421293485915708,
+            "std": 1.1310266028973107e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.0187673384934116,
+            "std": 8.31060502031168e-05
+          },
+          "pre_terminal_delta": {
+            "mean": 1.2719568911065321e-05,
+            "std": 1.1339250704970637e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 1.7798009213934677e-05,
+            "std": 1.1339250704970637e-06
+          }
+        },
+        "last_window": {
+          "terminal_delta": {
+            "mean": 7.813146695820332e-05,
+            "std": 1.892928059183335e-05
+          },
+          "pre_mean_delta": {
+            "mean": 8.978993786713361e-05,
+            "std": 3.465679160454104e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.014439647377756088,
+            "std": 5.2862807279586376e-05
+          },
+          "pre_terminal_delta": {
+            "mean": 6.677025857769459e-06,
+            "std": 3.828849143594602e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 2.3843204248646535e-05,
+            "std": 3.833493361978653e-06
+          }
+        }
+      },
+      "paired_differences": {
+        "pre_mean_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.15887518031146824,
+          "sample_standard_deviation": 0.020884254441597937,
+          "standard_error": 0.0014767397935679175,
+          "t_statistic": -107.5850877747484,
+          "t_ci_95": [
+            -0.16178724701155148,
+            -0.155963113611385
+          ],
+          "t_ci_family": [
+            -0.16244060291885182,
+            -0.15530975770408467
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 2.730360146204284e-178,
+          "log_p_value": -408.8557130307576,
+          "negative_log10_p_value": 177.56378006387746,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -7.607414512007453,
+          "bootstrap_mean_ci_95": [
+            -0.1617321049299432,
+            -0.1560022154280807
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.1623183171472535,
+            -0.1553634148952487
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__shared_past_hull": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": 0.0,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            0.0,
+            0.0
+          ],
+          "t_ci_family": [
+            0.0,
+            0.0
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_zero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_mean_ci_family": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 200,
+          "losses": 0,
+          "win_fraction": 0.0,
+          "tie_fraction": 1.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": 0.30493147415681027,
+          "sample_standard_deviation": 0.0006897201019237407,
+          "standard_error": 4.877057611909538e-05,
+          "t_statistic": 6252.365635627968,
+          "t_ci_95": [
+            0.3048353007000653,
+            0.3050276476135552
+          ],
+          "t_ci_family": [
+            0.304813723070649,
+            0.3050492252429715
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 0.0,
+          "log_p_value": -1215.5926933597357,
+          "negative_log10_p_value": 527.9251989680448,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 442.1090139410279,
+          "bootstrap_mean_ci_95": [
+            0.3048348254785779,
+            0.30502793605539336
+          ],
+          "bootstrap_mean_ci_family": [
+            0.30481428464055066,
+            0.30504791304997964
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 200,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        }
+      },
+      "switch_count": 0,
+      "switch_fraction": 0.0,
+      "switch_fraction_ci_95": [
+        0.0,
+        0.01827534035513624
+      ],
+      "switch_quantiles_05_50_95": null,
+      "mean_safe_rounds": 0.0,
+      "all_safe_tail_certificates_hold": true
+    },
+    "weaker_change": {
+      "n": 200,
+      "methods": {
+        "one_switch": {
+          "terminal_delta": {
+            "mean": 0.37586872459678344,
+            "std": 6.41661549945381e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.0003664643916976737,
+            "std": 6.298713836898069e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.4138572350387247,
+            "std": 0.01630274240717966
+          },
+          "pre_terminal_delta": {
+            "mean": 7.106252137184201e-05,
+            "std": 2.2324745274986563e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.1516048697889042,
+            "std": 0.06520404292170186
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta": {
+            "mean": 0.3797598403202444,
+            "std": 0.00042565080805698056
+          },
+          "pre_mean_delta": {
+            "mean": 0.0003664643916976737,
+            "std": 6.298713836898069e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.41764396414356414,
+            "std": 0.01631590078423753
+          },
+          "pre_terminal_delta": {
+            "mean": 7.106252137184201e-05,
+            "std": 2.2324745274986563e-05
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.1516048697889042,
+            "std": 0.06520404292170186
+          }
+        },
+        "block_safe": {
+          "terminal_delta": {
+            "mean": 0.014584398397065792,
+            "std": 7.795317409947532e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.21881935443675254,
+            "std": 0.024556288335915114
+          },
+          "mean_absolute_error": {
+            "mean": 0.1299172096344007,
+            "std": 0.004659328248922439
+          },
+          "pre_terminal_delta": {
+            "mean": 0.12534405519702338,
+            "std": 0.020613651983951816
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.17509475142683611,
+            "std": 0.003280498378471537
+          }
+        },
+        "lag_response": {
+          "terminal_delta": {
+            "mean": 5.4311172361984917e-05,
+            "std": 3.840888966022385e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.00026588263141026544,
+            "std": 2.226560653732937e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.06568154030559238,
+            "std": 0.00024786989078099075
+          },
+          "pre_terminal_delta": {
+            "mean": 2.5359042712322037e-05,
+            "std": 2.398973251613303e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 3.5676113537677966e-05,
+            "std": 2.3989732516133026e-06
+          }
+        },
+        "last_window": {
+          "terminal_delta": {
+            "mean": 6.33289250617177e-05,
+            "std": 4.2825531692445894e-05
+          },
+          "pre_mean_delta": {
+            "mean": 0.00016807292789903749,
+            "std": 6.769550558224028e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.05031319772314632,
+            "std": 0.00014203441368643773
+          },
+          "pre_terminal_delta": {
+            "mean": 1.308500745251553e-05,
+            "std": 8.098858858356068e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 4.7957188357238886e-05,
+            "std": 8.110278425709925e-06
+          }
+        }
+      },
+      "paired_differences": {
+        "pre_mean_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.21845289004505486,
+          "sample_standard_deviation": 0.02450033230451198,
+          "standard_error": 0.0017324351113844254,
+          "t_statistic": -126.09585698738498,
+          "t_ci_95": [
+            -0.22186917680044088,
+            -0.21503660328966884
+          ],
+          "t_ci_family": [
+            -0.22263566031972276,
+            -0.21427011977038696
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 8.195755264791499e-192,
+          "log_p_value": -439.9927214852491,
+          "negative_log10_p_value": 191.08641101863802,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -8.916323555530902,
+          "bootstrap_mean_ci_95": [
+            -0.2218405883897849,
+            -0.21505886394052695
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.22257819736397477,
+            -0.21425175249320916
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__shared_past_hull": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.003891115723460985,
+          "sample_standard_deviation": 0.00036474325366010296,
+          "standard_error": 2.5791242805510382e-05,
+          "t_statistic": -150.86964799655325,
+          "t_ci_95": [
+            -0.0039419749334956965,
+            -0.0038402565134262726
+          ],
+          "t_ci_family": [
+            -0.003953385786590462,
+            -0.0038288456603315073
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 3.7307256436675855e-207,
+          "log_p_value": -475.31851149249445,
+          "negative_log10_p_value": 206.4282066876577,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -10.668095117359014,
+          "bootstrap_mean_ci_95": [
+            -0.0039403573197998015,
+            -0.0038407838026675643
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.003950894493988866,
+            -0.0038289091473884427
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": 0.3612843261997177,
+          "sample_standard_deviation": 8.991571234345605e-05,
+          "standard_error": 6.358000993327673e-06,
+          "t_statistic": 56823.57183946077,
+          "t_ci_95": [
+            0.36127178849805053,
+            0.3612968639013848
+          ],
+          "t_ci_family": [
+            0.36126897551940274,
+            0.3612996768800326
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 0.0,
+          "log_p_value": -1654.7834727260426,
+          "negative_log10_p_value": 718.6633309496204,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 4018.033297892362,
+          "bootstrap_mean_ci_95": [
+            0.36127182245732775,
+            0.3612963740664984
+          ],
+          "bootstrap_mean_ci_family": [
+            0.36126905761269146,
+            0.3612990458978978
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 200,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        }
+      },
+      "switch_count": 200,
+      "switch_fraction": 1.0,
+      "switch_fraction_ci_95": [
+        0.9817246596448638,
+        1.0
+      ],
+      "switch_quantiles_05_50_95": [
+        64840.85,
+        64923.5,
+        65007.15
+      ],
+      "mean_safe_rounds": 613.16,
+      "all_safe_tail_certificates_hold": true
+    },
+    "stationary_control": {
+      "n": 200,
+      "methods": {
+        "one_switch": {
+          "terminal_delta": {
+            "mean": 2.1786499285589595e-05,
+            "std": 5.659637056532606e-06
+          },
+          "pre_mean_delta": {
+            "mean": 0.0001174741881825355,
+            "std": 1.8433009625361985e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.15799892560376458,
+            "std": 0.06112482174242982
+          },
+          "pre_terminal_delta": {
+            "mean": 2.1786499285589595e-05,
+            "std": 5.659637056532606e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.15799892560376458,
+            "std": 0.06112482174242982
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta": {
+            "mean": 2.1786499285589595e-05,
+            "std": 5.659637056532606e-06
+          },
+          "pre_mean_delta": {
+            "mean": 0.0001174741881825355,
+            "std": 1.8433009625361985e-05
+          },
+          "mean_absolute_error": {
+            "mean": 0.15799892560376458,
+            "std": 0.06112482174242982
+          },
+          "pre_terminal_delta": {
+            "mean": 2.1786499285589595e-05,
+            "std": 5.659637056532606e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.15799892560376458,
+            "std": 0.06112482174242982
+          }
+        },
+        "block_safe": {
+          "terminal_delta": {
+            "mean": 0.04478068697658944,
+            "std": 0.014168784059000157
+          },
+          "pre_mean_delta": {
+            "mean": 0.10706768572809629,
+            "std": 0.018085567744439958
+          },
+          "mean_absolute_error": {
+            "mean": 0.1350578368311181,
+            "std": 0.014994840695186614
+          },
+          "pre_terminal_delta": {
+            "mean": 0.04478068697658944,
+            "std": 0.014168784059000157
+          },
+          "pre_mean_absolute_error": {
+            "mean": 0.1350578368311181,
+            "std": 0.014994840695186614
+          }
+        },
+        "lag_response": {
+          "terminal_delta": {
+            "mean": 6.284729828135305e-06,
+            "std": 5.617092888022742e-07
+          },
+          "pre_mean_delta": {
+            "mean": 7.467224133339728e-05,
+            "std": 5.992077754548055e-06
+          },
+          "mean_absolute_error": {
+            "mean": 8.974059234364695e-06,
+            "std": 5.617092888022742e-07
+          },
+          "pre_terminal_delta": {
+            "mean": 6.284729828135305e-06,
+            "std": 5.617092888022742e-07
+          },
+          "pre_mean_absolute_error": {
+            "mean": 8.974059234364695e-06,
+            "std": 5.617092888022742e-07
+          }
+        },
+        "last_window": {
+          "terminal_delta": {
+            "mean": 3.0835981391003697e-06,
+            "std": 1.8987411655873859e-06
+          },
+          "pre_mean_delta": {
+            "mean": 4.472712814002338e-05,
+            "std": 1.8499589147916362e-05
+          },
+          "mean_absolute_error": {
+            "mean": 1.2175341479241505e-05,
+            "std": 1.8989868784198865e-06
+          },
+          "pre_terminal_delta": {
+            "mean": 3.0835981391003697e-06,
+            "std": 1.8987411655873859e-06
+          },
+          "pre_mean_absolute_error": {
+            "mean": 1.2175341479241505e-05,
+            "std": 1.8989868784198865e-06
+          }
+        }
+      },
+      "paired_differences": {
+        "pre_mean_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.10695021153991377,
+          "sample_standard_deviation": 0.018068659669015823,
+          "standard_error": 0.0012776471778912968,
+          "t_statistic": -83.70872130475848,
+          "t_ci_95": [
+            -0.1094696762536013,
+            -0.10443074682622625
+          ],
+          "t_ci_family": [
+            -0.11003494735603706,
+            -0.10386547572379048
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 4.491489114741671e-157,
+          "log_p_value": -360.00367530190505,
+          "negative_log10_p_value": 156.34760964850733,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -5.919100447904956,
+          "bootstrap_mean_ci_95": [
+            -0.10944783132071537,
+            -0.10442754805068914
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.10996159117985088,
+            -0.10393044850305468
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__shared_past_hull": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": 0.0,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            0.0,
+            0.0
+          ],
+          "t_ci_family": [
+            0.0,
+            0.0
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_zero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_mean_ci_family": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 200,
+          "losses": 0,
+          "win_fraction": 0.0,
+          "tie_fraction": 1.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        },
+        "terminal_delta__block_safe": {
+          "n": 200,
+          "degrees_of_freedom": 199,
+          "mean_difference": -0.04475890047730385,
+          "sample_standard_deviation": 0.014165542480290278,
+          "standard_error": 0.0010016551146999361,
+          "t_statistic": -44.68494177330907,
+          "t_ci_95": [
+            -0.04673412083581963,
+            -0.042783680118788074
+          ],
+          "t_ci_family": [
+            -0.04717728441082267,
+            -0.04234051654378504
+          ],
+          "confidence_level": 0.95,
+          "family_size": 3,
+          "family_interval_confidence_level": 0.9833333333333333,
+          "p_value": 1.0492611205867334e-105,
+          "log_p_value": -241.72334854259398,
+          "negative_log10_p_value": 104.97911641922501,
+          "p_value_underflow": false,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -3.1597025344832868,
+          "bootstrap_mean_ci_95": [
+            -0.04673258636051261,
+            -0.04279631136847191
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.047154307309966934,
+            -0.04239736174395557
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 200,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode"
+        }
+      },
+      "switch_count": 0,
+      "switch_fraction": 0.0,
+      "switch_fraction_ci_95": [
+        0.0,
+        0.01827534035513624
+      ],
+      "switch_quantiles_05_50_95": null,
+      "mean_safe_rounds": 0.0,
+      "all_safe_tail_certificates_hold": true
+    }
+  },
+  "primary_family": [
+    "pre_mean_delta__block_safe",
+    "terminal_delta__shared_past_hull",
+    "terminal_delta__block_safe"
+  ],
+  "primary_scenario": "primary",
+  "inference_scope": "Constructed resource-allocation mechanism model. Statistical inference is conditional on this generator; no representativeness claim about NYC, real attackers, or arbitrary games. Ambient representation sensitivity remains a limitation.",
+  "pointwise_intervals_are_not_simultaneous": true
+}

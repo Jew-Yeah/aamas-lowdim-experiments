@@ -1,0 +1,19 @@
+{
+  "verified_at_utc": "2026-10-04T06:03:16.605542+00:00",
+  "full_repository_tests_passed": 206,
+  "new_geometry_and_learner_tests_passed": 23,
+  "new_statistical_tests_passed": 31,
+  "validation_episodes": 800,
+  "independently_regenerated_path_hashes": 800,
+  "independently_reconstructed_switch_rounds": 800,
+  "full_representative_trajectories_audited": 8,
+  "all_five_methods_independently_checked_on_full_representatives": true,
+  "paired_inference_and_bootstrap_independently_checked": true,
+  "source_and_protocol_hashes_unchanged_after_freeze": true,
+  "safe_tail_certificates_all_hold": true,
+  "maximum_safe_tail_certificate_fraction": 0.175882,
+  "pdf_figures_rendered_and_visually_checked": 2,
+  "manuscript_edited_in_this_study": false,
+  "external_preregistration": false,
+  "scope": "Independent episodes of the declared synthetic generator, not a real-world population."
+}

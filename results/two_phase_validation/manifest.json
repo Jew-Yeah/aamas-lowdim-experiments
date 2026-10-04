@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "precommitment_sha256": "c5afa85d47f10235d84fade327c4ec332fbca036e9fe0ee458f459994f19a1c5",
+  "protocol_sha256": "9fafd7cce7c9250fbc3981bba40f792791937ab9903b2461dcbcb1f5c3c1930b",
+  "files": [
+    {
+      "path": "analysis.json",
+      "bytes": 34984,
+      "sha256": "a06668f677358abd804798d5f9f1678b8803f90ab09727dd65be737cdc98fe2a",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "development/late_change/dynamics.npz",
+      "bytes": 435210,
+      "sha256": "3eeff5cd350abfe2bab8ab42107b71b63ab9419693d2b568c90c11e0a4b00152",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/late_change/episodes.json",
+      "bytes": 30543,
+      "sha256": "d05c26c1680902392d99dd34dd15c146e0884d2cbf156aa781f82f7dce473b03",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/primary/dynamics.npz",
+      "bytes": 479842,
+      "sha256": "d4b1307f5db5c44c49b32d542a1d406297d2e140fb3dc61c6d60f5643f463d83",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/primary/episodes.json",
+      "bytes": 32113,
+      "sha256": "ab93bad260a0a2d82a74df5cb620f09536cfe993a111c5c1e47ac5a135a5cff8",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/stationary_control/dynamics.npz",
+      "bytes": 331192,
+      "sha256": "6bb399580732d7fb828d90cf6f710020f6b377f6c03a29e9348cc9dd14faea4c",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/stationary_control/episodes.json",
+      "bytes": 28851,
+      "sha256": "5f0008e84d6ec7cea7eba933516521d08e0df9f55508232745eaf2753a395824",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/weaker_change/dynamics.npz",
+      "bytes": 486413,
+      "sha256": "0a24642ded909c312580e24ecc9000834f57122fc86e847dbd462103391a98c0",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "development/weaker_change/episodes.json",
+      "bytes": 32094,
+      "sha256": "d900034715534f55a6297a6c7ffbdddce88f027535b515f811e483603d5ca073",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "figures/two_phase_dynamics.pdf",
+      "bytes": 96906,
+      "sha256": "04023132d9e3265e8a7795fe80fc0f2575caae9dc1d4ca8d0223f831fe21e603",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "figures/two_phase_dynamics.png",
+      "bytes": 189367,
+      "sha256": "939dc70f5dd80d4af54adebb4a9a7a9c08ffce7e423eea5a1437ffd0cc11e98a",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "figures/two_phase_sensitivity.pdf",
+      "bytes": 24298,
+      "sha256": "3718712c3d8ad78e9c24b074de32bebac266cb904be9978eb02d40015df74db2",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "figures/two_phase_sensitivity.png",
+      "bytes": 131419,
+      "sha256": "4e701684579ab868a56ff63a87797ac624d72d8a299fac6a572820f10c6a03c4",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "late_change/dynamics.npz",
+      "bytes": 10746411,
+      "sha256": "93b5526dca89bc9a2e9d01f4888ece53e40e0059718f584efd09548258c1c50b",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "late_change/episodes.json",
+      "bytes": 718006,
+      "sha256": "72c2fd4b104144342b0666930b87bf821c45042d30fdebc5d5b04f3092a062bd",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "late_change/representative_10000.npz",
+      "bytes": 10154957,
+      "sha256": "1e3f5151121533ec079e8e5eee53031be277b86a934626f7be345f5a3ade8d14",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "late_change/representative_10001.npz",
+      "bytes": 10152230,
+      "sha256": "990b665074e16efa764f16e90a5726cc0c8d2793c8933218810fa37754b32d7f",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "precommitment.json",
+      "bytes": 7139,
+      "sha256": "c5afa85d47f10235d84fade327c4ec332fbca036e9fe0ee458f459994f19a1c5",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "primary/dynamics.npz",
+      "bytes": 11847722,
+      "sha256": "94ec0659b7de45d5e7989c42daa025283dd8b3790380c50c14bdef0769c3eea2",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "primary/episodes.json",
+      "bytes": 756460,
+      "sha256": "5fa9c94c9bfc168469778fe1e02a1f1b647722fb9118820297aa6c44e0fabb48",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "primary/representative_10000.npz",
+      "bytes": 11866954,
+      "sha256": "9c66d38bd5c29a315a3fdcaa98422829e6821f81eb80f19bc005dc27a404553c",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "primary/representative_10001.npz",
+      "bytes": 11841679,
+      "sha256": "976e0e73a485bdb9df89b061394729c7f4a692a6b5cce24999df6df518f1dbe1",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13314,
+      "sha256": "18f76075ed5f5a4900930a368c9a7d7f24b41a313cd95316dccb1fcb6c10d09e",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "README.ru.md",
+      "bytes": 21272,
+      "sha256": "cf71eb9015b4f93774e48dd782c9d2e4bd8e400815c85847f14c5f9c0fc14ee9",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "stationary_control/dynamics.npz",
+      "bytes": 8151060,
+      "sha256": "4f3cab9fa319f5cd249df0befba27faa75cfd53f2b4d17e646d40f9d2fb46df6",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "stationary_control/episodes.json",
+      "bytes": 675126,
+      "sha256": "1b23d7d730ad0594612f6145080662069e08a4af013ec11970d4a2c9e425fb67",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "stationary_control/representative_10000.npz",
+      "bytes": 6289958,
+      "sha256": "80f206a79efd45d3668d2680fef56b2040de16ad1eec43904a1b3eca6ee5635d",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "stationary_control/representative_10001.npz",
+      "bytes": 6398504,
+      "sha256": "a3faeb7e6b8ba52c41506224051079b36e2f2a0db648e22f26f328a966351b83",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 891,
+      "sha256": "504485d332ed44bcf707c37bf97371b8b792d933aefe3c2337a717b2ffaa9854",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "weaker_change/dynamics.npz",
+      "bytes": 12021680,
+      "sha256": "55f798df92a2b58e962207959231b99b4a1af1eb6d694bf57d8a4cde35f887bd",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "weaker_change/episodes.json",
+      "bytes": 756092,
+      "sha256": "158316e80c8cfbe32409a389141d36be6a85d6e9537e013fb8a78cb09e3d2c13",
+      "public_repository": true,
+      "role": "published summary/report"
+    },
+    {
+      "path": "weaker_change/representative_10000.npz",
+      "bytes": 12123260,
+      "sha256": "1be4eb3f4bf3b6b99bbf320a7db9eecd024ffbbd92d11a2df9fb489b383b8e50",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    },
+    {
+      "path": "weaker_change/representative_10001.npz",
+      "bytes": 12125494,
+      "sha256": "fbf4391653e44646f32b0bc418894ef08dd97fd9f4147b278cd0db2005d60306",
+      "public_repository": false,
+      "role": "local regenerable raw output"
+    }
+  ],
+  "raw_output_policy": "Full arrays remain locally available and can be regenerated from published seeds/code; excluded from Git."
+}

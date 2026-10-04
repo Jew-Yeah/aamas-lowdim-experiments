@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "study": "Independent two-phase original-budget validation",
+  "design_fixed_at_utc": "2026-10-04T05:47:13Z",
+  "status": "Design fixed before the new development and validation batches; implementation audit precedes validation",
+  "registration": "Local auditable precommitment, not an external preregistration. The design follows earlier exploratory results.",
+  "game": {
+    "learner": "p in [0,1], affine dimension k=1",
+    "opponent": "conv{0,e_1,...,e_m} in its original Euclidean geometry",
+    "payoff": "u(p,ell)=a(ell)*p-b(ell)",
+    "response": "p_star(ell)=b(ell)/a(ell)",
+    "full_target": "{0} at every point in the entire realized hull, including interior mixtures",
+    "zero_context": {"efficiency": 1.0, "required_input": 0.0},
+    "phase_one": "First round zero context, then one repeated known context. Its required capacity ratio is drawn independently per episode uniformly from [0.02,0.15], with efficiency 1.",
+    "phase_two": "Fresh orthogonal task types every round. Each type has independent efficiency a and required capacity ratio r, and b=a*r. These types have different payoff coefficients.",
+    "scope": "Constructed resource-allocation mechanism model. Statistical inference is conditional on this generator; no representativeness claim about NYC, real attackers, or arbitrary games. Ambient representation sensitivity remains a limitation."
+  },
+  "fixed_settings": {
+    "T": 65536,
+    "window": 16,
+    "a_min": 0.5,
+    "pre_r_low": 0.02,
+    "pre_r_high": 0.15,
+    "post_a_low": 0.5,
+    "post_a_high": 1.0,
+    "budget": "Original B0(h)=6*h^(3/4), G=24576; unchanged block-safe routine and fresh safe tail",
+    "sample_stride": 128,
+    "extra_sample_points": "round 1, phase boundary, next round, horizon; fixed independently of outcomes",
+    "base_entropy": 20261004,
+    "rng": "default_rng(SeedSequence([base_entropy, scenario_id, episode_seed]))"
+  },
+  "scenarios": [
+    {"id": 0, "name": "primary", "change_round": 16384, "post_r_low": 0.85, "post_r_high": 1.0},
+    {"id": 1, "name": "late_change", "change_round": 32768, "post_r_low": 0.85, "post_r_high": 1.0},
+    {"id": 2, "name": "weaker_change", "change_round": 16384, "post_r_low": 0.5, "post_r_high": 0.85},
+    {"id": 3, "name": "stationary_control", "change_round": 65536, "post_r_low": 0.85, "post_r_high": 1.0}
+  ],
+  "methods": ["one_switch", "shared_past_hull", "block_safe", "lag_response", "last_window"],
+  "causality": "Every action precedes observation; every method faces the identical exogenous path within its episode and starts at p=0.5. No learner restarts except the single fresh safe tail.",
+  "development_seeds": {"first": 0, "last": 7, "count": 8, "use": "Implementation and runtime checks only. No generator, budget, window, endpoint or scenario selection based on development outcomes."},
+  "validation_seeds": {"first": 10000, "last": 10199, "count_per_scenario": 200, "total_episodes": 800},
+  "representative_full_paths": [10000, 10001],
+  "metrics": {
+    "terminal_delta": "abs(sum(u)/T), exact distance to the full strict target",
+    "pre_terminal_delta": "abs(sum_{t<=H}(u)/H), H is the fixed environmental phase boundary",
+    "pre_mean_delta": "mean_{t<=H} abs(sum_{s<=t}(u)/t), computed on every round",
+    "post_mean_delta": "mean_{t>H} abs(sum_{s<=t}(u)/t), full-prefix target distances, not an average conditional on switch",
+    "daily_mismatch": "mean abs(u), additional metric; also report separately before and after H",
+    "switch": "All episodes retained, including no switch; crossing action remains fast and safe starts next round"
+  },
+  "primary_family": [
+    {"scenario": "primary", "metric": "pre_mean_delta", "contrast": "one_switch minus block_safe", "desired_direction": "negative"},
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus shared_past_hull", "desired_direction": "negative"},
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus block_safe", "desired_direction": "negative"}
+  ],
+  "inference": {
+    "unit": "Independent complete episode, paired across methods. Rounds are dependent and never treated as independent observations.",
+    "primary": "Two-sided paired t tests of mean episode-level differences; Holm correction across all three primary contrasts; report unadjusted 95% mean-difference t intervals and Bonferroni 98.3333333333% intervals for the family.",
+    "robustness": "9999 whole-episode paired bootstrap draws for primary contrast mean intervals; fixed RNG. No sign-flip exactness claim.",
+    "sensitivity": "All fixed scenarios and controls reported descriptively with intervals; no additional confirmatory significance claims and no best-cell selection.",
+    "curves": "Primary scenario mean curves and pointwise 95% whole-episode bootstrap intervals, 2000 draws. These are not simultaneous bands or individual-path ranges.",
+    "precision_rationale": "n=200 gives approximately 80% power for a standardized paired mean effect about 0.23 under a normal approximation and conservative alpha=0.05/3. This is not a guarantee of power for a practically important absolute effect.",
+    "fixed_sample_size": true,
+    "optional_stopping": false,
+    "conditioning_on_switch": false,
+    "robustness_resamples": 9999,
+    "curve_resamples": 2000,
+    "inference_seed": 2026100401,
+    "curve_bootstrap_seed": 2026100402
+  },
+  "claims": "A successful mechanism claim requires prechange benefit and full-horizon benefit over continuing fast-only. Overall advantage over standalone safe is assessed separately and must not be inferred if its comparison fails. No q=4 experiment, minimax exponent estimate, real-world general superiority, or artificial threshold retuning."
+}

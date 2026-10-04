@@ -2,7 +2,24 @@
 
 # Full one-switch trajectories
 
-The current primary experiment follows **730 chronological days of NYC request
+## Independent two-phase validation
+
+The [new paired study](results/two_phase_validation/README.md) runs **800
+independent episodes**, four fixed scenarios with 200 episodes each, using the
+original block-safe procedure and budget. Its locally frozen design separates
+development seeds from validation and reports all five methods. In the primary
+synthetic scenario one-switch has lower prechange mean target distance than
+block-safe, and lower terminal target distance than fast-only (0.395181 versus
+0.520319). Standalone block-safe is better at the horizon (0.049686), and lag
+and window are stronger still. Holm-adjusted paired inference supports these
+different directions; this is not a claim of overall or real-world superiority.
+See the [method notes](docs/two_phase_validation_en.md) and all fixed sensitivity
+results, including episodes without switching. Full raw arrays are generated
+locally from the published seeds and code rather than committed to Git.
+
+## Real-data illustration
+
+The manuscript's real-data illustration follows **730 chronological days of NYC request
 shares**, including the first certified crossing and the complete safe tail.
 It uses `u(p,ell)=(p-ell)/sqrt(2)`, benchmark `p*(ell)=ell`, and the full target
 `{0}`. A separately proved lag safe base gives the conservative, data-independent

@@ -11,3 +11,7 @@ results/runs/
 # External simulators and their isolated runtime
 .external/
 .venv-cage/
+# Full Monte Carlo arrays are regenerated from published seeds and code.
+/results/two_phase_validation/development/
+/results/two_phase_validation/*/dynamics.npz
+/results/two_phase_validation/*/representative_*.npz
