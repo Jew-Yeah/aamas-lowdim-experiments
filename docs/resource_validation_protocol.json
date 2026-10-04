@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "study": "Full vector resource-allocation switching validation",
+  "status": "Fixed design; source receipt required before validation",
+  "registration": "Local auditable precommitment, not external preregistration. This new design follows earlier exploratory scalar studies and their mixed results.",
+  "public_source_commit_plan": "Publish the fixed implementation and protocol before validation if publication is available. The source receipt must distinguish its local commit from an actually published commit. An intended or local commit is not an external registry preregistration.",
+  "game": {
+    "learner": "P=[0,1], two pure configurations off/on, K=2 and k=1. All learners start at p=0.5.",
+    "opponent": "L=conv{0,e_1,...,e_M}; Euclidean orthogonal request classes. The round-specific potential class catalogue and every payoff map are fixed before interaction. A request arriving after H uses that round's fresh class; an idle round uses origin.",
+    "payoff": "u(p,ell)=((1-p)*epsilon*r, (1-p)*epsilon*ell, p*(gamma0-(gamma0-gamma1)*r)), r=sum(ell)",
+    "coordinates": "Aggregate normalized unmet demand; every class's normalized unmet demand; normalized activation/idle resource cost. This is a genuine vector with M+2 coordinates, not a scalar objective relabeled as a vector.",
+    "normalization": "epsilon=1/sqrt(2), gamma0=1, gamma1=0.2 give vertex norm at most one. Mixed payoffs satisfy the same norm bound by convexity.",
+    "known_lipschitz_bound": "M=T-H=163840. On the original Euclidean subprobability domain a known fixed bound is K_u=max(epsilon*sqrt(M+1),(gamma0-gamma1)*sqrt(M)), approximately 323.817. This value is known before play and is not fitted to observed paths.",
+    "physical_interpretation": "Modeled fractional service activation for unit requests and separate class service requirements; idle activation costs one unit, loaded activation costs 0.2 units. No measured operating costs or observed real deployment outcomes are claimed.",
+    "response": "Fixed all-coordinate weighted benchmark: p_star=1 if 2*epsilon*r > gamma0-(gamma0-gamma1)*r, else p_star=0. Equality chooses off.",
+    "beta": 0.6386979044864147,
+    "full_strict_target": "Origin-only target is {0}. After any request and the already observed origin, write a target as (A,w,E): w>=0, sum(w)=A, E>=0, 2*A+E<=beta, with w supported on all observed request classes. The target includes benchmark responses at every interior hull mixture and tie-boundary limits.",
+    "evaluation": "Exact full target at primary endpoints, with independent support-gap or analytical checks. All-round dynamics retain certified lower/upper distance bounds from the aggregate/energy projection and resource-coordinate norm; bounds are explicitly distinguished from exact distance and statistical uncertainty.",
+    "scope": "Constructed stress model, not real data, real attacker learning, q=4 validation, or empirical proof of minimax exponents. Every genuinely new class adds a payoff coordinate and makes dimension large. For this horizon the model is one fixed finite game valid for every path; comparing different T would change M and K_u, so no convergence-rate experiment is claimed. Inference is conditional on this fixed stochastic mechanism.",
+    "interactive_goal_caveat": "Adaptive policies produce different paths and observed request-class sets for different learners. Each exact primary distance is to that learner's own full realized-hull target. A difference measures own-target approachability performance, not success against one identical service target. Report physical aggregate shortage and idle cost alongside it; a common full-library/aggregate target diagnostic is secondary and may be weaker."
+  },
+  "fixed_settings": {
+    "T": 262144,
+    "H": 98304,
+    "change_round": 98304,
+    "epsilon": 0.7071067811865475,
+    "gamma0": 1.0,
+    "gamma1": 0.2,
+    "window": 16,
+    "sample_stride": 512,
+    "base_entropy": 2026100402,
+    "budget": "Original block-safe base, B0(h)=6*h^(3/4), G=6*T^(3/4)=69511.42501776238. The threshold and fresh-tail base are not retuned.",
+    "prechange": "Origin only for H=3*T/8 rounds. This deliberately benign phase is part of the constructed model.",
+    "reaction_probability": "q_t=0.05+0.9*sigmoid((theta-mean(p_{t-memory},...,p_{t-1}))/0.03); only already observed actions enter. Postchange ell_t is that round's fresh unit class if shared U_t<q_t, otherwise origin.",
+    "theta_low": 0.45,
+    "theta_high": 0.55,
+    "reaction_floor": 0.05,
+    "reaction_gain": 0.9,
+    "reaction_scale": 0.03,
+    "exogenous_probability": 0.5,
+    "feasibility_rationale": "T and H chosen before outputs from the analytic budget-margin calculation G/T <= beta*(H/T)/(2*epsilon-beta): 0.26516504294495535 <= 0.308841880556077. This design check is not a theorem of superiority or a guarantee that every stochastic episode switches."
+  },
+  "scenarios": [
+    {"name": "primary", "id": 0, "mode": "reactive", "memory": 1},
+    {"name": "memory16", "id": 1, "mode": "reactive", "memory": 16},
+    {"name": "exogenous", "id": 2, "mode": "exogenous", "memory": 1},
+    {"name": "stationary", "id": 3, "mode": "stationary", "memory": 1}
+  ],
+  "methods": ["one_switch", "shared_past_hull", "block_safe", "lag_response", "last_window", "uniform", "request_trigger", "fast_recent_saddle"],
+  "controls": {
+    "lag_response": "Benchmark response to the previous revealed opponent action, with uniform first move.",
+    "last_window": "Benchmark response to the mean of at most 16 previous opponent actions, with uniform first move.",
+    "uniform": "Constant p=0.5.",
+    "request_trigger": "Uniform first move; then off until the first observed request. Afterwards play p_bal=beta forever. This strong game-specific control is mandatory; no certified-safe-base claim is asserted for it in this study. It uses known game parameters and past observations, not future information.",
+    "fast_recent_saddle": "Uninterrupted fast policy with the same hull geometry and another valid certified dual tie choice: after a request, choose the most recently observed unit in the relevant tied saddle set rather than origin. Before a request the origin choice remains. This alternative was identified mathematically before development outputs, not selected by outcome. Its results are mandatory and descriptive, with no extra confirmatory test."
+  },
+  "development_seeds": {"first": 30000, "last": 30015, "count": 16},
+  "validation_seeds": {"first": 40000, "last": 40255, "count_per_scenario": 256, "total_episodes": 1024},
+  "representative_full_paths": [40000, 40001],
+  "causality": {
+    "pairing": "Same episode theta and exogenous uniforms U_t across all policies; each attacker keeps a separate learner-action history. Paths can differ. Random innovations are indexed by episode, scenario and round, not adaptive RNG call order.",
+    "timing": "All choices occur before the current opponent action is observed. The reaction probability sees past learner actions only, including past uniform initialization; current p_t is unavailable to the attacker policy.",
+    "fixed_game": "Each potential class has a fixed physical payoff map. Adaptive selection changes the opponent action, never an existing label's coefficients.",
+    "oracle_tie_limitation": "The primary one-switch/fast comparison is conditional on the specified origin-tie fast oracle. A valid recent-unit tied dual can change fast performance without switching. Benefit against origin-tie fast is not proof that every valid fast oracle requires fallback. Preserve the alternate result even if it is better.",
+    "switching": "Actual crossing round stays fast. A fresh safe run starts next round. No periodic restarts and no conditioning primary inference on a switch.",
+    "information": "All methods know the same game and benchmark map. Future uniforms, episode theta and evaluator outputs are unavailable to learners."
+  },
+  "metrics": {
+    "terminal_delta": "Exact distance of each episode's full mean vector payoff at T to the entire own realized-hull strict target. Compute distance per episode before averaging across episodes.",
+    "early_pre_mean_delta": "Exact mean over every t<=H of distance to origin-only target {0}; H is fixed by the generator, not the observed switch.",
+    "physical_outcomes": "Mean aggregate unmet demand in request units; class-resolved service deficits; modeled activation cost and idle activation cost separately. No claim of measured fairness improvement.",
+    "curves": "Fixed grid with stride 512 and explicit H,H+1,T. Show actual exact checkpoints where feasible and otherwise certified lower/upper bounds labeled as such. Do not present bounds as exact values or sampling CIs.",
+    "switching": "Fraction of all episodes switched, exact binomial interval; crossing distribution conditional on crossing, with full denominator used for probability curves; delay from H and safe-tail lengths.",
+    "numeric_uncertainty": "Save full-target lower/upper certificates. Paired true differences are bounded by lower(master)-upper(control) and upper(master)-lower(control); statistical CIs must disclose or conservatively incorporate any nonnegligible oracle error."
+  },
+  "primary_family": [
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus shared_past_hull", "prediction": "negative"},
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus block_safe", "prediction": "uncertain; two-sided"},
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus lag_response", "prediction": "uncertain; two-sided"},
+    {"scenario": "primary", "metric": "terminal_delta", "contrast": "one_switch minus last_window", "prediction": "uncertain; two-sided"}
+  ],
+  "inference": {
+    "family_size": 4,
+    "unit": "Independent complete episode, paired across methods; neither rounds nor vector coordinates are independent replicates.",
+    "primary": "Two-sided episode-level paired t tests; Holm across all four terminal primary comparisons. Report ordinary 95% t intervals and Bonferroni 98.75% marginal intervals for conservative family coverage.",
+    "early_comparison": "The prechange origin-only path and initialization are identical and deterministic in every episode. Report the exact early one-switch minus block-safe difference as a fixed-design quantity, with no t-test/p-value or sampling-superiority claim. Do not add artificial prefix randomness to manufacture a p-value.",
+    "bootstrap": "9999 whole-episode paired draws for percentile mean-difference robustness intervals. Use 2000 shared-weight whole-episode draws for pointwise mean curves. Numerical envelopes and episode-sampling uncertainty are separate.",
+    "robustness_resamples": 9999,
+    "inference_seed": 2026100403,
+    "curve_bootstrap_seed": 2026100404,
+    "curve_resamples": 2000,
+    "precision_rationale": "For n=256 and conservative alpha=0.05/4, the normal-approximate 80% standardized paired effect threshold is 0.2087. Under iid normal differences, noncentral-t power at d_z=0.22 is approximately 0.8415. These assumptions are for planning, not an observed-power claim or practical-effect guarantee.",
+    "distribution_assumptions": "Terminal distances may have an atom at zero from exact target membership. Normal-difference power calculations need not describe that distribution. Report zero-distance fractions and paired win/tie/loss counts; compare bootstrap intervals and avoid exact-normality or guaranteed-power claims.",
+    "sensitivity": "All other scenarios, trigger, uniform and alternate recent-saddle comparisons are descriptive. Preserve complete control tables and intervals without selecting a winning scenario.",
+    "fixed_sample_size": true,
+    "optional_stopping": false,
+    "conditioning_on_switch": false,
+    "degenerate_tests": "Constant differences have undefined t statistics/p-values/d_z; retain explicit status instead of invented significance. All-zero distances mean no failures observed in this sample, not population equality or established equivalence. Report exact binomial intervals for the fraction of positive distances, keeping numerical unresolved cases separate from exact zero membership. Very small p-values are reported in finite log scale with underflow flags, not as mathematical zero.",
+    "outward_numerical_mean_intervals": "Use each method's terminal_projection_lower/upper. For paired episode bounds l=L_master-U_control and u=U_master-L_control, report outward sampling intervals [mean(l)-tcrit*sd(l)/sqrt(n), mean(u)+tcrit*sd(u)/sqrt(n)]. Family tcrit uses quantile 1-0.05/(2*4); ordinary intervals use 0.975. This accounts for E[l]<=E[true difference]<=E[u]. Directional claims require outward family intervals to exclude zero. The tests remain numerical episode-level tests, not formal exact-arithmetic proofs.",
+    "failures": "Keep scientific failures and no-switch episodes. No seed replacement or silent omission. Implementation/oracle defects require a documented amendment and fresh untouched validation, retaining the original failed batch."
+  },
+  "reproducibility": {
+    "receipt": "Critical source and protocol SHA-256, UTC freeze time, local git commit and software versions saved before validation. This protocol file alone is not the receipt.",
+    "outputs": "All 1024 episode summaries, game/target definitions, seeds, full selected representative traces, exact endpoint certificates, dynamics bounds, English figures and bilingual interpretation.",
+    "claims": "Assess early speed and benefit of fallback separately. Winning against origin-tie fast-only does not imply winning against safe-only, lag, window, uniform, mandatory trigger or every valid fast-oracle tie rule. Mixed or negative results remain reportable. No manuscript edits until validated outcomes are available."
+  }
+}

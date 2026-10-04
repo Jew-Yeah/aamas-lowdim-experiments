@@ -15,3 +15,7 @@ results/runs/
 /results/two_phase_validation/development/
 /results/two_phase_validation/*/dynamics.npz
 /results/two_phase_validation/*/representative_*.npz
+# Vector resource episodes: public JSON and figures, reproducible raw arrays.
+/results/resource_validation/development/
+/results/resource_validation/*/dynamics.npz
+/results/resource_validation/*/representative_*.npz
