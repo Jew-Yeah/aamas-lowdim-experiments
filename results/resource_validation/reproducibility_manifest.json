@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "hash_algorithm": "SHA-256",
+  "frozen_at_utc": "2026-10-04T06:49:44.295022+00:00",
+  "source_commit": "dc404b3aeeebd73ba14c46e806b9d796cf59e899",
+  "source_commit_url": "https://github.com/Jew-Yeah/aamas-lowdim-experiments/commit/dc404b3aeeebd73ba14c46e806b9d796cf59e899",
+  "protocol_path": "docs/resource_validation_protocol.json",
+  "protocol_sha256": "eac5463bbbdc78f77d66ca585e4d74a6674c79722a7772a9128eb10e20b06494",
+  "critical_source_receipt": {
+    "scripts/run_resource_validation.py": "b359c0593f3ea7c624e5ad4c3d155ee1b1c4369ffc586d79e79fbfb4f071d3cd",
+    "src/lowdim_games/resource_validation.py": "51b874762c4f325e1121a0dc06b70567c3356c0eb45a87ffd17273cabb7a85b5",
+    "src/lowdim_games/resource_target.py": "7a2b7be9955d725521787cb0819fc0ae6f269d9bac07466ec4d900dc64817d47",
+    "src/lowdim_games/paired_inference.py": "23076cbb4cea7596cc20b06ecfcb29c87318ba288ee8a821c3b2f1db8b8ed0c9",
+    "src/lowdim_games/learners.py": "b0bf3e464f7d4286fb83ec0fb0a2a0fa97b32e4a512eb5e50b4e9f2b5aa4bb8e"
+  },
+  "critical_source_hashes_verified": {
+    "scripts/run_resource_validation.py": "b359c0593f3ea7c624e5ad4c3d155ee1b1c4369ffc586d79e79fbfb4f071d3cd",
+    "src/lowdim_games/resource_validation.py": "51b874762c4f325e1121a0dc06b70567c3356c0eb45a87ffd17273cabb7a85b5",
+    "src/lowdim_games/resource_target.py": "7a2b7be9955d725521787cb0819fc0ae6f269d9bac07466ec4d900dc64817d47",
+    "src/lowdim_games/paired_inference.py": "23076cbb4cea7596cc20b06ecfcb29c87318ba288ee8a821c3b2f1db8b8ed0c9",
+    "src/lowdim_games/learners.py": "b0bf3e464f7d4286fb83ec0fb0a2a0fa97b32e4a512eb5e50b4e9f2b5aa4bb8e"
+  },
+  "postprocessor_sha256": {
+    "scripts/build_resource_validation_report.py": "f4076d8e9d12637c7a537298b5359f3885fe1c016e8f13736ab27692c52e5b0f",
+    "scripts/build_resource_validation_figures.py": "0423048f1bbeb104c8deafcabc93d3431fe6eef664808b520d5ea28226b6d679"
+  },
+  "software_versions_at_freeze": {
+    "python": "3.12.14",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "seeds": {
+    "first": 40000,
+    "last": 40255,
+    "count_per_scenario": 256,
+    "total_episodes": 1024
+  },
+  "representative_seeds": [
+    40000,
+    40001
+  ],
+  "artifact_paths_relative_to": "the report output directory",
+  "excluded": [
+    "reproducibility_manifest.json itself",
+    "development/**",
+    "hidden files/directories"
+  ],
+  "raw_artifact_policy": "Listed NPZ arrays are local generated artifacts, not automatically published. Recreate the batch with the fixed protocol and seeds; compare SHA-256. Published JSON and figures retain the complete episode denominators.",
+  "local_raw_artifacts": [
+    "exogenous/dynamics.npz",
+    "exogenous/representative_40000.npz",
+    "exogenous/representative_40001.npz",
+    "memory16/dynamics.npz",
+    "memory16/representative_40000.npz",
+    "memory16/representative_40001.npz",
+    "primary/dynamics.npz",
+    "primary/representative_40000.npz",
+    "primary/representative_40001.npz",
+    "stationary/dynamics.npz",
+    "stationary/representative_40000.npz",
+    "stationary/representative_40001.npz"
+  ],
+  "artifact_sha256": {
+    "analysis.json": {
+      "sha256": "6e6dc93401d0435b567350163e87d1c06d56332f72458fc8bb2e2d55f8f59068",
+      "bytes": 57130
+    },
+    "distribution_diagnostics.json": {
+      "sha256": "9267972fcdfa8e17e7b6c3d7fff9c92977918e2b85c1f596578684cc3a34d0fd",
+      "bytes": 114150
+    },
+    "exogenous/dynamics.npz": {
+      "sha256": "76bd6b290ac5588308ed0cf00b7e552121e33b88f88eb6e9919ae3c33fff7d1a",
+      "bytes": 27340223
+    },
+    "exogenous/episodes.json": {
+      "sha256": "0b071c97567b224850288df081d33acb615fd8ff8cd2d9d40053371831a65b7d",
+      "bytes": 3507786
+    },
+    "exogenous/representative_40000.npz": {
+      "sha256": "73081b88fcf54f8fbedc7ffefc83fc9e4f5a90dd1177e12c960a5442e26fe3d5",
+      "bytes": 42206450
+    },
+    "exogenous/representative_40001.npz": {
+      "sha256": "8fd5892e142fbca603e52cb69746ba2ce70d9db6eb704175a68cdb5d454bc382",
+      "bytes": 42100731
+    },
+    "figures/captions.json": {
+      "sha256": "f5fad5a710ea4105ecd9331dde9a3486994d11e8e7a262870cd817b439827f45",
+      "bytes": 1691
+    },
+    "figures/resource_outcomes_and_sensitivity.pdf": {
+      "sha256": "7f9c038bb5d5527f5bdf576a5f3dbe5927dbc30326af753260dc16f9d69f2774",
+      "bytes": 35772
+    },
+    "figures/resource_outcomes_and_sensitivity.png": {
+      "sha256": "7782148e166742f3375ab5ff37da6b45c19a847a5690316e17c1134bff35e86f",
+      "bytes": 164836
+    },
+    "figures/resource_switching_dynamics.pdf": {
+      "sha256": "5935c6544d7120b99757bb57d40d069be87951f303a1cda5e0e03ba86d73d959",
+      "bytes": 93002
+    },
+    "figures/resource_switching_dynamics.png": {
+      "sha256": "7addfd748df6cae10373fe1a04d728ff1fea08044cf418b657e7ae280a32b23a",
+      "bytes": 202725
+    },
+    "memory16/dynamics.npz": {
+      "sha256": "e9f5056cf06ee55a22c722c7b25726326e908012424c81e0f3b24b367f9f7c80",
+      "bytes": 30798529
+    },
+    "memory16/episodes.json": {
+      "sha256": "8e56b15cd383fc8fe068cf279d57781d401a56a7411593c2fb41b92cf267a261",
+      "bytes": 3517921
+    },
+    "memory16/representative_40000.npz": {
+      "sha256": "a22933b3ab8b1f2efb2d614231a54a1aa89c36799d3180c781b284d4251733b8",
+      "bytes": 51603339
+    },
+    "memory16/representative_40001.npz": {
+      "sha256": "94264fe0bda6b0d792e3c7833247c02169cac64621bc5d95766f254be3f85c21",
+      "bytes": 52243543
+    },
+    "precommitment.json": {
+      "sha256": "a620e9ecbcc728ba5711ed72cb007c1543037ba153e99e11b729cdd4de101130",
+      "bytes": 15468
+    },
+    "primary/dynamics.npz": {
+      "sha256": "b213487d9f70419c05cd34de0d8915fd76f3e065110a6b6508cc46f8ef6a73e5",
+      "bytes": 30246311
+    },
+    "primary/episodes.json": {
+      "sha256": "8a98d4180a7fbd75d842b90af8de70f45102f40c241b6237fbc681977393099c",
+      "bytes": 3497884
+    },
+    "primary/representative_40000.npz": {
+      "sha256": "68701f8cabe23c38583c0ea9134e85f1306c7ce4c4aba3c80363ef4eadf0b445",
+      "bytes": 50087677
+    },
+    "primary/representative_40001.npz": {
+      "sha256": "2c42f1eaae7bab6f060d6d228d1abf185ad73b487876df82f38c1815acaefaee",
+      "bytes": 51526354
+    },
+    "README.md": {
+      "sha256": "3b60a79fba4237aadd83bc21877d93660d0b8814b20616b321f67a70393ca9f9",
+      "bytes": 22217
+    },
+    "README.ru.md": {
+      "sha256": "58a56e5106b5cc586780d5890f36d2e9df3f2c09da31ce84cf0801d13eb22651",
+      "bytes": 33513
+    },
+    "stationary/dynamics.npz": {
+      "sha256": "a21d81edbb4d6386414c8afd7971baa7590136a5037d75343747f14c2b1622d5",
+      "bytes": 335749
+    },
+    "stationary/episodes.json": {
+      "sha256": "e602e8c505428e358d43fcf6f36820e89702a4a5152d19ce56496b190e83f16a",
+      "bytes": 3117057
+    },
+    "stationary/representative_40000.npz": {
+      "sha256": "e54536acbeebf8c7dab53137dc080e2e3d377d3abeca197b3fdbdafc4586ff21",
+      "bytes": 26978256
+    },
+    "stationary/representative_40001.npz": {
+      "sha256": "2bd60c55f5cdc9a138b8064f2256b24d588448505d5abfce485ea7d75e03735b",
+      "bytes": 26978432
+    }
+  }
+}

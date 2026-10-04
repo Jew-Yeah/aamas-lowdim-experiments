@@ -26,7 +26,7 @@ NAMES = {"one_switch":"One-switch", "shared_past_hull":"Fast: origin saddle",
          "last_window":"Window (W=16)", "uniform":"Uniform",
          "request_trigger":"Request trigger", "fast_recent_saddle":"Fast: recent saddle"}
 SHORT = ["One-\nswitch", "Fast\norigin", "Block\nsafe", "Lag", "Window\n16",
-         "Uniform", "Request\ntrigger", "Fast\nrecent"]
+         "Fixed\np=0.5", "Request\ntrigger", "Fast\nrecent"]
 COLORS = {"one_switch":"#00796b", "shared_past_hull":"#b71c1c",
           "block_safe":"#1965a6", "lag_response":"#7b1fa2",
           "last_window":"#e67e00", "uniform":"#777777",
@@ -78,7 +78,8 @@ def make_figures(output):
     axes[0,1].set(title="(b) Full realized-target distance",ylabel=r"Mean enclosure midpoint for $\delta_t$")
     axes[0,1].set_yscale("symlog",linthresh=1e-5)
     axes[0,1].set_yticks([0,1e-5,1e-3,1e-1,.5],labels=["0",r"$10^{-5}$",r"$10^{-3}$","0.1","0.5"])
-    axes[0,1].legend(ncol=2)
+    handles, labels = axes[0,1].get_legend_handles_labels()
+    fig.legend(handles, labels, ncol=4, loc="outside upper center")
     def difference(ax, comparator, label, color, style="-"):
         lo=data["one_switch__delta_lower"]-data[f"{comparator}__delta_upper"]
         hi=data["one_switch__delta_upper"]-data[f"{comparator}__delta_lower"]
@@ -101,18 +102,31 @@ def make_figures(output):
 
     fig, axes = plt.subplots(2,2,figsize=(8,5.1),constrained_layout=True)
     x=np.arange(len(METHODS))
-    for ax,key,title,ylabel in ((axes[0,0],"terminal_delta","(a) Exact terminal target distance",r"Mean $\delta_T$"),
+    for ax,key,title,ylabel in ((axes[0,0],"terminal_delta","(a) Terminal full-target distance",r"Mean $\delta_T$"),
                               (axes[0,1],"mean_unserved_fraction","(b) Physical unmet demand","Mean unserved request units / round")):
-        means,lows,highs=[],[],[]
+        means,lows,highs,membership=[],[],[],[]
         for method in METHODS:
             v=np.array([row["methods"][method][key] for row in rows])[:,None]
+            inside = key == "terminal_delta" and all(
+                row["methods"][method]["terminal_delta_upper"] == 0 for row in rows)
+            membership.append(inside)
+            if inside:
+                # The analytical full-target membership inequality supplies zero.
+                # Preserve the small floating-point KKT displacement in raw data.
+                v = np.zeros_like(v)
             m,lo,hi=band(v)
             means.append(m[0]);lows.append(lo[0]);highs.append(hi[0])
         means=np.array(means)
         ax.bar(x,means,color=[COLORS[m] for m in METHODS],alpha=.82,width=.72)
-        ax.errorbar(x,means,yerr=np.array([means-np.array(lows),np.array(highs)-means]),
+        ax.errorbar(x,means,yerr=np.maximum(0,np.array([means-np.array(lows),np.array(highs)-means])),
                     fmt="none",color="black",linewidth=.8,capsize=2)
+        if key == "terminal_delta":
+            for index, value in enumerate(means):
+                ax.annotate("0\N{DAGGER}" if membership[index] else f"{value:.4g}",
+                            (index, value), xytext=(0,4), textcoords="offset points",
+                            ha="center", fontsize=6.2)
         ax.set(title=title,ylabel=ylabel,xticks=x,xticklabels=SHORT)
+        ax.tick_params(axis="x",labelsize=7)
         ax.grid(axis="y",alpha=.18)
     idle=np.array([np.mean([row["methods"][m]["mean_idle_cost"] for row in rows]) for m in METHODS])
     busy=np.array([np.mean([row["methods"][m]["mean_loaded_cost"] for row in rows]) for m in METHODS])
@@ -120,6 +134,7 @@ def make_figures(output):
     axes[1,0].bar(x,busy,bottom=idle,color=[COLORS[m] for m in METHODS],alpha=.45,
                   hatch="///",width=.72,label="Loaded overhead")
     axes[1,0].set(title="(c) Modeled provisioning cost",ylabel="Mean cost units / round",xticks=x,xticklabels=SHORT)
+    axes[1,0].tick_params(axis="x",labelsize=7)
     axes[1,0].legend()
     axes[1,0].grid(axis="y",alpha=.18)
     scenario_names={"primary":"Reactive: memory 1","memory16":"Reactive: memory 16",
@@ -130,7 +145,7 @@ def make_figures(output):
         cdf=(tau[:,None]<=t).mean(axis=0)
         axes[1,1].step(t/1000,cdf,where="post",color=color,linewidth=1.2,label=scenario_names[name])
     axes[1,1].axvline(H/1000,color="#333333",linestyle=":",linewidth=.8)
-    axes[1,1].set(title="(d) Budget-crossing probability by scenario",xlabel="Decision round (thousands)",
+    axes[1,1].set(title="(d) Switching probability by scenario",xlabel="Decision round (thousands)",
                   ylabel="Fraction of all episodes crossed",xlim=(0,T/1000),ylim=(-.02,1.05))
     axes[1,1].legend(loc="upper left")
     axes[1,1].grid(alpha=.18)
@@ -145,17 +160,22 @@ def make_figures(output):
             "mean midpoint shown as a line. Dark fill is numerical enclosure; light outer fill includes "
             "95% pointwise whole-episode bootstrap uncertainty. These are not simultaneous bands. "
             "Negative paired differences favor one-switch. The symlog distance axis includes exact zero. "
+            "The target expands when the first request is observed: a sharp drop near H is partly a "
+            "change of the realized target, and zero distance does not imply zero unmet demand. "
             "The two valid fast saddle tie choices are distinct controls.",
         "resource_outcomes_and_sensitivity":
-            "Panels a-c: primary scenario, all eight methods, 256 episodes. Terminal distances are exact "
-            "full-target KKT evaluations with numerical residual checks. Error bars in a,b are descriptive "
+            "Panels a-c: primary scenario, all eight methods, 256 episodes. Terminal distances use "
+            "full-target KKT evaluations with numerical residual checks. A zero marked with a dagger "
+            "denotes full-target membership from the analytical endpoint inequalities in every episode; "
+            "raw KKT roundoff is retained in the report, without ranking those small differences. "
+            "Error bars in a,b are descriptive "
             "95% whole-episode bootstrap mean intervals; physical outcomes are not the same metric as "
             "target distance. Modeled provisioning cost splits idle reservation waste and loaded overhead. "
             "Panel d retains all 256 episodes per scenario in the denominator, including no switches; "
             "a crossed round is still fast, with safe mode starting next round. Targets can differ across "
             "interactive methods. The model is constructed, not observed operating data."
     }
-    (folder/"captions.json").write_text(json.dumps(captions,indent=2)+"\n",encoding="utf-8")
+    (folder/"captions.json").write_text(json.dumps(captions,indent=2)+"\n",encoding="utf-8",newline="\n")
     print("Created two PDF/PNG figure pairs and explicit English captions.")
 
 

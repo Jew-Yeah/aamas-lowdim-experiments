@@ -2,9 +2,36 @@
 
 # Full one-switch trajectories
 
+## Vector resource switching validation
+
+The [vector resource study](results/resource_validation/README.md) contains
+**1,024 independent episodes**, four fixed scenarios with 256 episodes each,
+and all eight causal policies. The code and protocol were published before
+the held-out runs. The original block-safe procedure and budget are retained;
+the full realized-hull target includes interior mixtures and class-resolved
+payoff coordinates. This is a constructed mechanism experiment.
+
+In the primary reactive scenario, all 256 one-switch episodes cross the budget.
+One-switch reaches the full target at the horizon, while continued fast with
+the specified origin saddle has mean distance **0.100510**. The paired difference
+is **−0.100510**, with certificate-aware 98.75% family interval
+**[−0.100547, −0.100473]**. Block-safe, lag, window, request-trigger, and fast
+with another valid saddle choice also reach the target. Their tiny KKT
+displacements are floating-point diagnostics, not scientifically rankable
+differences. Early performance and fallback dynamics are reported separately;
+the deterministic calm prefix has no sampling p-value.
+
+See the [English figures and complete tables](results/resource_validation/README.md),
+[method notes](docs/resource_validation_en.md), and
+[fixed protocol](docs/resource_validation_protocol.json). Physical unmet demand
+and provisioning cost accompany distances because interactive paths and
+realized targets can differ. All sensitivity cases and earlier studies remain
+available. This comparison does not establish general dominance, necessity
+of switching for every valid fast oracle, or performance on real systems.
+
 ## Independent two-phase validation
 
-The [new paired study](results/two_phase_validation/README.md) runs **800
+The [earlier paired study](results/two_phase_validation/README.md) runs **800
 independent episodes**, four fixed scenarios with 200 episodes each, using the
 original block-safe procedure and budget. Its locally frozen design separates
 development seeds from validation and reports all five methods. In the primary

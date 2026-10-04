@@ -1,0 +1,3361 @@
+{
+  "schema_version": 1,
+  "protocol_sha256": "eac5463bbbdc78f77d66ca585e4d74a6674c79722a7772a9128eb10e20b06494",
+  "classification_conventions": {
+    "kkt": "Zero iff KKT projection upper=0; positive iff KKT projection lower>0; unresolved otherwise. Floating numerical certificates are not formal exact-arithmetic proofs.",
+    "membership": "A=cumulative_aggregate/T and E=cumulative_energy/T: inside iff observed_requests>0 and 2*A+E<=beta, or no requests and A=E=0. This is a diagnostic on stored floats using the proven target form and the model identity A=sum(w). Independent floating summation of w may leave a tiny KKT residual.",
+    "combined": "Stored-float analytical members are zero; outside members with KKT lower>0 are positive; remaining outside members are unresolved. This diagnostic is separate from the KKT classification.",
+    "binomial": "Two-sided 95% Clopper-Pearson intervals over independent episodes. Possible-positive enclosure takes the lower endpoint for definite positives and upper endpoint for definite positives plus unresolved; ambiguity can make it uninformative.",
+    "no_equivalence": "No positive distances observed is not population equality or established practical equivalence. No arbitrary tolerance relabels numerical residuals as failures."
+  },
+  "interval_conventions": {
+    "ordinary_confidence_level": 0.95,
+    "family_marginal_confidence_level": 0.9875,
+    "family_size": 4,
+    "unit": "complete independent episode",
+    "formula": "l=L_master-U_control, u=U_master-L_control; [mean(l)-tcrit*sd(l)/sqrt(n), mean(u)+tcrit*sd(u)/sqrt(n)]",
+    "raw_p_values": "Saved t/Holm/bootstrap on numerical KKT distances remain diagnostics; a raw small p-value does not rank algorithms when endpoints share analytical membership or outward intervals include zero."
+  },
+  "scenarios": {
+    "primary": {
+      "n": 256,
+      "methods": {
+        "one_switch": {
+          "terminal_delta_mean": 2.891535752155838e-13,
+          "terminal_delta_std": 1.718071099791651e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.8651386818623337e-13,
+            2.890188088855439e-13,
+            2.920372277337435e-13,
+            2.928865483475818e-13
+          ],
+          "maximum_kkt_distance_residual": 2.936262344377383e-13,
+          "maximum_support_gap": 1.4453853975593632e-13,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.936262344377383e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.03921895401976813,
+            "maximum_kkt_residual_among_members": 2.936262344377383e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta_mean": 0.10051021497470372,
+          "terminal_delta_std": 0.0002358361796775007,
+          "terminal_delta_quantiles_05_50_95_99": [
+            0.10013726713750708,
+            0.10050681160869547,
+            0.1008965866149075,
+            0.10106733234371715
+          ],
+          "maximum_kkt_distance_residual": 0.1011002406831963,
+          "maximum_support_gap": 1.3877787807814457e-17,
+          "maximum_feasibility_error": 1.1102230246251565e-16,
+          "maximum_projection_interval_width": 1.1102230246251565e-16,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": -0.20220364731218488,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "block_safe": {
+          "terminal_delta_mean": 6.746990119377294e-16,
+          "terminal_delta_std": 4.897560290315797e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            6.938893903907228e-17,
+            5.828670879282072e-16,
+            1.627170620466245e-15,
+            1.935257509799726e-15
+          ],
+          "maximum_kkt_distance_residual": 3.1780134079895106e-15,
+          "maximum_support_gap": 8.748243579320928e-16,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 3.1780134079895106e-15,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 1,
+            "positive": 0,
+            "unresolved": 255,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              9.889279722355371e-05,
+              0.021570890352533498
+            ],
+            "possible_positive_fraction_upper_count": 255,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.9999011072027765
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.1825314024491135,
+            "maximum_kkt_residual_among_members": 3.1780134079895106e-15
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "lag_response": {
+          "terminal_delta_mean": 1.0666950179052948e-13,
+          "terminal_delta_std": 1.5209819718161532e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.0640099912251344e-13,
+            1.0666467709086191e-13,
+            1.0690059948359476e-13,
+            1.070026012239822e-13
+          ],
+          "maximum_kkt_distance_residual": 1.0706713293728853e-13,
+          "maximum_support_gap": 2.3694528954580816e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 1.0706713293728853e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.2296999157642348,
+            "maximum_kkt_residual_among_members": 1.0706713293728853e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "last_window": {
+          "terminal_delta_mean": 2.382728346225771e-13,
+          "terminal_delta_std": 1.3300405272587672e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.362207651707138e-13,
+            2.3822610550894296e-13,
+            2.4034246814963467e-13,
+            2.4112933871833776e-13
+          ],
+          "maximum_kkt_distance_residual": 2.426669976074436e-13,
+          "maximum_support_gap": 8.108807560032871e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.426669976074436e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.021672574693476054,
+            "maximum_kkt_residual_among_members": 2.426669976074436e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "uniform": {
+          "terminal_delta_mean": 0.0007024082514440698,
+          "terminal_delta_std": 0.0016986354069376051,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.5028590311393373e-14,
+            1.2984752162381596e-13,
+            0.005085716892884269,
+            0.006847348445345679
+          ],
+          "maximum_kkt_distance_residual": 0.007214145418786809,
+          "maximum_support_gap": 5.503688394791804e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.205041704783639e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 51,
+            "unresolved": 205,
+            "positive_fraction": 0.19921875,
+            "positive_fraction_ci_95": [
+              0.1520773670877045,
+              0.25347206324818045
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.1520773670877045,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 205,
+            "outside": 51,
+            "inside_fraction_ci_95": [
+              0.7465279367518195,
+              0.8479226329122955
+            ],
+            "outside_fraction_ci_95": [
+              0.1520773670877045,
+              0.25347206324818045
+            ],
+            "minimum_membership_margin_when_requests_observed": -0.016131270733034553,
+            "maximum_kkt_residual_among_members": 2.205041704783639e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 205,
+            "positive": 51,
+            "unresolved": 0,
+            "positive_fraction": 0.19921875,
+            "positive_fraction_ci_95": [
+              0.1520773670877045,
+              0.25347206324818045
+            ],
+            "zero_fraction_ci_95": [
+              0.7465279367518195,
+              0.8479226329122955
+            ],
+            "possible_positive_fraction_upper_count": 51,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.1520773670877045,
+              0.25347206324818045
+            ]
+          }
+        },
+        "request_trigger": {
+          "terminal_delta_mean": 1.8695778974432697e-15,
+          "terminal_delta_std": 6.051792985060867e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.2693839035460286e-15,
+            1.6297727056802103e-15,
+            3.116864405461328e-15,
+            3.3821903611119805e-15
+          ],
+          "maximum_kkt_distance_residual": 3.443426099813962e-15,
+          "maximum_support_gap": 1.0307762876917139e-16,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 3.443426099813962e-15,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.23950684847584197,
+            "maximum_kkt_residual_among_members": 3.443426099813962e-15
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "fast_recent_saddle": {
+          "terminal_delta_mean": 3.8768315814563525e-13,
+          "terminal_delta_std": 1.5858956679968964e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            3.85122489454659e-13,
+            3.877453913503359e-13,
+            3.902989043069738e-13,
+            3.9126202278083613e-13
+          ],
+          "maximum_kkt_distance_residual": 3.917421942389865e-13,
+          "maximum_support_gap": 2.008609737043692e-13,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 3.917421942389865e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.09413579519175125,
+            "maximum_kkt_residual_among_members": 3.917421942389865e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        }
+      },
+      "paired_differences": {
+        "terminal_delta__shared_past_hull": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": -0.10051021497441456,
+          "sample_standard_deviation": 0.00023583617967762595,
+          "standard_error": 1.4739761229851622e-05,
+          "t_statistic": -6818.985287960892,
+          "t_ci_95": [
+            -0.10053924214200158,
+            -0.10048118780682755
+          ],
+          "t_ci_family": [
+            -0.10054729358530345,
+            -0.10047313636352567
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1547.4908165277034,
+          "negative_log10_p_value": 672.066722413939,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -426.1865804975558,
+          "bootstrap_mean_ci_95": [
+            -0.10053975050430797,
+            -0.10048124948203405
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.10054824469559166,
+            -0.10047362062037805
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 256,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -0.10051021497470375,
+            -0.10051021497441455
+          ],
+          "numeric_and_sampling_ci_family": [
+            -0.10054729358559263,
+            -0.10047313636352566
+          ],
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true,
+          "direction_robust_to_numerical_uncertainty": true,
+          "numeric_and_sampling_ci_95": [
+            -0.10053924214229075,
+            -0.10048118780682753
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 256,
+            "losses": 0,
+            "unresolved": 0
+          },
+          "both_stored_membership_zero": 0,
+          "log_holm_p_value": -1546.1045221665836,
+          "log10_holm_p_value": -671.4646624226111,
+          "holm_test_defined": true,
+          "holm_log_convention": "Undefined tests count in the planned family with p=1."
+        },
+        "terminal_delta__block_safe": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 2.884788762036461e-13,
+          "sample_standard_deviation": 1.7651460492209999e-15,
+          "standard_error": 1.1032162807631249e-16,
+          "t_statistic": 2614.889584516445,
+          "t_ci_95": [
+            2.882616186553924e-13,
+            2.886961337518998e-13
+          ],
+          "t_ci_family": [
+            2.882013565982548e-13,
+            2.887563958090374e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1303.08021152891,
+          "negative_log10_p_value": 565.9205453443277,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 163.43059903227757,
+          "bootstrap_mean_ci_95": [
+            2.882658060822038e-13,
+            2.886899188670258e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            2.882080607968709e-13,
+            2.8874680831026884e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -6.746990119377294e-16,
+            2.891535752155838e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -7.516993825160399e-16,
+            2.8942369360825667e-13
+          ],
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true,
+          "direction_robust_to_numerical_uncertainty": false,
+          "numeric_and_sampling_ci_95": [
+            -7.349791197264539e-16,
+            2.8936503868911966e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256,
+          "log_holm_p_value": -1301.9815992402418,
+          "log10_holm_p_value": -565.443424089608,
+          "holm_test_defined": true,
+          "holm_log_convention": "Undefined tests count in the planned family with p=1."
+        },
+        "terminal_delta__lag_response": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 1.8248407342505435e-13,
+          "sample_standard_deviation": 1.7181244238289904e-15,
+          "standard_error": 1.073827764893119e-16,
+          "t_statistic": 1699.3793547815083,
+          "t_ci_95": [
+            1.8227260338829413e-13,
+            1.8269554346181457e-13
+          ],
+          "t_ci_family": [
+            1.8221394664867535e-13,
+            1.8275420020143335e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1193.1922018049693,
+          "negative_log10_p_value": 518.1967890938894,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 106.2112096738446,
+          "bootstrap_mean_ci_95": [
+            1.8227416917395573e-13,
+            1.826900718378266e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            1.822144967192612e-13,
+            1.8274246658543833e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -1.0666950179052948e-13,
+            2.891535752155838e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -1.0669341495719418e-13,
+            2.8942369360825667e-13
+          ],
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true,
+          "direction_robust_to_numerical_uncertainty": false,
+          "numeric_and_sampling_ci_95": [
+            -1.0668822232723978e-13,
+            2.8936503868911966e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256,
+          "log_holm_p_value": -1192.4990546244094,
+          "log10_holm_p_value": -517.8957590982254,
+          "holm_test_defined": true,
+          "holm_log_convention": "Undefined tests count in the planned family with p=1."
+        },
+        "terminal_delta__last_window": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 5.0880740593006735e-14,
+          "sample_standard_deviation": 2.0790872528342894e-15,
+          "standard_error": 1.2994295330214309e-16,
+          "t_statistic": 391.5621378459729,
+          "t_ci_95": [
+            5.062484256159132e-14,
+            5.113663862442215e-14
+          ],
+          "t_ci_family": [
+            5.055386255691714e-14,
+            5.120761862909633e-14
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -819.0841323101215,
+          "negative_log10_p_value": 355.7237188767987,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 24.472633615373386,
+          "bootstrap_mean_ci_95": [
+            5.0624212937985803e-14,
+            5.112968425383113e-14
+          ],
+          "bootstrap_mean_ci_family": [
+            5.055844929996098e-14,
+            5.119728290403289e-14
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -2.382728346225771e-13,
+            2.891535752155838e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -2.384819461136303e-13,
+            2.8942369360825667e-13
+          ],
+          "holm_p_value": 0.0,
+          "significant_at_family_0_05": true,
+          "direction_robust_to_numerical_uncertainty": false,
+          "numeric_and_sampling_ci_95": [
+            -2.384365385518683e-13,
+            2.8936503868911966e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256,
+          "log_holm_p_value": -819.0841323101215,
+          "log10_holm_p_value": -355.7237188767987,
+          "holm_test_defined": true,
+          "holm_log_convention": "Undefined tests count in the planned family with p=1."
+        }
+      },
+      "early_phase": {
+        "one_switch_mean_distance": 0.00011772705839256978,
+        "block_safe_mean_distance": 0.17712672374444868,
+        "difference": -0.1770089966860561,
+        "constant_in_all_episodes": true,
+        "inference": "deterministic fixed-design quantity; no sampling test"
+      },
+      "switching": {
+        "n_all": 256,
+        "n_switched": 256,
+        "n_not_switched": 0,
+        "fraction": 1.0,
+        "fraction_ci_95": [
+          0.9856936372709606,
+          1.0
+        ],
+        "conditional_round_quantiles_05_50_95": [
+          171376.5,
+          171472.0,
+          171576.0
+        ],
+        "conditional_delay_from_H_quantiles_05_50_95": [
+          73072.5,
+          73168.0,
+          73272.0
+        ],
+        "mean_safe_rounds_all_episodes": 90672.5390625,
+        "crossing_round_remains_fast": true,
+        "fresh_safe_starts_next_round": true
+      },
+      "conditional_safe_tail_certificates_hold": true
+    },
+    "memory16": {
+      "n": 256,
+      "methods": {
+        "one_switch": {
+          "terminal_delta_mean": 2.8900872580533976e-13,
+          "terminal_delta_std": 1.5811664421976397e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.8622243464226926e-13,
+            2.890604422489673e-13,
+            2.9141272728239187e-13,
+            2.9206498330935915e-13
+          ],
+          "maximum_kkt_distance_residual": 2.929601006229632e-13,
+          "maximum_support_gap": 1.4405978122491343e-13,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.929601006229632e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.03918499203372823,
+            "maximum_kkt_residual_among_members": 2.929601006229632e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta_mean": 0.10050350307268431,
+          "terminal_delta_std": 0.00023567045246239098,
+          "terminal_delta_quantiles_05_50_95_99": [
+            0.10013119797647015,
+            0.10051355512092866,
+            0.10088512264416152,
+            0.10105411505981964
+          ],
+          "maximum_kkt_distance_residual": 0.10114609656605608,
+          "maximum_support_gap": 2.7755575615628914e-17,
+          "maximum_feasibility_error": 1.1102230246251565e-16,
+          "maximum_projection_interval_width": 1.249000902703301e-16,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": -0.2022953588545453,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "block_safe": {
+          "terminal_delta_mean": 7.39425881635114e-16,
+          "terminal_delta_std": 5.793421157585031e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            5.551115123125783e-17,
+            5.828670879282072e-16,
+            1.8943180357666733e-15,
+            2.4917568008930796e-15
+          ],
+          "maximum_kkt_distance_residual": 2.9004576518332215e-15,
+          "maximum_support_gap": 1.1469427391595692e-15,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.9004576518332215e-15,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 3,
+            "positive": 0,
+            "unresolved": 253,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.002423238753872661,
+              0.03386328263629141
+            ],
+            "possible_positive_fraction_upper_count": 253,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.9975767612461274
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.1826802470772132,
+            "maximum_kkt_residual_among_members": 2.9004576518332215e-15
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "lag_response": {
+          "terminal_delta_mean": 2.1060301939879178e-14,
+          "terminal_delta_std": 8.451137937927037e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.9692580899288714e-14,
+            2.105260410445453e-14,
+            2.247160790780356e-14,
+            2.3028107198896918e-14
+          ],
+          "maximum_kkt_distance_residual": 2.338407245616736e-14,
+          "maximum_support_gap": 3.5467723306122754e-15,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.338407245616736e-14,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.3355667020840716,
+            "maximum_kkt_residual_among_members": 2.338407245616736e-14
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "last_window": {
+          "terminal_delta_mean": 9.080664822511131e-14,
+          "terminal_delta_std": 5.030493023393802e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            9.001133172148457e-14,
+            9.084399898995343e-14,
+            9.160033842547932e-14,
+            9.177103521551544e-14
+          ],
+          "maximum_kkt_distance_residual": 9.185707749992389e-14,
+          "maximum_support_gap": 1.9165405928243605e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 9.185707749992389e-14,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.2307458512407217,
+            "maximum_kkt_residual_among_members": 9.185707749992389e-14
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "uniform": {
+          "terminal_delta_mean": 0.0005209860367614988,
+          "terminal_delta_std": 0.0013933224390798003,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.783363817204787e-14,
+            1.3210266214258581e-13,
+            0.003949201392805961,
+            0.006328195274509641
+          ],
+          "maximum_kkt_distance_residual": 0.0071146004620521305,
+          "maximum_support_gap": 5.511665728131311e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.2032375923686232e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 47,
+            "unresolved": 209,
+            "positive_fraction": 0.18359375,
+            "positive_fraction_ci_95": [
+              0.13812765290471318,
+              0.23655247319649395
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.13812765290471318,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 209,
+            "outside": 47,
+            "inside_fraction_ci_95": [
+              0.7634475268035061,
+              0.8618723470952868
+            ],
+            "outside_fraction_ci_95": [
+              0.13812765290471318,
+              0.23655247319649395
+            ],
+            "minimum_membership_margin_when_requests_observed": -0.015908682047325262,
+            "maximum_kkt_residual_among_members": 2.2032375923686232e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 209,
+            "positive": 47,
+            "unresolved": 0,
+            "positive_fraction": 0.18359375,
+            "positive_fraction_ci_95": [
+              0.13812765290471318,
+              0.23655247319649395
+            ],
+            "zero_fraction_ci_95": [
+              0.7634475268035061,
+              0.8618723470952868
+            ],
+            "possible_positive_fraction_upper_count": 47,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.13812765290471318,
+              0.23655247319649395
+            ]
+          }
+        },
+        "request_trigger": {
+          "terminal_delta_mean": 1.825098503317052e-15,
+          "terminal_delta_std": 5.675386390016458e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.281093287008872e-15,
+            1.577731001400906e-15,
+            2.9308153126628156e-15,
+            3.2892959189734217e-15
+          ],
+          "maximum_kkt_distance_residual": 3.488528910189359e-15,
+          "maximum_support_gap": 1.0539331720068438e-16,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 3.488528910189359e-15,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.2395068484758443,
+            "maximum_kkt_residual_among_members": 3.488528910189359e-15
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "fast_recent_saddle": {
+          "terminal_delta_mean": 0.02838158292680341,
+          "terminal_delta_std": 0.00019310239839959875,
+          "terminal_delta_quantiles_05_50_95_99": [
+            0.028081628427213685,
+            0.028382994137965446,
+            0.028679127135061093,
+            0.028801458904642214
+          ],
+          "maximum_kkt_distance_residual": 0.028855560266707957,
+          "maximum_support_gap": 3.469446951953614e-17,
+          "maximum_feasibility_error": 2.220446049250313e-16,
+          "maximum_projection_interval_width": 7.73686670285656e-16,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": -0.06452278739253758,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        }
+      },
+      "paired_differences": {
+        "terminal_delta__shared_past_hull": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": -0.1005035030723953,
+          "sample_standard_deviation": 0.00023567045246257386,
+          "standard_error": 1.4729403278910866e-05,
+          "t_statistic": -6823.324826491327,
+          "t_ci_95": [
+            -0.10053250984196005,
+            -0.10047449630283056
+          ],
+          "t_ci_family": [
+            -0.10054055562733753,
+            -0.10046645051745308
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1547.6530436449953,
+          "negative_log10_p_value": 672.1371767557939,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -426.45780165570807,
+          "bootstrap_mean_ci_95": [
+            -0.10053138644178893,
+            -0.10047487475564204
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.10053931309799634,
+            -0.10046718807364971
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 256,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -0.10050350307268432,
+            -0.10050350307239528
+          ],
+          "numeric_and_sampling_ci_family": [
+            -0.10054055562762652,
+            -0.10046645051745305
+          ],
+          "numeric_and_sampling_ci_95": [
+            -0.10053250984224904,
+            -0.10047449630283053
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 256,
+            "losses": 0,
+            "unresolved": 0
+          },
+          "both_stored_membership_zero": 0
+        },
+        "terminal_delta__block_safe": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 2.8826929992370465e-13,
+          "sample_standard_deviation": 1.704935127054012e-15,
+          "standard_error": 1.0655844544087574e-16,
+          "t_statistic": 2705.26938274124,
+          "t_ci_95": [
+            2.8805945325079115e-13,
+            2.8847914659661814e-13
+          ],
+          "t_ci_family": [
+            2.8800124679354775e-13,
+            2.8853735305386155e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1311.7447038516889,
+          "negative_log10_p_value": 569.6834865486037,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 169.07933642132787,
+          "bootstrap_mean_ci_95": [
+            2.880654102841579e-13,
+            2.884764448802743e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            2.8800762501886985e-13,
+            2.8853897556294605e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -7.39425881635114e-16,
+            2.8900872580533976e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -8.305111464622485e-16,
+            2.892573197884214e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -8.107324161427646e-16,
+            2.8920333879204675e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        },
+        "terminal_delta__lag_response": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 2.679484238654606e-13,
+          "sample_standard_deviation": 1.83696750423356e-15,
+          "standard_error": 1.148104690145975e-16,
+          "t_statistic": 2333.8326736683866,
+          "t_ci_95": [
+            2.677223263953007e-13,
+            2.681745213356205e-13
+          ],
+          "t_ci_family": [
+            2.676596123548683e-13,
+            2.6823723537605287e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1274.0853627364386,
+          "negative_log10_p_value": 553.3282425101382,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 145.86454210427473,
+          "bootstrap_mean_ci_95": [
+            2.6772838503455465e-13,
+            2.6817156622508526e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            2.676620542232683e-13,
+            2.682388856932276e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -2.1060301939879178e-14,
+            2.8900872580533976e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -2.1193172331350527e-14,
+            2.892573197884214e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -2.1164320160306797e-14,
+            2.8920333879204675e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        },
+        "terminal_delta__last_window": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 1.9820207758022845e-13,
+          "sample_standard_deviation": 1.544789383417832e-15,
+          "standard_error": 9.65493364636145e-17,
+          "t_statistic": 2052.857998199941,
+          "t_ci_95": [
+            1.9801194195141866e-13,
+            1.9839221320903824e-13
+          ],
+          "t_ci_family": [
+            1.9795920286723347e-13,
+            1.9844495229322344e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1241.3759890980803,
+          "negative_log10_p_value": 539.1227420324875,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 128.30362488749645,
+          "bootstrap_mean_ci_95": [
+            1.9801672237682032e-13,
+            1.983927399532709e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            1.979650377816316e-13,
+            1.9845095889942792e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -9.080664822511131e-14,
+            2.8900872580533976e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -9.088573858929914e-14,
+            2.892573197884214e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -9.086856449437709e-14,
+            2.8920333879204675e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        }
+      },
+      "early_phase": {
+        "one_switch_mean_distance": 0.00011772705839256978,
+        "block_safe_mean_distance": 0.17712672374444868,
+        "difference": -0.1770089966860561,
+        "constant_in_all_episodes": true,
+        "inference": "deterministic fixed-design quantity; no sampling test"
+      },
+      "switching": {
+        "n_all": 256,
+        "n_switched": 256,
+        "n_not_switched": 0,
+        "fraction": 1.0,
+        "fraction_ci_95": [
+          0.9856936372709606,
+          1.0
+        ],
+        "conditional_round_quantiles_05_50_95": [
+          171379.0,
+          171476.5,
+          171570.5
+        ],
+        "conditional_delay_from_H_quantiles_05_50_95": [
+          73075.0,
+          73172.5,
+          73266.5
+        ],
+        "mean_safe_rounds_all_episodes": 90670.16796875,
+        "crossing_round_remains_fast": true,
+        "fresh_safe_starts_next_round": true
+      },
+      "conditional_safe_tail_certificates_hold": true
+    },
+    "exogenous": {
+      "n": 256,
+      "methods": {
+        "one_switch": {
+          "terminal_delta_mean": 2.896302989108257e-13,
+          "terminal_delta_std": 8.16975841907333e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.8831798060124925e-13,
+            2.896016759734721e-13,
+            2.9090618802740664e-13,
+            2.914002372733648e-13
+          ],
+          "maximum_kkt_distance_residual": 2.9196089990080054e-13,
+          "maximum_support_gap": 1.1439763370412375e-13,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.9196089990080054e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.20179693509114843,
+            "maximum_kkt_residual_among_members": 2.9196089990080054e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta_mean": 3.720912467031212e-13,
+          "terminal_delta_std": 1.3148794873839452e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            3.7003039521366077e-13,
+            3.7200797997627433e-13,
+            3.744018983731223e-13,
+            3.7512631889669025e-13
+          ],
+          "maximum_kkt_distance_residual": 3.755329380794592e-13,
+          "maximum_support_gap": 1.6700500426583684e-13,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 3.755329380794592e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.19397942609107927,
+            "maximum_kkt_residual_among_members": 3.755329380794592e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "block_safe": {
+          "terminal_delta_mean": 5.092768654707536e-16,
+          "terminal_delta_std": 2.709509203929861e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            9.540979117872439e-17,
+            4.926614671774132e-16,
+            9.471590178833367e-16,
+            1.197653087814387e-15
+          ],
+          "maximum_kkt_distance_residual": 1.429412144204889e-15,
+          "maximum_support_gap": 1.9581054891076455e-16,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 1.429412144204889e-15,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.210977413492916,
+            "maximum_kkt_residual_among_members": 1.429412144204889e-15
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "lag_response": {
+          "terminal_delta_mean": 1.067090751698252e-13,
+          "terminal_delta_std": 6.305662380415778e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.0571057917907467e-13,
+            1.067410049238049e-13,
+            1.076534694721687e-13,
+            1.080420475307875e-13
+          ],
+          "maximum_kkt_distance_residual": 1.082883782643762e-13,
+          "maximum_support_gap": 2.4075209698511e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 1.082883782643762e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.22800280897068814,
+            "maximum_kkt_residual_among_members": 1.082883782643762e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "last_window": {
+          "terminal_delta_mean": 5.4679947635721815e-14,
+          "terminal_delta_std": 1.7608445741164338e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            5.1313120419393954e-14,
+            5.462991170546161e-14,
+            5.746791931215967e-14,
+            5.839079220137933e-14
+          ],
+          "maximum_kkt_distance_residual": 5.868916463924734e-14,
+          "maximum_support_gap": 1.0625636530918352e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 5.868916463924734e-14,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.23483227106025176,
+            "maximum_kkt_residual_among_members": 5.868916463924734e-14
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "uniform": {
+          "terminal_delta_mean": 1.860456233515606e-13,
+          "terminal_delta_std": 6.574397436919726e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.8501519760683038e-13,
+            1.8600398998813716e-13,
+            1.8720094918656116e-13,
+            1.8756315944834512e-13
+          ],
+          "maximum_kkt_distance_residual": 1.877664690397296e-13,
+          "maximum_support_gap": 4.175125106645921e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 1.877664690397296e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.042124874394122824,
+            "maximum_kkt_residual_among_members": 1.877664690397296e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "request_trigger": {
+          "terminal_delta_mean": 8.978142665080902e-14,
+          "terminal_delta_std": 2.8773245637359004e-16,
+          "terminal_delta_quantiles_05_50_95_99": [
+            8.933132011890166e-14,
+            8.97615315409439e-14,
+            9.028888747764086e-14,
+            9.044778814804033e-14
+          ],
+          "maximum_kkt_distance_residual": 9.053868765818152e-14,
+          "maximum_support_gap": 4.327913316576169e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 9.053868765818152e-14,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.23950684847697745,
+            "maximum_kkt_residual_among_members": 9.053868765818152e-14
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        },
+        "fast_recent_saddle": {
+          "terminal_delta_mean": 2.662237834696879e-13,
+          "terminal_delta_std": 1.2356067812200264e-15,
+          "terminal_delta_quantiles_05_50_95_99": [
+            2.6422614096688335e-13,
+            2.661898479416891e-13,
+            2.6824376053724563e-13,
+            2.687336464468615e-13
+          ],
+          "maximum_kkt_distance_residual": 2.6922908347160046e-13,
+          "maximum_support_gap": 9.591307338103534e-14,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 2.6922908347160046e-13,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 0,
+            "unresolved": 256,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 256,
+            "outside": 0,
+            "inside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "outside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "minimum_membership_margin_when_requests_observed": 0.20716177623349058,
+            "maximum_kkt_residual_among_members": 2.6922908347160046e-13
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 256,
+            "positive": 0,
+            "unresolved": 0,
+            "positive_fraction": 0.0,
+            "positive_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "zero_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "possible_positive_fraction_upper_count": 0,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.0,
+              0.014306362729039377
+            ]
+          }
+        }
+      },
+      "paired_differences": {
+        "terminal_delta__shared_past_hull": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": -8.246094779229551e-14,
+          "sample_standard_deviation": 1.5220286542113754e-15,
+          "standard_error": 9.512679088821096e-17,
+          "t_statistic": -866.8530392158456,
+          "t_ci_95": [
+            -8.264828198706757e-14,
+            -8.227361359752346e-14
+          ],
+          "t_ci_family": [
+            -8.270024402033138e-14,
+            -8.222165156425965e-14
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1021.5711047583076,
+          "negative_log10_p_value": 443.6626936683417,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": -54.17831495099011,
+          "bootstrap_mean_ci_95": [
+            -8.265100843313222e-14,
+            -8.227401507472642e-14
+          ],
+          "bootstrap_mean_ci_family": [
+            -8.269780124364398e-14,
+            -8.222913181529096e-14
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 256,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -3.720912467031212e-13,
+            2.896302989108257e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -3.722979745467673e-13,
+            2.8975874540020286e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -3.722530845826577e-13,
+            2.897308538583745e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        },
+        "terminal_delta__block_safe": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 2.8912102204535495e-13,
+          "sample_standard_deviation": 8.815226714216353e-16,
+          "standard_error": 5.509516696385221e-17,
+          "t_statistic": 5247.665775022457,
+          "t_ci_95": [
+            2.8901252255070537e-13,
+            2.892295215400045e-13
+          ],
+          "t_ci_family": [
+            2.889824273811772e-13,
+            2.892596167095327e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1480.6998313699207,
+          "negative_log10_p_value": 643.059766119032,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 327.9791109389033,
+          "bootstrap_mean_ci_95": [
+            2.890115704807898e-13,
+            2.8922809243089873e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            2.889839338286e-13,
+            2.8925799066105776e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -5.092768654707536e-16,
+            2.896302989108257e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -5.518762824091186e-16,
+            2.8975874540020286e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -5.426260224357823e-16,
+            2.897308538583745e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        },
+        "terminal_delta__lag_response": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 1.829212237410005e-13,
+          "sample_standard_deviation": 1.0289034517526485e-15,
+          "standard_error": 6.430646573454053e-17,
+          "t_statistic": 2844.5230452580963,
+          "t_ci_95": [
+            1.8279458433831978e-13,
+            1.8304786314368123e-13
+          ],
+          "t_ci_family": [
+            1.8275945759137104e-13,
+            1.8308298989062997e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1324.543728899475,
+          "negative_log10_p_value": 575.2420325005986,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 177.78269032863088,
+          "bootstrap_mean_ci_95": [
+            1.8279777919214674e-13,
+            1.8304569828191813e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            1.8276211571693555e-13,
+            1.830805384411046e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -1.067090751698252e-13,
+            2.896302989108257e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -1.068082139881862e-13,
+            2.8975874540020286e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -1.0678668646717305e-13,
+            2.897308538583745e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        },
+        "terminal_delta__last_window": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 2.349503512751039e-13,
+          "sample_standard_deviation": 1.9634982685060418e-15,
+          "standard_error": 1.227186417816276e-16,
+          "t_statistic": 1914.5449123629294,
+          "t_ci_95": [
+            2.347086801567257e-13,
+            2.351920223934821e-13
+          ],
+          "t_ci_family": [
+            2.346416463580786e-13,
+            2.3525905619212917e-13
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": 0.0,
+          "log_p_value": -1223.5901201703646,
+          "negative_log10_p_value": 531.3984373013261,
+          "p_value_underflow": true,
+          "inference_status": "ok",
+          "degenerate_empirical_intervals": false,
+          "d_z": 119.65905702268304,
+          "bootstrap_mean_ci_95": [
+            2.347081323782543e-13,
+            2.351883444939862e-13
+          ],
+          "bootstrap_mean_ci_family": [
+            2.346452628824037e-13,
+            2.352543554656316e-13
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -5.4679947635721815e-14,
+            2.896302989108257e-13
+          ],
+          "numeric_and_sampling_ci_family": [
+            -5.4956790955049346e-14,
+            2.8975874540020286e-13
+          ],
+          "numeric_and_sampling_ci_95": [
+            -5.489667575020121e-14,
+            2.897308538583745e-13
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 256
+        }
+      },
+      "early_phase": {
+        "one_switch_mean_distance": 0.00011772705839256978,
+        "block_safe_mean_distance": 0.17712672374444868,
+        "difference": -0.1770089966860561,
+        "constant_in_all_episodes": true,
+        "inference": "deterministic fixed-design quantity; no sampling test"
+      },
+      "switching": {
+        "n_all": 256,
+        "n_switched": 256,
+        "n_not_switched": 0,
+        "fraction": 1.0,
+        "fraction_ci_95": [
+          0.9856936372709606,
+          1.0
+        ],
+        "conditional_round_quantiles_05_50_95": [
+          236728.75,
+          237341.5,
+          237988.25
+        ],
+        "conditional_delay_from_H_quantiles_05_50_95": [
+          138424.75,
+          139037.5,
+          139684.25
+        ],
+        "mean_safe_rounds_all_episodes": 24802.17578125,
+        "crossing_round_remains_fast": true,
+        "fresh_safe_starts_next_round": true
+      },
+      "conditional_safe_tail_certificates_hold": true
+    },
+    "stationary": {
+      "n": 256,
+      "methods": {
+        "one_switch": {
+          "terminal_delta_mean": 3.814697265625e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06
+          ],
+          "maximum_kkt_distance_residual": 3.814697265625e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "shared_past_hull": {
+          "terminal_delta_mean": 3.814697265625e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06
+          ],
+          "maximum_kkt_distance_residual": 3.814697265625e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "block_safe": {
+          "terminal_delta_mean": 0.06272168562229308,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            0.06272168562229308,
+            0.06272168562229308,
+            0.06272168562229308,
+            0.06272168562229308
+          ],
+          "maximum_kkt_distance_residual": 0.06272168562229308,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "lag_response": {
+          "terminal_delta_mean": 1.9073486328125e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "maximum_kkt_distance_residual": 1.9073486328125e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "last_window": {
+          "terminal_delta_mean": 1.9073486328125e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "maximum_kkt_distance_residual": 1.9073486328125e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "uniform": {
+          "terminal_delta_mean": 0.5,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "maximum_kkt_distance_residual": 0.5,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "request_trigger": {
+          "terminal_delta_mean": 1.9073486328125e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "maximum_kkt_distance_residual": 1.9073486328125e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        },
+        "fast_recent_saddle": {
+          "terminal_delta_mean": 3.814697265625e-06,
+          "terminal_delta_std": 0.0,
+          "terminal_delta_quantiles_05_50_95_99": [
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06,
+            3.814697265625e-06
+          ],
+          "maximum_kkt_distance_residual": 3.814697265625e-06,
+          "maximum_support_gap": 0.0,
+          "maximum_feasibility_error": 0.0,
+          "maximum_projection_interval_width": 0.0,
+          "kkt_certificate_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          },
+          "stored_float_membership_diagnostic": {
+            "inside": 0,
+            "outside": 256,
+            "inside_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "outside_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "minimum_membership_margin_when_requests_observed": null,
+            "maximum_kkt_residual_among_members": null
+          },
+          "combined_machine_float_classification": {
+            "n": 256,
+            "zero": 0,
+            "positive": 256,
+            "unresolved": 0,
+            "positive_fraction": 1.0,
+            "positive_fraction_ci_95": [
+              0.9856936372709606,
+              1.0
+            ],
+            "zero_fraction_ci_95": [
+              0.0,
+              0.014306362729039377
+            ],
+            "possible_positive_fraction_upper_count": 256,
+            "possible_positive_population_fraction_enclosure_95": [
+              0.9856936372709606,
+              1.0
+            ]
+          }
+        }
+      },
+      "paired_differences": {
+        "terminal_delta__shared_past_hull": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 0.0,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            0.0,
+            0.0
+          ],
+          "t_ci_family": [
+            0.0,
+            0.0
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_zero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_mean_ci_family": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 256,
+          "losses": 0,
+          "win_fraction": 0.0,
+          "tie_fraction": 1.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            0.0,
+            0.0
+          ],
+          "numeric_and_sampling_ci_family": [
+            0.0,
+            0.0
+          ],
+          "numeric_and_sampling_ci_95": [
+            0.0,
+            0.0
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 0,
+            "unresolved": 256
+          },
+          "both_stored_membership_zero": 0
+        },
+        "terminal_delta__block_safe": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": -0.06271787092502745,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            -0.06271787092502745,
+            -0.06271787092502745
+          ],
+          "t_ci_family": [
+            -0.06271787092502745,
+            -0.06271787092502745
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_nonzero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            -0.06271787092502742,
+            -0.0627178709250274
+          ],
+          "bootstrap_mean_ci_family": [
+            -0.06271787092502742,
+            -0.0627178709250274
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 256,
+          "ties": 0,
+          "losses": 0,
+          "win_fraction": 1.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 0.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            -0.06271787092502745,
+            -0.06271787092502745
+          ],
+          "numeric_and_sampling_ci_family": [
+            -0.06271787092502745,
+            -0.06271787092502745
+          ],
+          "numeric_and_sampling_ci_95": [
+            -0.06271787092502745,
+            -0.06271787092502745
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 256,
+            "losses": 0,
+            "unresolved": 0
+          },
+          "both_stored_membership_zero": 0
+        },
+        "terminal_delta__lag_response": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 1.9073486328125e-06,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "t_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_nonzero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "bootstrap_mean_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "numeric_and_sampling_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "numeric_and_sampling_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 256,
+            "unresolved": 0
+          },
+          "both_stored_membership_zero": 0
+        },
+        "terminal_delta__last_window": {
+          "n": 256,
+          "degrees_of_freedom": 255,
+          "mean_difference": 1.9073486328125e-06,
+          "sample_standard_deviation": 0.0,
+          "standard_error": 0.0,
+          "t_statistic": null,
+          "t_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "t_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "confidence_level": 0.95,
+          "family_size": 4,
+          "family_interval_confidence_level": 0.9875,
+          "p_value": null,
+          "log_p_value": null,
+          "negative_log10_p_value": null,
+          "p_value_underflow": false,
+          "inference_status": "constant_nonzero",
+          "degenerate_empirical_intervals": true,
+          "d_z": null,
+          "bootstrap_mean_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "bootstrap_mean_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "bootstrap_resamples": 9999,
+          "bootstrap_method": "percentile, independent complete paired episodes",
+          "wins": 0,
+          "ties": 0,
+          "losses": 256,
+          "win_fraction": 0.0,
+          "tie_fraction": 0.0,
+          "loss_fraction": 1.0,
+          "difference_direction": "method minus control; negative favors method",
+          "inference_unit": "independent complete episode",
+          "numerical_mean_difference_enclosure": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "numeric_and_sampling_ci_family": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "numeric_and_sampling_ci_95": [
+            1.9073486328125e-06,
+            1.9073486328125e-06
+          ],
+          "kkt_bound_comparisons": {
+            "wins": 0,
+            "losses": 256,
+            "unresolved": 0
+          },
+          "both_stored_membership_zero": 0
+        }
+      },
+      "early_phase": {
+        "one_switch_mean_distance": 0.00011772705839256978,
+        "block_safe_mean_distance": 0.17712672374444868,
+        "difference": -0.1770089966860561,
+        "constant_in_all_episodes": true,
+        "inference": "deterministic fixed-design quantity; no sampling test"
+      },
+      "switching": {
+        "n_all": 256,
+        "n_switched": 0,
+        "n_not_switched": 256,
+        "fraction": 0.0,
+        "fraction_ci_95": [
+          0.0,
+          0.014306362729039377
+        ],
+        "conditional_round_quantiles_05_50_95": null,
+        "conditional_delay_from_H_quantiles_05_50_95": null,
+        "mean_safe_rounds_all_episodes": 0.0,
+        "crossing_round_remains_fast": true,
+        "fresh_safe_starts_next_round": true
+      },
+      "conditional_safe_tail_certificates_hold": true
+    }
+  }
+}
